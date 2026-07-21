@@ -1,7 +1,6 @@
 /* ============================================================
    ELITE FITNESS – GOLDEN RATIO STYLES
-   Based on 1.618:1 ratio & Fibonacci sequence
-   Mobile-Fixed Version
+   Mobile-Fixed Version with Working Theme Toggle
    ============================================================ */
 
 /* ============================================================
@@ -37,7 +36,7 @@
     --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-    /* Golden Ratio Spacing (Fibonacci: 8, 13, 21, 34, 55, 89) */
+    /* Golden Ratio Spacing */
     --space-xs: 8px;
     --space-sm: 13px;
     --space-md: 21px;
@@ -114,7 +113,7 @@ a {
 }
 
 /* ============================================================
-   TYPOGRAPHY – Golden Ratio Font Scale
+   TYPOGRAPHY
    ============================================================ */
 h1, .h1 {
     font-size: clamp(44px, 6vw, 72px);
@@ -225,7 +224,7 @@ small, .small-text {
 }
 
 /* ============================================================
-   THEME TOGGLE
+   THEME TOGGLE (Mobile-Friendly)
    ============================================================ */
 .theme-toggle-wrapper {
     position: fixed;
@@ -252,6 +251,13 @@ small, .small-text {
     box-shadow: var(--shadow-sm);
     transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     font-family: var(--font);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
 }
 
 .theme-toggle:hover {
@@ -375,7 +381,12 @@ small, .small-text {
     cursor: pointer;
     background: transparent;
     border: none;
-    padding: 4px;
+    padding: 8px;
+    min-height: 44px;
+    min-width: 44px;
+    justify-content: center;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .hamburger span {
@@ -385,6 +396,7 @@ small, .small-text {
     background: var(--text-primary);
     border-radius: 2px;
     transition: all 0.3s ease;
+    transform-origin: center;
 }
 
 .hamburger.active span:nth-child(1) {
@@ -1180,91 +1192,120 @@ small, .small-text {
 }
 
 /* ============================================================
-   MOBILE FIXES – OVERFLOW, BUTTONS, LAYOUT
+   MOBILE RESPONSIVE FIXES
    ============================================================ */
-
-/* Prevent horizontal scroll on all devices */
-html, body {
-    overflow-x: hidden;
-    width: 100%;
-    max-width: 100%;
-}
-
-* {
-    max-width: 100%;
-}
-
-/* Fix container overflow */
-.container {
-    max-width: 100%;
-    padding-left: 16px;
-    padding-right: 16px;
-    overflow-x: hidden;
-}
-
-/* ============================================================
-   RESPONSIVE – Maintain Golden Ratio on Mobile
-   ============================================================ */
-@media (max-width: 1024px) {
-    .hero-grid {
-        grid-template-columns: 1fr;
-        gap: var(--space-xl);
-    }
-    .grid-2 {
-        grid-template-columns: 1fr;
-        gap: var(--space-xl);
-    }
-    .grid-3 {
-        grid-template-columns: 1fr 1fr;
-    }
-    .checkout-wrapper {
-        grid-template-columns: 1fr;
-        gap: var(--space-lg);
-    }
-    .feature-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-    .facility-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-    .class-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-    .footer-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-    .trainer-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-    .contact-grid {
-        grid-template-columns: 1fr;
-        gap: var(--space-lg);
-    }
-}
-
 @media (max-width: 768px) {
-    .nav-links {
-        display: none;
-        flex-direction: column;
-        background: var(--bg-nav);
-        backdrop-filter: blur(16px);
-        position: absolute;
-        top: 72px;
-        left: 0;
-        right: 0;
-        padding: var(--space-lg);
-        gap: var(--space-md);
-        border-bottom: 1px solid var(--border-light);
+    /* Prevent horizontal scroll */
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+        max-width: 100%;
     }
 
-    .nav-links.open {
-        display: flex;
+    * {
+        max-width: 100%;
+    }
+
+    .container {
+        padding-left: 16px;
+        padding-right: 16px;
+        overflow-x: hidden;
+    }
+
+    /* Theme Toggle Mobile */
+    .theme-toggle-wrapper {
+        top: 10px;
+        right: 12px;
+    }
+
+    .theme-toggle {
+        padding: 6px 12px;
+        font-size: 13px;
+        min-height: 40px;
+        min-width: 40px;
+    }
+
+    .theme-toggle .toggle-label {
+        display: none;
+    }
+
+    .theme-toggle .icon-sun,
+    .theme-toggle .icon-moon {
+        font-size: 18px;
+    }
+
+    /* Navbar Mobile */
+    .navbar {
+        padding: 10px 0;
+    }
+
+    .navbar .container {
+        padding: 0 16px;
+    }
+
+    .nav-logo {
+        font-size: 18px;
     }
 
     .hamburger {
         display: flex;
     }
 
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        background: var(--bg-nav);
+        backdrop-filter: blur(16px);
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        padding: 16px 20px;
+        gap: 12px;
+        border-bottom: 1px solid var(--border-light);
+        box-shadow: var(--shadow-md);
+        align-items: stretch;
+        text-align: center;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+
+    .nav-links a {
+        font-size: 15px;
+        padding: 10px 0;
+        color: var(--text-primary);
+    }
+
+    .nav-links a::after {
+        display: none;
+    }
+
+    .nav-links .admin-link {
+        border: 1px solid var(--accent);
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin-top: 4px;
+        background: var(--accent-dim);
+        color: var(--accent);
+    }
+
+    .nav-links .admin-link i {
+        font-size: 14px;
+        margin-right: 8px;
+    }
+
+    .nav-cta {
+        font-size: 14px !important;
+        padding: 10px 20px !important;
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Hero Mobile */
     .hero {
         padding: 100px 0 40px;
         min-height: auto;
@@ -1322,6 +1363,7 @@ html, body {
         object-fit: cover;
     }
 
+    /* Sections Mobile */
     .section {
         padding: 40px 0;
     }
@@ -1336,6 +1378,12 @@ html, body {
         max-width: 100%;
     }
 
+    .section-sub {
+        font-size: 15px;
+        max-width: 100%;
+    }
+
+    /* Grids Mobile */
     .grid-2 {
         grid-template-columns: 1fr;
         gap: 24px;
@@ -1372,6 +1420,7 @@ html, body {
         gap: 24px;
     }
 
+    /* Cards Mobile */
     .format-card {
         padding: 20px;
     }
@@ -1413,6 +1462,7 @@ html, body {
         font-size: 20px;
     }
 
+    /* Checkout Mobile */
     .checkout-wrapper {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -1442,92 +1492,7 @@ html, body {
         justify-content: center;
     }
 
-    .navbar {
-        padding: 10px 0;
-    }
-
-    .navbar .container {
-        padding: 0 16px;
-    }
-
-    .nav-logo {
-        font-size: 18px;
-    }
-
-    .nav-links {
-        padding: 16px;
-        gap: 12px;
-        top: 60px;
-    }
-
-    .nav-links a {
-        font-size: 14px;
-        padding: 10px 0;
-    }
-
-    .nav-cta {
-        font-size: 13px !important;
-        padding: 8px 16px !important;
-    }
-
-    .hamburger span {
-        width: 22px;
-        height: 2px;
-    }
-
-    .theme-toggle-wrapper {
-        top: 10px;
-        right: 12px;
-    }
-
-    .theme-toggle {
-        padding: 4px 10px;
-        font-size: 12px;
-        gap: 6px;
-    }
-
-    .theme-toggle .toggle-label {
-        display: none;
-    }
-
-    .theme-toggle .icon-sun,
-    .theme-toggle .icon-moon {
-        font-size: 16px;
-    }
-
-    .floating {
-        bottom: 12px;
-        right: 12px;
-        gap: 8px;
-    }
-
-    .floating .whatsapp {
-        width: 48px;
-        height: 48px;
-        font-size: 1.8rem;
-    }
-
-    .floating .back-top {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
-    }
-
-    .nav-links .admin-link {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        border: 1px solid var(--border-light);
-        border-radius: 8px;
-        padding: 8px 12px;
-        margin-top: 4px;
-    }
-
-    .nav-links .admin-link i {
-        font-size: 14px;
-    }
-
+    /* BMI Mobile */
     .bmi-box {
         padding: 20px;
     }
@@ -1542,6 +1507,7 @@ html, body {
         font-size: 2.5rem;
     }
 
+    /* Offers Mobile */
     .offer-banner {
         padding: 24px 16px;
     }
@@ -1562,6 +1528,7 @@ html, body {
         padding: 10px 24px;
     }
 
+    /* FAQ Mobile */
     .faq-question {
         padding: 14px 16px;
         font-size: 14px;
@@ -1576,6 +1543,7 @@ html, body {
         padding: 0 16px 16px;
     }
 
+    /* Contact Mobile */
     .contact-grid {
         grid-template-columns: 1fr;
         gap: 24px;
@@ -1596,6 +1564,7 @@ html, body {
         height: 200px;
     }
 
+    /* Testimonials Mobile */
     .testimonial-card {
         padding: 20px;
     }
@@ -1609,45 +1578,50 @@ html, body {
         height: 60px;
     }
 
-    .container {
-        padding-left: 16px;
-        padding-right: 16px;
+    /* Floating Buttons Mobile */
+    .floating {
+        bottom: 12px;
+        right: 12px;
+        gap: 8px;
     }
 
-    .row,
-    .grid,
-    .flex {
-        flex-wrap: wrap;
+    .floating .whatsapp {
+        width: 48px;
+        height: 48px;
+        font-size: 1.8rem;
     }
 
-    /* Fix any element causing horizontal scroll */
-    * {
-        max-width: 100%;
-        word-wrap: break-word;
+    .floating .back-top {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
     }
 
-    /* Fix tables on mobile */
-    .table-responsive {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+    /* Footer Mobile */
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
     }
 }
 
+/* ============================================================
+   EXTRA SMALL SCREENS (480px and below)
+   ============================================================ */
 @media (max-width: 480px) {
     .hero h1 {
-        font-size: 30px;
+        font-size: 26px;
     }
 
     .hero p {
-        font-size: 16px;
+        font-size: 14px;
     }
 
     .section-title {
-        font-size: 28px;
+        font-size: 24px;
     }
 
     .format-card .price {
-        font-size: 26px;
+        font-size: 24px;
     }
 
     .facility-grid {
@@ -1659,10 +1633,46 @@ html, body {
     }
 
     .hero-stats {
-        gap: var(--space-md);
+        gap: 8px;
     }
 
     .hero-stats .stat-number {
-        font-size: 18px;
+        font-size: 16px;
+    }
+
+    .hero-stats .stat-label {
+        font-size: 11px;
+    }
+
+    .theme-toggle-wrapper {
+        top: 8px;
+        right: 8px;
+    }
+
+    .theme-toggle {
+        padding: 4px 10px;
+        font-size: 12px;
+        min-height: 34px;
+        min-width: 34px;
+    }
+
+    .theme-toggle .icon-sun,
+    .theme-toggle .icon-moon {
+        font-size: 15px;
+    }
+
+    .nav-logo {
+        font-size: 16px;
+    }
+
+    .hamburger span {
+        width: 20px;
+        height: 2px;
+    }
+
+    .hero-btns .btn-primary,
+    .hero-btns .btn-outline {
+        font-size: 14px;
+        padding: 12px 16px;
     }
 }
