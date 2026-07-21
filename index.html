@@ -1,763 +1,544 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    <title>Elite Fitness – Forge Your Legacy</title>
-
-    <!-- Google Fonts & Font Awesome -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elite Fitness – Built for Scale. Built for India.</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-
     <!-- Main CSS -->
     <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-    <!-- ===== LOADER ===== -->
-    <div id="loader" role="status" aria-label="Loading">
-        <div class="loader-spinner"></div>
-        <div class="loader-text">FORGING STRENGTH...</div>
+    <!-- ============================================================
+    THEME TOGGLE (floating)
+    ============================================================ -->
+    <div class="theme-toggle-wrapper">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span class="icon-sun"><i class="fas fa-sun"></i></span>
+            <span class="icon-moon"><i class="fas fa-moon"></i></span>
+            <span class="toggle-label">Theme</span>
+        </button>
     </div>
 
-    <!-- ===== NAVBAR ===== -->
-    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
-        <div class="nav-container">
-            <a href="#" class="logo">ELITE<span>FITNESS</span></a>
-            <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
-                <span></span><span></span><span></span>
-            </button>
-            <ul class="nav-links" id="navLinks" role="menubar">
-                <li role="none"><a href="#home" role="menuitem">Home</a></li>
-                <li role="none"><a href="#about" role="menuitem">About</a></li>
-                <li role="none"><a href="#membership" role="menuitem">Membership</a></li>
-                <li role="none"><a href="#trainers" role="menuitem">Trainers</a></li>
-                <li role="none"><a href="#members" role="menuitem">Members</a></li>
-                <li role="none"><a href="#contact" role="menuitem">Contact</a></li>
-                <li role="none"><a href="dashboard.html" class="nav-cta" role="menuitem">Login</a></li>
+    <!-- ============================================================
+    NAVBAR
+    ============================================================ -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-logo">ELITE<span>FITNESS</span></a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">About</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#plans">Plans</a></li>
+                <li><a href="#trainers">Trainers</a></li>
+                <li><a href="star-members.html">Star Members</a></li>
+                <li><a href="admin.html" class="admin-link"><i class="fas fa-user-shield"></i> Admin</a></li>
+                <li><a href="dashboard.html" class="nav-cta">Login</a></li>
             </ul>
+
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </nav>
 
-    <!-- ===== HERO ===== -->
+    <!-- ============================================================
+    HERO
+    ============================================================ -->
     <section class="hero" id="home">
-        <div class="container hero-content">
-            <div class="hero-text">
-                <h1>Forge Your <span class="blue">Legacy.</span></h1>
-                <p>Elite coaching, premium equipment, and a community that pushes you to be your absolute best. Built for champions, open for everyone.</p>
-                <div class="hero-btns">
-                    <a href="#membership" class="btn-primary"><i class="fas fa-dumbbell"></i> Join Now</a>
-                    <a href="#contact" class="btn-outline"><i class="fas fa-calendar-check"></i> Book Free Trial</a>
-                </div>
-                <div class="hero-stats">
-                    <div class="stat-item"><div class="num" data-target="4.9">0</div><div class="label">⭐ Rating</div></div>
-                    <div class="stat-item"><div class="num" data-target="1200">0</div><div class="label">👥 Members</div></div>
-                    <div class="stat-item"><div class="num" data-target="8">0</div><div class="label">💪 Trainers</div></div>
-                    <div class="stat-item"><div class="num" data-target="10">0</div><div class="label">🏆 Years</div></div>
-                </div>
-            </div>
-            <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?w=600&q=80" alt="Elite Fitness gym interior" loading="lazy" width="600" height="400" />
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== ABOUT ===== -->
-    <section id="about" class="container">
-        <h2 class="section-title">About <span class="blue">Us</span></h2>
-        <p class="section-sub">We don't just build bodies – we build discipline, confidence, and champions.</p>
-        <div class="about-grid">
-            <div class="about-text">
-                <h3>Built by Athletes, For Athletes.</h3>
-                <p><strong>Mission:</strong> To make elite fitness accessible to everyone, regardless of their starting point.</p>
-                <p><strong>Vision:</strong> To build a global community where strength, health, and resilience are the standard.</p>
-                <p>Founded in 2016, Elite Fitness has grown from a small garage gym to a 10,000 sq ft facility, housing some of the best powerlifters, bodybuilders, and casual fitness enthusiasts in the region.</p>
-            </div>
-            <div class="about-image">
-                <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80" alt="Elite Fitness gym" loading="lazy" width="600" height="450" />
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== WHY CHOOSE US ===== -->
-    <section id="why-us" class="container">
-        <h2 class="section-title">Why <span class="orange">Choose Us</span></h2>
-        <p class="section-sub">The Elite difference – what makes us the premier fitness destination.</p>
-        <div class="features-grid">
-            <div class="feature-card"><i class="fas fa-dumbbell"></i><h3>Premium Equipment</h3><p>Top-tier machines & free weights for every muscle group.</p></div>
-            <div class="feature-card"><i class="fas fa-user-graduate"></i><h3>Certified Trainers</h3><p>Expert coaches with years of competitive experience.</p></div>
-            <div class="feature-card"><i class="fas fa-apple-alt"></i><h3>Diet Guidance</h3><p>Customized meal plans tailored to your fitness goals.</p></div>
-            <div class="feature-card"><i class="fas fa-clock"></i><h3>Flexible Timings</h3><p>Open 5 AM – 12 AM, 365 days a year. No excuses.</p></div>
-        </div>
-    </section>
-
-    <!-- ===== MEMBERSHIP ===== -->
-    <section id="membership" class="container">
-        <h2 class="section-title">Membership <span class="blue">Plans</span></h2>
-        <p class="section-sub">Choose the plan that fits your journey.</p>
-        <div class="pricing-grid">
-            <div class="pricing-card">
-                <h3>Basic</h3>
-                <div class="price">₹5,000 <span>/mo</span></div>
-                <ul>
-                    <li><i class="fas fa-check"></i> Access to all equipment</li>
-                    <li><i class="fas fa-check"></i> Locker room & showers</li>
-                    <li><i class="fas fa-check"></i> 1 Group class / week</li>
-                </ul>
-                <a href="#checkout" class="btn-blue">Join Now</a>
-            </div>
-            <div class="pricing-card popular">
-                <div class="badge">Most Popular</div>
-                <h3>Premium</h3>
-                <div class="price">₹7,000 <span>/mo</span></div>
-                <ul>
-                    <li><i class="fas fa-check"></i> Everything in Basic</li>
-                    <li><i class="fas fa-check"></i> Unlimited group classes</li>
-                    <li><i class="fas fa-check"></i> 2 Personal training sessions</li>
-                    <li><i class="fas fa-check"></i> Custom diet plan</li>
-                </ul>
-                <a href="#checkout" class="btn-primary">Join Now</a>
-            </div>
-            <div class="pricing-card">
-                <h3>Elite</h3>
-                <div class="price">₹10,000 <span>/mo</span></div>
-                <ul>
-                    <li><i class="fas fa-check"></i> Everything in Premium</li>
-                    <li><i class="fas fa-check"></i> Unlimited PT sessions</li>
-                    <li><i class="fas fa-check"></i> 24/7 keycard access</li>
-                    <li><i class="fas fa-check"></i> Priority class booking</li>
-                </ul>
-                <a href="#checkout" class="btn-blue">Join Now</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== CHECKOUT ===== -->
-    <section id="checkout" class="container">
-        <h2 class="section-title">Quick <span class="orange">Checkout</span></h2>
-        <div class="checkout-wrapper">
-            <div>
-                <h3>Selected Plan: <span style="color:var(--accent-orange);">Premium</span></h3>
-                <p style="color:var(--text-secondary);">Monthly recurring, cancel anytime.</p>
-                <div style="margin:1.5rem 0;">
-                    <label style="display:block;font-size:0.9rem;color:var(--text-secondary);margin-bottom:0.3rem;">Coupon Code</label>
-                    <input type="text" placeholder="Enter code" style="width:100%;padding:0.8rem;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-primary);color:#fff;min-height:48px;" />
-                </div>
-                <label style="display:block;font-size:0.9rem;color:var(--text-secondary);margin-bottom:0.5rem;">Payment Method</label>
-                <div class="payment-methods">
-                    <button class="active"><i class="fas fa-mobile-alt"></i> UPI</button>
-                    <button><i class="fas fa-credit-card"></i> Credit</button>
-                    <button><i class="fas fa-wallet"></i> Wallet</button>
-                </div>
-            </div>
-            <div>
-                <h3>Summary</h3>
-                <div class="summary-line"><span>Premium Plan</span><span>₹7,000.00</span></div>
-                <div class="summary-line"><span>GST (18%)</span><span>₹1,260.00</span></div>
-                <div class="summary-line total"><span>Total</span><span>₹8,260.00</span></div>
-                <button class="btn-primary" style="width:100%;margin-top:1.5rem;"><i class="fas fa-lock"></i> Proceed to Payment</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== FACILITIES ===== -->
-    <section id="facilities" class="container">
-        <h2 class="section-title">Our <span class="orange">Facilities</span></h2>
-        <p class="section-sub">Everything you need to train like a champion.</p>
-        <div class="facility-grid">
-            <div class="facility-item"><i class="fas fa-weight-hanging"></i><p>Strength Zone</p></div>
-            <div class="facility-item"><i class="fas fa-heartbeat"></i><p>Cardio Zone</p></div>
-            <div class="facility-item"><i class="fas fa-running"></i><p>CrossFit</p></div>
-            <div class="facility-item"><i class="fas fa-arrows-alt-h"></i><p>Functional Area</p></div>
-            <div class="facility-item"><i class="fas fa-tshirt"></i><p>Locker Room</p></div>
-            <div class="facility-item"><i class="fas fa-car"></i><p>Parking</p></div>
-            <div class="facility-item"><i class="fas fa-hot-tub"></i><p>Steam Bath</p></div>
-            <div class="facility-item"><i class="fas fa-snowflake"></i><p>Air Conditioning</p></div>
-        </div>
-    </section>
-
-    <!-- ===== TRAINERS ===== -->
-    <section id="trainers" class="container">
-        <h2 class="section-title">Meet Your <span class="orange">Trainers</span></h2>
-        <p class="section-sub">World-class athletes dedicated to your success.</p>
-        <div class="trainer-grid">
-            <div class="trainer-card"><img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=400&q=80" alt="Trainer" loading="lazy" width="400" height="400" /><div class="info"><h4>Alex Rivera</h4><p>10+ Years • Strength & Conditioning</p><button class="btn-primary" style="padding:0.4rem 1.2rem;font-size:0.8rem;margin-top:0.5rem;">Book Session</button></div></div>
-            <div class="trainer-card"><img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400&q=80" alt="Trainer" loading="lazy" width="400" height="400" /><div class="info"><h4>Maya Chen</h4><p>8+ Years • Yoga & Mobility</p><button class="btn-primary" style="padding:0.4rem 1.2rem;font-size:0.8rem;margin-top:0.5rem;">Book Session</button></div></div>
-            <div class="trainer-card"><img src="https://images.unsplash.com/photo-1519340241574-2cec6aef0c01?w=400&q=80" alt="Trainer" loading="lazy" width="400" height="400" /><div class="info"><h4>James Okafor</h4><p>12+ Years • CrossFit & HIIT</p><button class="btn-primary" style="padding:0.4rem 1.2rem;font-size:0.8rem;margin-top:0.5rem;">Book Session</button></div></div>
-            <div class="trainer-card"><img src="https://images.unsplash.com/photo-1567309217775-3f5aa6f83c90?w=400&q=80" alt="Trainer" loading="lazy" width="400" height="400" /><div class="info"><h4>Sophie Kim</h4><p>6+ Years • Nutrition & Body Recomp</p><button class="btn-primary" style="padding:0.4rem 1.2rem;font-size:0.8rem;margin-top:0.5rem;">Book Session</button></div></div>
-        </div>
-    </section>
-
-    <!-- ===== MEMBER WORKOUT PROFILES ===== -->
-    <section id="members" class="container">
-        <h2 class="section-title">Member <span class="orange">Workouts</span></h2>
-        <p class="section-sub">Real members, real routines – see what our community is training like.</p>
-
-        <div class="member-profile-grid">
-
-            <!-- Member 1: Rahul Sharma -->
-            <div class="member-profile">
-                <div class="member-profile-header">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80" alt="Rahul Sharma" loading="lazy" />
-                    <div class="member-info">
-                        <h3>Rahul Sharma</h3>
-                        <p><i class="fas fa-calendar-alt" style="color:var(--accent-orange);"></i> Member since: Jan 2024</p>
-                        <p><i class="fas fa-tag" style="color:var(--accent-blue);"></i> Plan: Premium (Gym + PT)</p>
-                        <p><i class="fas fa-dumbbell" style="color:var(--accent-orange);"></i> Goal: Build Muscle & Strength</p>
-                        <span class="badge-orange"><i class="fas fa-fire"></i> 6 Months Progress</span>
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-text">
+                    <div class="hero-badge">
+                        <span class="dot"></span>
+                        Elite Fitness – Forge Your Legacy
+                    </div>
+                    <h1>
+                        Build Strength.<br />
+                        <span class="highlight">Build Confidence.</span>
+                    </h1>
+                    <p>
+                        A premium fitness ecosystem designed for those who demand the best.
+                        Science-based training, world-class equipment, and a community that pushes you.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#plans" class="btn-primary"><i class="fas fa-arrow-right"></i> Join Now</a>
+                        <a href="#contact" class="btn-outline"><i class="fas fa-calendar-check"></i> Free Trial</a>
+                    </div>
+                    <div class="hero-stats">
+                        <div>
+                            <div class="stat-number">1200+</div>
+                            <div class="stat-label">Active Members</div>
+                        </div>
+                        <div>
+                            <div class="stat-number">4.9★</div>
+                            <div class="stat-label">Average Rating</div>
+                        </div>
+                        <div>
+                            <div class="stat-number">10+</div>
+                            <div class="stat-label">Years of Excellence</div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="workout-split">
-                    <h4 style="color:var(--accent-orange);margin-bottom:1rem;"><i class="fas fa-calendar-week"></i> Weekly Workout Split</h4>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Day</th>
-                                <th>Exercise</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="day-label">Monday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=100&q=80" alt="Bench Press" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Bench Press</div>
-                                            <div class="exercise-detail">4 sets × 10 reps</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1526401485004-46910ecc8e51?w=100&q=80" alt="Incline Dumbbell Press" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Incline Dumbbell Press</div>
-                                            <div class="exercise-detail">3 sets × 12 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Tuesday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1581009146145-b5a5b36c6ef5?w=100&q=80" alt="Deadlift" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Deadlift</div>
-                                            <div class="exercise-detail">4 sets × 8 reps</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1570829460005-c840387bb1ca?w=100&q=80" alt="Barbell Row" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Barbell Row</div>
-                                            <div class="exercise-detail">3 sets × 12 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Wednesday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=100&q=80" alt="Shoulder Press" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Shoulder Press</div>
-                                            <div class="exercise-detail">4 sets × 10 reps</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=100&q=80" alt="Lateral Raises" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Lateral Raises</div>
-                                            <div class="exercise-detail">3 sets × 15 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Thursday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=100&q=80" alt="Leg Press" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Leg Press</div>
-                                            <div class="exercise-detail">4 sets × 12 reps</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=100&q=80" alt="Squats" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Squats</div>
-                                            <div class="exercise-detail">4 sets × 10 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Friday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=100&q=80" alt="Bicep Curls" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Bicep Curls</div>
-                                            <div class="exercise-detail">3 sets × 12 reps</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1519340241574-2cec6aef0c01?w=100&q=80" alt="Tricep Pushdowns" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Tricep Pushdowns</div>
-                                            <div class="exercise-detail">3 sets × 15 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Saturday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=100&q=80" alt="Cardio" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">HIIT Cardio</div>
-                                            <div class="exercise-detail">30 mins</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=100&q=80" alt="Core" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Core & Abs</div>
-                                            <div class="exercise-detail">3 sets × 20 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Sunday</span></td>
-                                <td style="color:var(--accent-blue);font-weight:600;">Rest Day – Recovery & Stretching</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="hero-image">
+                    <img
+                    src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80"
+                    alt="Elite Fitness Gym"
+                    loading="lazy"
+                    />
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Member 2: Priya Patel -->
-            <div class="member-profile">
-                <div class="member-profile-header">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80" alt="Priya Patel" loading="lazy" />
-                    <div class="member-info">
-                        <h3>Priya Patel</h3>
-                        <p><i class="fas fa-calendar-alt" style="color:var(--accent-orange);"></i> Member since: March 2024</p>
-                        <p><i class="fas fa-tag" style="color:var(--accent-blue);"></i> Plan: Basic (Gym Only)</p>
-                        <p><i class="fas fa-heart" style="color:var(--accent-orange);"></i> Goal: Weight Loss & Fitness</p>
-                        <span class="badge-blue"><i class="fas fa-heartbeat"></i> 3 Months Progress</span>
+    <!-- ============================================================
+    ABOUT
+    ============================================================ -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="grid-2">
+                <div>
+                    <span class="section-label">About Elite Fitness</span>
+                    <h2 class="section-title">
+                        More Than a Gym – <span class="highlight">A Lifestyle</span>
+                    </h2>
+                    <p class="section-desc">
+                        We combine science-backed training, premium equipment, and a supportive community
+                        to help you achieve results that last. Whether you're a beginner or a seasoned athlete,
+                        we have the tools and expertise to guide you.
+                    </p>
+                    <p class="section-desc" style="margin-top:12px;">
+                        Our trainers are among the best in the industry – certified, experienced, and passionate
+                        about your success.
+                    </p>
+                </div>
+                <div>
+                    <img
+                    src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=800&q=80"
+                    alt="Elite Fitness Interior"
+                    loading="lazy"
+                    style="width:100%; border-radius:var(--radius-lg); box-shadow:var(--shadow-md);"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    WHY CHOOSE US
+    ============================================================ -->
+    <section class="section section-alt" id="features">
+        <div class="container">
+            <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
+                <span class="section-label">Why Elite Fitness</span>
+                <h2 class="section-title">
+                    Built on <span class="highlight">Real Science</span>, Not Just Hype
+                </h2>
+                <p class="section-desc" style="margin:0 auto;">
+                    Every aspect of our gym is designed with your results in mind.
+                </p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <i class="fas fa-dumbbell"></i>
+                    <h4>Premium Equipment</h4>
+                    <p>Top-tier machines and free weights for every muscle group.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-user-graduate"></i>
+                    <h4>Certified Trainers</h4>
+                    <p>Science-based coaches with real-world experience.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-apple-alt"></i>
+                    <h4>Diet Guidance</h4>
+                    <p>Personalized nutrition plans tailored to your goals.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-clock"></i>
+                    <h4>Flexible Timings</h4>
+                    <p>Open 5 AM – 12 AM, 365 days a year. No excuses.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    MEMBERSHIP PLANS
+    ============================================================ -->
+    <section class="section" id="plans">
+        <div class="container">
+            <div style="text-align:center; max-width:700px; margin:0 auto 48px;">
+                <span class="section-label">Membership Plans</span>
+                <h2 class="section-title">
+                    Choose the <span class="highlight">Right Plan</span> for You
+                </h2>
+                <p class="section-desc" style="margin:0 auto;">
+                    Flexible options to match your commitment level and goals.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <!-- Starter 1 Month -->
+                <div class="format-card">
+                    <h3>Starter</h3>
+                    <div class="subtitle">1 Month Membership</div>
+                    <div class="price">₹1,500 <span>/mo</span></div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Full gym access</li>
+                        <li><i class="fas fa-check"></i> Locker room & showers</li>
+                        <li><i class="fas fa-check"></i> 1 Group class / week</li>
+                    </ul>
+                    <a href="#checkout" class="btn-primary" style="width:100%; justify-content:center;">Join Now</a>
+                </div>
+
+                <!-- Pro 3 Months – Most Popular -->
+                <div class="format-card" style="border-color:var(--accent);">
+                    <span class="popular">Best Value</span>
+                    <h3>Pro</h3>
+                    <div class="subtitle">3 Month Membership</div>
+                    <div class="price">₹4,000 <span>/mo</span></div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Everything in Starter</li>
+                        <li><i class="fas fa-check"></i> Unlimited group classes</li>
+                        <li><i class="fas fa-check"></i> 2 Personal training sessions</li>
+                        <li><i class="fas fa-check"></i> Custom diet plan</li>
+                    </ul>
+                    <a href="#checkout" class="btn-primary" style="width:100%; justify-content:center;">Join Now</a>
+                </div>
+
+                <!-- Elite 6 Months -->
+                <div class="format-card">
+                    <h3>Elite</h3>
+                    <div class="subtitle">6 Month Membership</div>
+                    <div class="price">₹7,500 <span>/mo</span></div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Everything in Pro</li>
+                        <li><i class="fas fa-check"></i> Unlimited PT sessions</li>
+                        <li><i class="fas fa-check"></i> 24/7 keycard access</li>
+                        <li><i class="fas fa-check"></i> Priority class booking</li>
+                    </ul>
+                    <a href="#checkout" class="btn-primary" style="width:100%; justify-content:center;">Join Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    CHECKOUT (with PT addon)
+    ============================================================ -->
+    <section class="section section-alt" id="checkout">
+        <div class="container">
+            <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
+                <span class="section-label">Secure Checkout</span>
+                <h2 class="section-title">Complete Your <span class="highlight">Membership</span></h2>
+            </div>
+
+            <div class="checkout-wrapper" id="checkoutWrapper">
+                <div>
+                    <h3>Selected Plan: <span id="selectedPlanName">Pro</span></h3>
+                    <p style="color:var(--text-secondary);">Monthly recurring, cancel anytime.</p>
+                    <div style="margin:1.5rem 0;">
+                        <label style="display:block;font-size:0.9rem;color:var(--text-secondary);margin-bottom:0.3rem;">Coupon Code</label>
+                        <div style="display:flex; gap:10px;">
+                            <input type="text" id="discountCodeInput" placeholder="Enter code (e.g., STUDENT200)" style="flex:1; padding:0.8rem; border-radius:8px; border:1px solid var(--border-light); background:var(--bg-card); color:var(--text-primary);" />
+                            <button class="btn-outline" id="applyDiscountBtn">Apply</button>
+                        </div>
+                        <div id="discountMessage" style="margin-top:0.5rem; font-size:0.9rem;"></div>
+                    </div>
+
+                    <div style="margin:1.5rem 0;">
+                        <label style="display:flex; align-items:center; gap:12px; cursor:pointer;">
+                            <input type="checkbox" id="ptAddon" style="width:20px; height:20px; accent-color:var(--accent);" />
+                            <span style="font-weight:600;">Add Advanced Personal Training</span>
+                            <span style="color:var(--accent); font-weight:700;">(+₹6,000/month)</span>
+                        </label>
+                        <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px; margin-left:32px;">
+                            One-on-one coaching with a certified trainer, tailored to your goals.
+                        </p>
+                    </div>
+
+                    <label style="display:block;font-size:0.9rem;color:var(--text-secondary);margin-bottom:0.5rem;">Payment Method</label>
+                    <div class="payment-methods">
+                        <button class="active"><i class="fas fa-mobile-alt"></i> UPI</button>
+                        <button><i class="fas fa-credit-card"></i> Credit</button>
+                        <button><i class="fas fa-wallet"></i> Wallet</button>
                     </div>
                 </div>
 
-                <div class="workout-split">
-                    <h4 style="color:var(--accent-orange);margin-bottom:1rem;"><i class="fas fa-calendar-week"></i> Weekly Workout Split</h4>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Day</th>
-                                <th>Exercise</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="day-label">Monday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=100&q=80" alt="Dumbbell Squats" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Dumbbell Squats</div>
-                                            <div class="exercise-detail">4 sets × 15 reps</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=100&q=80" alt="Leg Curls" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Leg Curls</div>
-                                            <div class="exercise-detail">3 sets × 15 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Tuesday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=100&q=80" alt="Lat Pulldown" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Lat Pulldown</div>
-                                            <div class="exercise-detail">4 sets × 12 reps</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1570829460005-c840387bb1ca?w=100&q=80" alt="Seated Cable Row" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Seated Cable Row</div>
-                                            <div class="exercise-detail">3 sets × 12 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Wednesday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=100&q=80" alt="Incline Walking" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Incline Walking</div>
-                                            <div class="exercise-detail">45 mins</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=100&q=80" alt="Core" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Core & Abs</div>
-                                            <div class="exercise-detail">3 sets × 20 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Thursday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=100&q=80" alt="Chest Press" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Chest Press</div>
-                                            <div class="exercise-detail">4 sets × 12 reps</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1581009146145-b5a5b36c6ef5?w=100&q=80" alt="Shoulder Press" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Shoulder Press</div>
-                                            <div class="exercise-detail">3 sets × 12 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Friday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=100&q=80" alt="Dumbbell Lunges" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Dumbbell Lunges</div>
-                                            <div class="exercise-detail">4 sets × 12 reps</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1519340241574-2cec6aef0c01?w=100&q=80" alt="Calf Raises" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Calf Raises</div>
-                                            <div class="exercise-detail">3 sets × 15 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Saturday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=100&q=80" alt="Cardio" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Steady State Cardio</div>
-                                            <div class="exercise-detail">40 mins</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=100&q=80" alt="Stretching" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Stretching</div>
-                                            <div class="exercise-detail">15 mins</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Sunday</span></td>
-                                <td style="color:var(--accent-blue);font-weight:600;">Rest Day – Recovery & Mobility</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div>
+                    <h3>Summary</h3>
+                    <div class="summary-line"><span>Plan</span><span id="summaryPlanPrice">₹4,000.00</span></div>
+                    <div class="summary-line" id="ptSummaryRow" style="display:none;"><span>Advanced Personal Training</span><span id="summaryPtPrice">₹6,000.00</span></div>
+                    <div class="summary-line" id="discountSummaryRow" style="display:none;"><span>Discount</span><span id="summaryDiscount">-₹0.00</span></div>
+                    <div class="summary-line"><span>GST (18%)</span><span id="summaryGst">₹720.00</span></div>
+                    <div class="summary-line total"><span>Total</span><span id="summaryTotal">₹4,720.00</span></div>
+                    <button class="btn-primary" style="width:100%;margin-top:1.5rem;" id="proceedPaymentBtn"><i class="fas fa-lock"></i> Proceed to Payment</button>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Member 3: Amit Singh -->
-            <div class="member-profile">
-                <div class="member-profile-header">
-                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80" alt="Amit Singh" loading="lazy" />
-                    <div class="member-info">
-                        <h3>Amit Singh</h3>
-                        <p><i class="fas fa-calendar-alt" style="color:var(--accent-orange);"></i> Member since: June 2024</p>
-                        <p><i class="fas fa-tag" style="color:var(--accent-blue);"></i> Plan: Elite (Gym + PT)</p>
-                        <p><i class="fas fa-trophy" style="color:var(--accent-orange);"></i> Goal: Competition Prep</p>
-                        <span class="badge-orange"><i class="fas fa-fire"></i> 2 Months Progress</span>
+    <!-- ============================================================
+    TRAINERS
+    ============================================================ -->
+    <section class="section" id="trainers">
+        <div class="container">
+            <div style="text-align:center; max-width:700px; margin:0 auto 48px;">
+                <span class="section-label">Our Trainers</span>
+                <h2 class="section-title">Learn from the <span class="highlight">Best</span></h2>
+                <p class="section-desc" style="margin:0 auto;">
+                    Certified professionals dedicated to your success.
+                </p>
+            </div>
+
+            <div class="trainer-grid">
+                <!-- Jeff Nippard -->
+                <div class="trainer-card">
+                    <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=400&q=80" alt="Jeff Nippard" loading="lazy" />
+                    <div class="info">
+                        <h4>Jeff Nippard</h4>
+                        <p>Science-Based Strength Coach</p>
+                        <p style="font-size:0.85rem; color:var(--text-muted);">10+ Years • Bodybuilding & Powerlifting</p>
+                        <button class="btn-primary" style="padding:0.4rem 1.2rem;font-size:0.8rem;margin-top:0.5rem;">Book Session</button>
                     </div>
                 </div>
 
-                <div class="workout-split">
-                    <h4 style="color:var(--accent-orange);margin-bottom:1rem;"><i class="fas fa-calendar-week"></i> Weekly Workout Split</h4>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Day</th>
-                                <th>Exercise</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="day-label">Monday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=100&q=80" alt="Barbell Squats" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Barbell Squats</div>
-                                            <div class="exercise-detail">5 sets × 6 reps</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=100&q=80" alt="Leg Press" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Leg Press</div>
-                                            <div class="exercise-detail">4 sets × 10 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Tuesday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1570829460005-c840387bb1ca?w=100&q=80" alt="Chest Press" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Chest Press</div>
-                                            <div class="exercise-detail">4 sets × 8 reps</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1519340241574-2cec6aef0c01?w=100&q=80" alt="Incline Press" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Incline Press</div>
-                                            <div class="exercise-detail">4 sets × 10 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Wednesday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=100&q=80" alt="Deadlift" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Deadlift</div>
-                                            <div class="exercise-detail">5 sets × 5 reps</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1581009146145-b5a5b36c6ef5?w=100&q=80" alt="Barbell Row" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Barbell Row</div>
-                                            <div class="exercise-detail">4 sets × 8 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Thursday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=100&q=80" alt="Shoulder Press" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Shoulder Press</div>
-                                            <div class="exercise-detail">4 sets × 8 reps</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=100&q=80" alt="Lateral Raises" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Lateral Raises</div>
-                                            <div class="exercise-detail">3 sets × 12 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Friday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=100&q=80" alt="Arms Focus" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Bicep Curls</div>
-                                            <div class="exercise-detail">4 sets × 10 reps</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=100&q=80" alt="Tricep Extensions" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Tricep Extensions</div>
-                                            <div class="exercise-detail">4 sets × 12 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Saturday</span></td>
-                                <td>
-                                    <div class="exercise-cell">
-                                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=100&q=80" alt="Cardio" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">HIIT Cardio</div>
-                                            <div class="exercise-detail">30 mins</div>
-                                        </div>
-                                    </div>
-                                    <div class="exercise-cell" style="margin-top:0.5rem;">
-                                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=100&q=80" alt="Core" loading="lazy" />
-                                        <div>
-                                            <div class="exercise-name">Core & Abs</div>
-                                            <div class="exercise-detail">4 sets × 20 reps</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="day-label">Sunday</span></td>
-                                <td style="color:var(--accent-blue);font-weight:600;">Rest Day – Active Recovery</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- Chris Bumstead -->
+                <div class="trainer-card">
+                    <img src="https://images.unsplash.com/photo-1519340241574-2cec6aef0c01?w=400&q=80" alt="Chris Bumstead" loading="lazy" />
+                    <div class="info">
+                        <h4>Chris Bumstead</h4>
+                        <p>Classic Physique Specialist</p>
+                        <p style="font-size:0.85rem; color:var(--text-muted);">8+ Years • Classic Physique & Aesthetics</p>
+                        <button class="btn-primary" style="padding:0.4rem 1.2rem;font-size:0.8rem;margin-top:0.5rem;">Book Session</button>
+                    </div>
                 </div>
             </div>
-
         </div>
     </section>
 
-    <!-- ===== TESTIMONIALS ===== -->
-    <section id="testimonials" class="container">
-        <h2 class="section-title">Member <span class="orange">Stories</span></h2>
-        <p class="section-sub">Real words from real people.</p>
-        <div class="testimonial-carousel">
-            <div class="testimonial-track" id="testimonialTrack">
-                <div class="testimonial-card"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80" alt="Member" loading="lazy" width="80" height="80" /><h4>Michael R.</h4><div class="stars">★★★★★</div><p>"The best gym I've ever been to. The trainers know their stuff, and the atmosphere is electric."</p></div>
-                <div class="testimonial-card"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80" alt="Member" loading="lazy" width="80" height="80" /><h4>Sarah K.</h4><div class="stars">★★★★★</div><p>"I lost 15kg in 4 months thanks to the diet guidance and HIIT classes. I've never felt more confident."</p></div>
-                <div class="testimonial-card"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80" alt="Member" loading="lazy" width="80" height="80" /><h4>David L.</h4><div class="stars">★★★★★</div><p>"State-of-the-art equipment and a welcoming community. It's my second home."</p></div>
+    <!-- ============================================================
+    FACILITIES
+    ============================================================ -->
+    <section class="section section-alt" id="facilities">
+        <div class="container">
+            <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
+                <span class="section-label">Facilities</span>
+                <h2 class="section-title">Everything You <span class="highlight">Need</span></h2>
             </div>
-            <div class="dots" id="dotsContainer">
-                <span class="active" data-index="0"></span>
-                <span data-index="1"></span>
-                <span data-index="2"></span>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== GROUP CLASSES ===== -->
-    <section id="classes" class="container">
-        <h2 class="section-title">Group <span class="blue">Classes</span></h2>
-        <p class="section-sub">Find your rhythm, train with the best.</p>
-        <div class="class-grid">
-            <div class="class-card"><i class="fas fa-bolt"></i><h4>HIIT</h4><div class="time">Mon/Wed/Fri • 6:00 AM</div></div>
-            <div class="class-card"><i class="fas fa-spa"></i><h4>Yoga</h4><div class="time">Tue/Thu • 7:00 PM</div></div>
-            <div class="class-card"><i class="fas fa-music"></i><h4>Zumba</h4><div class="time">Mon/Wed/Fri • 5:00 PM</div></div>
-            <div class="class-card"><i class="fas fa-fire"></i><h4>CrossFit</h4><div class="time">Daily • 8:00 AM</div></div>
-            <div class="class-card"><i class="fas fa-fist-raised"></i><h4>Boxing</h4><div class="time">Tue/Thu • 6:00 PM</div></div>
-            <div class="class-card"><i class="fas fa-arrow-up"></i><h4>Strength</h4><div class="time">Mon/Wed/Fri • 12:00 PM</div></div>
-        </div>
-    </section>
-
-    <!-- ===== BMI CALCULATOR ===== -->
-    <section id="bmi" class="container">
-        <h2 class="section-title">BMI <span class="orange">Calculator</span></h2>
-        <p class="section-sub">Know your numbers, track your progress.</p>
-        <div class="bmi-box">
-            <input type="number" id="bmiHeight" placeholder="Height in cm (e.g., 175)" min="1" />
-            <input type="number" id="bmiWeight" placeholder="Weight in kg (e.g., 70)" min="1" />
-            <button class="btn-primary" id="calcBmi" style="width:100%;">Calculate BMI</button>
-            <div class="bmi-result" id="bmiResult">
-                <div class="bmi-number">--</div>
-                <p id="bmiCategory" style="color:var(--text-secondary);">Enter your details above</p>
-                <p id="bmiSuggestion" style="font-size:0.9rem;color:var(--text-secondary);"></p>
+            <div class="facility-grid">
+                <div class="facility-item"><i class="fas fa-weight-hanging"></i><p>Strength Zone</p></div>
+                <div class="facility-item"><i class="fas fa-heartbeat"></i><p>Cardio Zone</p></div>
+                <div class="facility-item"><i class="fas fa-running"></i><p>CrossFit</p></div>
+                <div class="facility-item"><i class="fas fa-arrows-alt-h"></i><p>Functional Area</p></div>
+                <div class="facility-item"><i class="fas fa-tshirt"></i><p>Locker Room</p></div>
+                <div class="facility-item"><i class="fas fa-car"></i><p>Parking</p></div>
+                <div class="facility-item"><i class="fas fa-hot-tub"></i><p>Steam Bath</p></div>
+                <div class="facility-item"><i class="fas fa-snowflake"></i><p>Air Conditioning</p></div>
             </div>
         </div>
     </section>
 
-    <!-- ===== SPECIAL OFFERS ===== -->
-    <section id="offers" class="container">
-        <div class="offer-banner">
-            <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);">🔥 Summer Blaze Offer</h2>
-            <p style="color:var(--text-secondary);">Get 30% off on all annual memberships. Limited time only!</p>
-            <div class="countdown" id="countdown">
-                <span><span id="days">00</span><span class="label">Days</span></span>
-                <span><span id="hours">00</span><span class="label">Hours</span></span>
-                <span><span id="minutes">00</span><span class="label">Mins</span></span>
-                <span><span id="seconds">00</span><span class="label">Secs</span></span>
+    <!-- ============================================================
+    GROUP CLASSES
+    ============================================================ -->
+    <section class="section" id="classes">
+        <div class="container">
+            <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
+                <span class="section-label">Group Classes</span>
+                <h2 class="section-title">Train <span class="highlight">Together</span></h2>
             </div>
-            <a href="#membership" class="btn-primary" style="font-size:1.2rem;padding:0.8rem 3rem;">Claim Offer</a>
+            <div class="class-grid">
+                <div class="class-card"><i class="fas fa-bolt"></i><h4>HIIT</h4><div class="time">Mon/Wed/Fri • 6:00 AM</div></div>
+                <div class="class-card"><i class="fas fa-spa"></i><h4>Yoga</h4><div class="time">Tue/Thu • 7:00 PM</div></div>
+                <div class="class-card"><i class="fas fa-fire"></i><h4>CrossFit</h4><div class="time">Daily • 8:00 AM</div></div>
+                <div class="class-card"><i class="fas fa-arrow-up"></i><h4>Strength</h4><div class="time">Mon/Wed/Fri • 12:00 PM</div></div>
+            </div>
         </div>
     </section>
 
-    <!-- ===== FAQ ===== -->
-    <section id="faq" class="container">
-        <h2 class="section-title">Frequently Asked <span class="blue">Questions</span></h2>
-        <p class="section-sub">Everything you need to know before you start.</p>
-        <div class="faq-list">
-            <div class="faq-item"><div class="faq-question">What are the membership terms? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">All memberships are monthly rolling. You can cancel anytime with 7 days' notice.</div></div>
-            <div class="faq-item"><div class="faq-question">Do you offer refunds? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">We offer a 7-day money-back guarantee if you are not satisfied with your trial.</div></div>
-            <div class="faq-item"><div class="faq-question">What are the gym timings? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">We are open from 5:00 AM to 12:00 AM, 365 days a year.</div></div>
-            <div class="faq-item"><div class="faq-question">Is parking available? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">Yes, we have a dedicated parking lot with 50+ spots for members.</div></div>
-            <div class="faq-item"><div class="faq-question">How do I book a personal trainer? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">You can book a session directly via the trainers' section on this site or at the front desk.</div></div>
-        </div>
-    </section>
-
-    <!-- ===== CONTACT ===== -->
-    <section id="contact" class="container">
-        <h2 class="section-title">Get In <span class="orange">Touch</span></h2>
-        <p class="section-sub">We'd love to hear from you – reach out anytime.</p>
-        <div class="contact-grid">
-            <div class="contact-info">
-                <h3>Visit Us</h3>
-                <p><i class="fas fa-map-pin"></i> 123 Fitness Ave, Downtown, NY 10001</p>
-                <p><i class="fas fa-phone-alt"></i> +1 (555) 123-4567</p>
-                <p><i class="fas fa-envelope"></i> info@elitefitness.com</p>
-                <p><i class="fas fa-clock"></i> Mon-Sun: 5:00 AM – 12:00 AM</p>
-                <div class="contact-actions">
-                    <a href="tel:+15551234567" class="btn-primary"><i class="fas fa-phone"></i> Call Now</a>
-                    <a href="#" class="btn-outline"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                    <a href="#" class="btn-outline"><i class="fas fa-directions"></i> Directions</a>
+    <!-- ============================================================
+    BMI CALCULATOR
+    ============================================================ -->
+    <section class="section section-alt" id="bmi">
+        <div class="container">
+            <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
+                <span class="section-label">BMI Calculator</span>
+                <h2 class="section-title">Know Your <span class="highlight">Numbers</span></h2>
+            </div>
+            <div class="bmi-box">
+                <input type="number" id="bmiHeight" placeholder="Height in cm (e.g., 175)" min="1" />
+                <input type="number" id="bmiWeight" placeholder="Weight in kg (e.g., 70)" min="1" />
+                <button class="btn-primary" id="calcBmi" style="width:100%;">Calculate BMI</button>
+                <div class="bmi-result" id="bmiResult">
+                    <div class="bmi-number">--</div>
+                    <p id="bmiCategory" style="color:var(--text-secondary);">Enter your details above</p>
+                    <p id="bmiSuggestion" style="font-size:0.9rem;color:var(--text-secondary);"></p>
                 </div>
             </div>
-            <div class="contact-map">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1!2d-74.006!3d40.7128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDQyJzQ2LjAiTiA3NMKwMDAnMjEuMCJX!5e0!3m2!1sen!2sus!4v1610000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Google Map"></iframe>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    SPECIAL OFFERS
+    ============================================================ -->
+    <section class="section" id="offers">
+        <div class="container">
+            <div class="offer-banner">
+                <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);">🔥 Summer Blaze Offer</h2>
+                <p style="color:var(--text-secondary);">Get 30% off on all annual memberships. Limited time only!</p>
+                <div class="countdown" id="countdown">
+                    <span><span id="days">00</span><span class="label">Days</span></span>
+                    <span><span id="hours">00</span><span class="label">Hours</span></span>
+                    <span><span id="minutes">00</span><span class="label">Mins</span></span>
+                    <span><span id="seconds">00</span><span class="label">Secs</span></span>
+                </div>
+                <a href="#plans" class="btn-primary" style="font-size:1.2rem;padding:0.8rem 3rem;">Claim Offer</a>
             </div>
         </div>
     </section>
 
-    <!-- ===== FOOTER ===== -->
+    <!-- ============================================================
+    FAQ
+    ============================================================ -->
+    <section class="section section-alt" id="faq">
+        <div class="container">
+            <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
+                <span class="section-label">FAQ</span>
+                <h2 class="section-title">Frequently Asked <span class="highlight">Questions</span></h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item"><div class="faq-question">What are the membership terms? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">All memberships are monthly rolling. You can cancel anytime with 7 days' notice.</div></div>
+                <div class="faq-item"><div class="faq-question">Do you offer refunds? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">We offer a 7-day money-back guarantee if you are not satisfied with your trial.</div></div>
+                <div class="faq-item"><div class="faq-question">What are the gym timings? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">We are open from 5:00 AM to 12:00 AM, 365 days a year.</div></div>
+                <div class="faq-item"><div class="faq-question">Is parking available? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">Yes, we have a dedicated parking lot with 50+ spots for members.</div></div>
+                <div class="faq-item"><div class="faq-question">How do I book a personal trainer? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">You can book a session directly via the trainers' section on this site or at the front desk.</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    TESTIMONIALS
+    ============================================================ -->
+    <section class="section" id="testimonials">
+        <div class="container">
+            <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
+                <span class="section-label">Testimonials</span>
+                <h2 class="section-title">What Our <span class="highlight">Members Say</span></h2>
+            </div>
+            <div class="testimonial-carousel">
+                <div class="testimonial-track" id="testimonialTrack">
+                    <div class="testimonial-card"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80" alt="Member" loading="lazy" width="80" height="80" /><h4>Michael R.</h4><div class="stars">★★★★★</div><p>"The best gym I've ever been to. The trainers know their stuff, and the atmosphere is electric."</p></div>
+                    <div class="testimonial-card"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80" alt="Member" loading="lazy" width="80" height="80" /><h4>Sarah K.</h4><div class="stars">★★★★★</div><p>"I lost 15kg in 4 months thanks to the diet guidance and HIIT classes. I've never felt more confident."</p></div>
+                    <div class="testimonial-card"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80" alt="Member" loading="lazy" width="80" height="80" /><h4>David L.</h4><div class="stars">★★★★★</div><p>"State-of-the-art equipment and a welcoming community. It's my second home."</p></div>
+                </div>
+                <div class="dots" id="dotsContainer">
+                    <span class="active" data-index="0"></span>
+                    <span data-index="1"></span>
+                    <span data-index="2"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    CONTACT
+    ============================================================ -->
+    <section class="section section-alt" id="contact">
+        <div class="container">
+            <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
+                <span class="section-label">Contact</span>
+                <h2 class="section-title">Get In <span class="highlight">Touch</span></h2>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Visit Us</h3>
+                    <p><i class="fas fa-map-pin"></i> 123 Fitness Ave, Downtown, NY 10001</p>
+                    <p><i class="fas fa-phone-alt"></i> +1 (555) 123-4567</p>
+                    <p><i class="fas fa-envelope"></i> info@elitefitness.com</p>
+                    <p><i class="fas fa-clock"></i> Mon-Sun: 5:00 AM – 12:00 AM</p>
+                    <div class="contact-actions">
+                        <a href="tel:+15551234567" class="btn-primary"><i class="fas fa-phone"></i> Call Now</a>
+                        <a href="#" class="btn-outline"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        <a href="#" class="btn-outline"><i class="fas fa-directions"></i> Directions</a>
+                    </div>
+                </div>
+                <div class="contact-map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1!2d-74.006!3d40.7128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDQyJzQ2LjAiTiA3NMKwMDAnMjEuMCJX!5e0!3m2!1sen!2sus!4v1610000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Google Map"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
-                <div><h4>ELITE<span style="color:var(--accent-orange);">FITNESS</span></h4><p style="color:var(--text-secondary);font-size:0.9rem;">Forge your legacy, one rep at a time.</p></div>
-                <div><h4>Quick Links</h4><a href="#home">Home</a><a href="#about">About</a><a href="#membership">Membership</a><a href="#trainers">Trainers</a></div>
-                <div><h4>Support</h4><a href="#faq">FAQ</a><a href="#contact">Contact</a><a href="#">Privacy Policy</a><a href="#">Terms & Conditions</a></div>
-                <div><h4>Connect</h4><div class="footer-social"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-youtube"></i></a><a href="#"><i class="fab fa-x-twitter"></i></a></div></div>
+                <div class="footer-brand">
+                    <div class="nav-logo" style="font-size:20px;">ELITE<span style="color:var(--accent);">FITNESS</span></div>
+                    <p>Forge your legacy, one rep at a time.</p>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#plans">Plans</a></li>
+                        <li><a href="#trainers">Trainers</a></li>
+                        <li><a href="star-members.html">Star Members</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Connect</h4>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-x-twitter"></i></a>
+                    </div>
+                </div>
             </div>
-            <div class="footer-bottom">&copy; 2026 Elite Fitness. All rights reserved. Built with 💪 for the grind.</div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 Elite Fitness. All rights reserved.</span>
+                <span>Built for Scale. Built for India.</span>
+            </div>
         </div>
     </footer>
 
-    <!-- ===== FLOATING BUTTONS ===== -->
+    <!-- ============================================================
+    FLOATING BUTTONS
+    ============================================================ -->
     <div class="floating">
         <a href="https://wa.me/15551234567" target="_blank" class="whatsapp" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
         <button class="back-top" id="backTop" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
     </div>
 
-    <!-- ===== JAVASCRIPT ===== -->
+    <!-- ============================================================
+    SCRIPTS
+    ============================================================ -->
+    <script src="js/data-layer.js"></script>
     <script src="js/script.js"></script>
-
 </body>
 </html>

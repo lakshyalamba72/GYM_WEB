@@ -1,208 +1,132 @@
-/* ============================================
-   ELITE FITNESS – MAIN JAVASCRIPT
-   All Interactivity | iOS-Compatible
-   ============================================ */
+// ============================================================
+//  ELITE FITNESS – MAIN JAVASCRIPT
+//  Theme, Nav, Interactions, BMI, Countdown, Checkout, etc.
+// ============================================================
 
-// ============================================
-//  BULLETPROOF LOADER
-// ============================================
+(function() {
+    'use strict';
 
-function hideLoader() {
-    var loader = document.getElementById('loader');
-    if (loader) loader.classList.add('hidden');
-}
+    // ----- THEME TOGGLE -----
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
 
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    setTimeout(hideLoader, 1200);
-} else {
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(hideLoader, 1200);
-    });
-}
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    html.setAttribute('data-theme', savedTheme);
 
-window.addEventListener('load', function() {
-    setTimeout(hideLoader, 1200);
-});
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            const current = html.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        });
+    }
 
-setTimeout(hideLoader, 3500);
-
-// ============================================
-//  MAIN APPLICATION
-// ============================================
-
-document.addEventListener('DOMContentLoaded', function() {
-
-    // ---- HAMBURGER ----
-    var hamburger = document.getElementById('hamburger');
-    var navLinks = document.getElementById('navLinks');
+    // ----- HAMBURGER MENU -----
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
 
     if (hamburger) {
         hamburger.addEventListener('click', function() {
             this.classList.toggle('active');
             navLinks.classList.toggle('open');
-            this.setAttribute('aria-expanded', navLinks.classList.contains('open'));
         });
 
         navLinks.querySelectorAll('a').forEach(function(link) {
             link.addEventListener('click', function() {
                 hamburger.classList.remove('active');
                 navLinks.classList.remove('open');
-                hamburger.setAttribute('aria-expanded', 'false');
             });
         });
     }
 
-    // ---- STICKY NAVBAR & BACK TOP ----
-    var navbar = document.getElementById('navbar');
-    var backTop = document.getElementById('backTop');
-
+    // ----- STICKY NAVBAR -----
+    const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) navbar.classList.add('scrolled');
-        else navbar.classList.remove('scrolled');
-
-        if (window.scrollY > 400) backTop.classList.add('show');
-        else backTop.classList.remove('show');
-    });
-
-    backTop.addEventListener('click', function() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    // ---- INTERSECTION OBSERVER ----
-    var sections = document.querySelectorAll('section');
-
-    var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-
-                var nums = entry.target.querySelectorAll('.num[data-target]');
-                nums.forEach(function(num) {
-                    var target = parseFloat(num.dataset.target);
-                    if (!num.dataset.counted) {
-                        num.dataset.counted = 'true';
-                        animateCounter(num, target);
-                    }
-                });
-            }
-        });
-    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
-
-    sections.forEach(function(sec) {
-        observer.observe(sec);
-    });
-
-    function animateCounter(el, target) {
-        var isFloat = target % 1 !== 0;
-        var current = 0;
-        var increment = target / 40;
-        var timer = setInterval(function() {
-            current += increment;
-            if (current >= target) {
-                current = target;
-                clearInterval(timer);
-            }
-            el.textContent = isFloat ? current.toFixed(1) : Math.floor(current);
-        }, 20);
-    }
-
-    // ---- BMI CALCULATOR ----
-    document.getElementById('calcBmi').addEventListener('click', function() {
-        var h = parseFloat(document.getElementById('bmiHeight').value) / 100;
-        var w = parseFloat(document.getElementById('bmiWeight').value);
-        var numDiv = document.querySelector('#bmiResult .bmi-number');
-        var catDiv = document.getElementById('bmiCategory');
-        var sugDiv = document.getElementById('bmiSuggestion');
-
-        if (!h || !w || h <= 0 || w <= 0) {
-            numDiv.textContent = '⚠️';
-            catDiv.textContent = 'Please enter valid height & weight.';
-            sugDiv.textContent = '';
-            return;
-        }
-
-        var bmi = w / (h * h);
-        numDiv.textContent = bmi.toFixed(1);
-
-        var category, suggestion;
-        if (bmi < 18.5) {
-            category = 'Underweight';
-            suggestion = 'Consider a balanced diet with healthy calorie surplus. Consult our nutritionist.';
-        } else if (bmi < 25) {
-            category = 'Normal';
-            suggestion = 'Great! Maintain with regular exercise and a balanced diet.';
-        } else if (bmi < 30) {
-            category = 'Overweight';
-            suggestion = 'Focus on HIIT and strength training. Our trainers can help!';
+        if (window.scrollY > 50) {
+            navbar.style.boxShadow = 'var(--shadow-sm)';
         } else {
-            category = 'Obese';
-            suggestion = 'We recommend a personalized plan with diet and PT sessions. Start today!';
+            navbar.style.boxShadow = 'none';
         }
-
-        catDiv.textContent = 'Category: ' + category;
-        sugDiv.textContent = suggestion;
     });
 
-    // ---- TESTIMONIAL CAROUSEL ----
-    var track = document.getElementById('testimonialTrack');
-    var dots = document.querySelectorAll('#dotsContainer span');
-    var currentIndex = 0;
-    var totalSlides = dots.length;
-    var startX = 0, endX = 0;
-
-    var autoSlide = setInterval(function() {
-        goTo((currentIndex + 1) % totalSlides);
-    }, 4500);
-
-    function goTo(index) {
-        currentIndex = index;
-        track.style.transform = 'translateX(-' + index * 100 + '%)';
-        dots.forEach(function(d, i) {
-            d.classList.toggle('active', i === index);
-        });
-    }
-
-    dots.forEach(function(d) {
-        d.addEventListener('click', function() {
-            clearInterval(autoSlide);
-            goTo(parseInt(this.dataset.index));
-        });
-    });
-
-    if (track) {
-        track.addEventListener('touchstart', function(e) {
-            startX = e.changedTouches[0].screenX;
-        });
-        track.addEventListener('touchend', function(e) {
-            endX = e.changedTouches[0].screenX;
-            var diff = startX - endX;
-            if (Math.abs(diff) > 40) {
-                clearInterval(autoSlide);
-                if (diff > 0) goTo((currentIndex + 1) % totalSlides);
-                else goTo((currentIndex - 1 + totalSlides) % totalSlides);
+    // ----- BACK TO TOP -----
+    const backTop = document.getElementById('backTop');
+    if (backTop) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 400) {
+                backTop.classList.add('show');
+            } else {
+                backTop.classList.remove('show');
             }
         });
+
+        backTop.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     }
 
-    // ---- FAQ ACCORDION ----
-    document.querySelectorAll('.faq-question').forEach(function(q) {
-        q.addEventListener('click', function() {
-            var item = this.parentElement;
-            var isActive = item.classList.contains('active');
-            document.querySelectorAll('.faq-item').forEach(function(el) {
-                el.classList.remove('active');
-            });
-            if (!isActive) item.classList.add('active');
+    // ----- SMOOTH SCROLL -----
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return;
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                const offsetTop = target.getBoundingClientRect().top + window.pageYOffset - 80;
+                window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+            }
         });
     });
 
-    // ---- COUNTDOWN ----
-    var targetDate = new Date();
+    // ----- BMI CALCULATOR -----
+    const calcBtn = document.getElementById('calcBmi');
+    if (calcBtn) {
+        calcBtn.addEventListener('click', function() {
+            const h = parseFloat(document.getElementById('bmiHeight').value) / 100;
+            const w = parseFloat(document.getElementById('bmiWeight').value);
+            const numDiv = document.querySelector('#bmiResult .bmi-number');
+            const catDiv = document.getElementById('bmiCategory');
+            const sugDiv = document.getElementById('bmiSuggestion');
+
+            if (!h || !w || h <= 0 || w <= 0) {
+                numDiv.textContent = '⚠️';
+                catDiv.textContent = 'Please enter valid height & weight.';
+                sugDiv.textContent = '';
+                return;
+            }
+
+            const bmi = w / (h * h);
+            numDiv.textContent = bmi.toFixed(1);
+
+            let category, suggestion;
+            if (bmi < 18.5) {
+                category = 'Underweight';
+                suggestion = 'Consider a balanced diet with healthy calorie surplus. Consult our nutritionist.';
+            } else if (bmi < 25) {
+                category = 'Normal';
+                suggestion = 'Great! Maintain with regular exercise and a balanced diet.';
+            } else if (bmi < 30) {
+                category = 'Overweight';
+                suggestion = 'Focus on HIIT and strength training. Our trainers can help!';
+            } else {
+                category = 'Obese';
+                suggestion = 'We recommend a personalized plan with diet and PT sessions. Start today!';
+            }
+
+            catDiv.textContent = 'Category: ' + category;
+            sugDiv.textContent = suggestion;
+        });
+    }
+
+    // ----- COUNTDOWN -----
+    const targetDate = new Date();
     targetDate.setDate(targetDate.getDate() + 30);
 
     function updateCountdown() {
-        var now = new Date().getTime();
-        var diff = targetDate - now;
+        const now = new Date().getTime();
+        const diff = targetDate - now;
 
         if (diff <= 0) {
             document.getElementById('days').textContent = '00';
@@ -212,10 +136,10 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        var d = Math.floor(diff / (1000 * 60 * 60 * 24));
-        var h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        var s = Math.floor((diff % (1000 * 60)) / 1000);
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
 
         document.getElementById('days').textContent = String(d).padStart(2, '0');
         document.getElementById('hours').textContent = String(h).padStart(2, '0');
@@ -226,23 +150,202 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    // ---- PAYMENT METHOD TOGGLE ----
-    document.querySelectorAll('.payment-methods button').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.payment-methods button').forEach(function(b) {
-                b.classList.remove('active');
+    // ----- TESTIMONIAL CAROUSEL -----
+    const track = document.getElementById('testimonialTrack');
+    const dots = document.querySelectorAll('#dotsContainer span');
+
+    if (track && dots.length) {
+        let currentIndex = 0;
+        const totalSlides = dots.length;
+        let startX = 0,
+            endX = 0;
+
+        let autoSlide = setInterval(function() {
+            goTo((currentIndex + 1) % totalSlides);
+        }, 4500);
+
+        function goTo(index) {
+            currentIndex = index;
+            track.style.transform = 'translateX(-' + index * 100 + '%)';
+            dots.forEach(function(d, i) {
+                d.classList.toggle('active', i === index);
             });
-            this.classList.add('active');
+        }
+
+        dots.forEach(function(d) {
+            d.addEventListener('click', function() {
+                clearInterval(autoSlide);
+                goTo(parseInt(this.dataset.index));
+            });
+        });
+
+        track.addEventListener('touchstart', function(e) {
+            startX = e.changedTouches[0].screenX;
+        });
+
+        track.addEventListener('touchend', function(e) {
+            endX = e.changedTouches[0].screenX;
+            const diff = startX - endX;
+            if (Math.abs(diff) > 40) {
+                clearInterval(autoSlide);
+                if (diff > 0) {
+                    goTo((currentIndex + 1) % totalSlides);
+                } else {
+                    goTo((currentIndex - 1 + totalSlides) % totalSlides);
+                }
+            }
+        });
+    }
+
+    // ----- FAQ ACCORDION -----
+    document.querySelectorAll('.faq-question').forEach(function(q) {
+        q.addEventListener('click', function() {
+            const item = this.parentElement;
+            const isActive = item.classList.contains('active');
+            document.querySelectorAll('.faq-item').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            if (!isActive) item.classList.add('active');
         });
     });
 
-    // ---- PARALLAX HERO ----
-    if (window.innerWidth > 768) {
-        var hero = document.querySelector('.hero');
-        window.addEventListener('scroll', function() {
-            var scrolled = window.scrollY;
-            if (hero) hero.style.backgroundPositionY = scrolled * 0.3 + 'px';
-        }, { passive: true });
+    // ----- CHECKOUT: PLAN SELECTION (from URL params) -----
+    const urlParams = new URLSearchParams(window.location.search);
+    const planParam = urlParams.get('plan');
+    const selectedPlanName = document.getElementById('selectedPlanName');
+    const summaryPlanPrice = document.getElementById('summaryPlanPrice');
+
+    const planData = {
+        'Starter': { price: 1500, duration: 1 },
+        'Pro': { price: 4000, duration: 3 },
+        'Elite': { price: 7500, duration: 6 }
+    };
+
+    let currentPlan = 'Pro';
+    let currentPrice = 4000;
+    let currentDiscount = 0;
+    let ptAddonActive = false;
+
+    if (planParam && planData[planParam]) {
+        currentPlan = planParam;
+        currentPrice = planData[planParam].price;
+        if (selectedPlanName) selectedPlanName.textContent = currentPlan;
+        if (summaryPlanPrice) summaryPlanPrice.textContent = '₹' + currentPrice.toFixed(2);
+    } else {
+        if (selectedPlanName) selectedPlanName.textContent = 'Pro';
+        if (summaryPlanPrice) summaryPlanPrice.textContent = '₹4,000.00';
     }
 
-});
+    function updateSummary() {
+        let total = currentPrice;
+        let ptPrice = 0;
+        let discount = currentDiscount;
+
+        if (ptAddonActive) {
+            ptPrice = 6000;
+            total += ptPrice;
+        }
+
+        if (discount > 0) {
+            total -= discount;
+        }
+
+        const gst = total * 0.18;
+        const finalTotal = total + gst;
+
+        // Update PT row
+        const ptRow = document.getElementById('ptSummaryRow');
+        const ptPriceEl = document.getElementById('summaryPtPrice');
+        if (ptRow && ptPriceEl) {
+            if (ptAddonActive) {
+                ptRow.style.display = 'flex';
+                ptPriceEl.textContent = '₹' + ptPrice.toFixed(2);
+            } else {
+                ptRow.style.display = 'none';
+            }
+        }
+
+        // Update discount row
+        const discountRow = document.getElementById('discountSummaryRow');
+        const discountEl = document.getElementById('summaryDiscount');
+        if (discountRow && discountEl) {
+            if (discount > 0) {
+                discountRow.style.display = 'flex';
+                discountEl.textContent = '-₹' + discount.toFixed(2);
+            } else {
+                discountRow.style.display = 'none';
+            }
+        }
+
+        if (summaryPlanPrice) summaryPlanPrice.textContent = '₹' + currentPrice.toFixed(2);
+        document.getElementById('summaryGst').textContent = '₹' + gst.toFixed(2);
+        document.getElementById('summaryTotal').textContent = '₹' + finalTotal.toFixed(2);
+    }
+
+    // ----- PT ADDON TOGGLE -----
+    const ptCheckbox = document.getElementById('ptAddon');
+    if (ptCheckbox) {
+        ptCheckbox.addEventListener('change', function() {
+            ptAddonActive = this.checked;
+            updateSummary();
+        });
+    }
+
+    // ----- DISCOUNT CODE -----
+    const discountInput = document.getElementById('discountCodeInput');
+    const applyDiscountBtn = document.getElementById('applyDiscountBtn');
+    const discountMessage = document.getElementById('discountMessage');
+
+    if (applyDiscountBtn && discountInput) {
+        applyDiscountBtn.addEventListener('click', function() {
+            const code = discountInput.value.trim().toUpperCase();
+
+            if (!code) {
+                discountMessage.innerHTML = '<span style="color:#ffa502;">⚠️ Please enter a discount code.</span>';
+                return;
+            }
+
+            // Check against data layer
+            const discount = window.DB ? window.DB.validateDiscountCode(code) : null;
+
+            if (code === 'STUDENT200' || (discount && discount.value === 200)) {
+                currentDiscount = 200;
+                discountMessage.innerHTML = '<span style="color:var(--accent);">✅ Discount applied! ₹200 off.</span>';
+                updateSummary();
+            } else {
+                currentDiscount = 0;
+                discountMessage.innerHTML = '<span style="color:#ff4757;">❌ Invalid code. Please try again.</span>';
+                updateSummary();
+            }
+        });
+    }
+
+    // ----- PAYMENT BUTTON -----
+    const proceedBtn = document.getElementById('proceedPaymentBtn');
+    if (proceedBtn) {
+        proceedBtn.addEventListener('click', function() {
+            const total = document.getElementById('summaryTotal').textContent;
+            alert('Payment of ' + total + ' processed successfully! (Demo)');
+        });
+    }
+
+    // ----- PLAN BUTTONS (from membership cards) -----
+    document.querySelectorAll('.format-card .btn-primary').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const card = this.closest('.format-card');
+            const planName = card.querySelector('h3').textContent;
+            const price = parseFloat(card.querySelector('.price').textContent.replace(/[₹,]/g, ''));
+            currentPlan = planName;
+            currentPrice = price;
+            if (selectedPlanName) selectedPlanName.textContent = planName;
+            // Scroll to checkout
+            document.getElementById('checkout').scrollIntoView({ behavior: 'smooth' });
+            updateSummary();
+        });
+    });
+
+    // Initial summary update
+    updateSummary();
+
+})();
