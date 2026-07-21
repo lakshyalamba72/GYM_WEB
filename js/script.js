@@ -1,96 +1,97 @@
 // ============================================================
 //  ELITE FITNESS – MAIN JAVASCRIPT
-//  Theme, Nav, Interactions, BMI, Countdown, Checkout, etc.
-//  Mobile-Fixed Version
+//  Theme Toggle (mobile‑friendly) & interactions
 // ============================================================
 
 (function() {
     'use strict';
 
-    // ----- THEME TOGGLE (Mobile-Friendly) -----
+    // ----- THEME TOGGLE (supports both click & touch) -----
     const themeToggle = document.getElementById('themeToggle');
     const html = document.documentElement;
 
-    // Load saved theme (with fallback for mobile)
+    // Load saved theme
     let savedTheme = localStorage.getItem('theme');
     if (!savedTheme) {
-        // Check if user prefers dark mode
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            savedTheme = 'dark';
-        } else {
-            savedTheme = 'light';
-        }
+        savedTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         localStorage.setItem('theme', savedTheme);
     }
     html.setAttribute('data-theme', savedTheme);
 
-    if (themeToggle) {
-        themeToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            const current = html.getAttribute('data-theme');
-            const next = current === 'light' ? 'dark' : 'light';
-            html.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-            
-            // Update toggle button icons
-            const sunIcon = this.querySelector('.icon-sun');
-            const moonIcon = this.querySelector('.icon-moon');
-            if (sunIcon && moonIcon) {
-                if (next === 'dark') {
-                    sunIcon.style.display = 'inline';
-                    moonIcon.style.display = 'none';
-                } else {
-                    sunIcon.style.display = 'none';
-                    moonIcon.style.display = 'inline';
-                }
+    // Update icon visibility on load
+    function updateToggleIcons(theme) {
+        const sunIcon = themeToggle ? themeToggle.querySelector('.icon-sun') : null;
+        const moonIcon = themeToggle ? themeToggle.querySelector('.icon-moon') : null;
+        if (sunIcon && moonIcon) {
+            if (theme === 'dark') {
+                sunIcon.style.display = 'inline';
+                moonIcon.style.display = 'none';
+            } else {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'inline';
             }
-        });
+        }
+    }
+    updateToggleIcons(savedTheme);
+
+    function toggleTheme(e) {
+        // Prevent default for touch events
+        if (e) e.preventDefault();
+        const current = html.getAttribute('data-theme');
+        const next = current === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateToggleIcons(next);
     }
 
-    // ----- HAMBURGER MENU -----
+    if (themeToggle) {
+        // Add both click and touchstart for mobile
+        themeToggle.addEventListener('click', toggleTheme);
+        themeToggle.addEventListener('touchstart', toggleTheme, { passive: false });
+    }
+
+    // ----- HAMBURGER MENU (mobile) -----
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
 
-    if (hamburger) {
+    if (hamburger && navLinks) {
+        // Toggle menu on hamburger click/tap
         hamburger.addEventListener('click', function(e) {
             e.stopPropagation();
             this.classList.toggle('active');
             navLinks.classList.toggle('open');
-            // Update aria-expanded for accessibility
-            const isOpen = navLinks.classList.contains('open');
-            this.setAttribute('aria-expanded', isOpen);
         });
 
-        // Close menu on link click
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (navLinks.classList.contains('open')) {
+                if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('open');
+                }
+            }
+        });
+
+        // Close menu on link click (including admin and star members)
         navLinks.querySelectorAll('a').forEach(function(link) {
             link.addEventListener('click', function() {
                 hamburger.classList.remove('active');
                 navLinks.classList.remove('open');
-                hamburger.setAttribute('aria-expanded', 'false');
             });
         });
     }
 
-    // Close menu when clicking outside
-    document.addEventListener('click', function(e) {
-        if (navLinks && navLinks.classList.contains('open')) {
-            if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('open');
-                hamburger.setAttribute('aria-expanded', 'false');
-            }
-        }
-    });
-
     // ----- STICKY NAVBAR -----
     const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
+    if (navbar) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    }
 
     // ----- BACK TO TOP -----
     const backTop = document.getElementById('backTop');
@@ -102,14 +103,13 @@
                 backTop.classList.remove('show');
             }
         });
-
         backTop.addEventListener('click', function(e) {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
 
-    // ----- SMOOTH SCROLL -----
+    // ----- SMOOTH SCROLL for anchor links -----
     document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
@@ -163,7 +163,7 @@
         });
     }
 
-    // ----- COUNTDOWN -----
+    // ----- COUNTDOWN TIMER -----
     const targetDate = new Date();
     targetDate.setDate(targetDate.getDate() + 30);
 
@@ -193,15 +193,14 @@
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    // ----- TESTIMONIAL CAROUSEL (Mobile-Friendly) -----
+    // ----- TESTIMONIAL CAROUSEL (mobile‑friendly) -----
     const track = document.getElementById('testimonialTrack');
     const dots = document.querySelectorAll('#dotsContainer span');
 
     if (track && dots.length) {
         let currentIndex = 0;
         const totalSlides = dots.length;
-        let startX = 0,
-            endX = 0;
+        let startX = 0, endX = 0;
         let isDragging = false;
 
         let autoSlide = setInterval(function() {
@@ -229,7 +228,7 @@
             });
         });
 
-        // Touch support
+        // Touch events for swiping
         track.addEventListener('touchstart', function(e) {
             startX = e.changedTouches[0].screenX;
             isDragging = false;
@@ -269,7 +268,7 @@
         });
     });
 
-    // ----- CHECKOUT -----
+    // ----- CHECKOUT: PLAN SELECTION & SUMMARY -----
     const urlParams = new URLSearchParams(window.location.search);
     const planParam = urlParams.get('plan');
     const selectedPlanName = document.getElementById('selectedPlanName');
@@ -383,7 +382,7 @@
         });
     }
 
-    // ----- PLAN BUTTONS -----
+    // ----- PLAN BUTTONS (from membership cards) -----
     document.querySelectorAll('.format-card .btn-primary').forEach(function(btn) {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -398,6 +397,7 @@
         });
     });
 
+    // Initial summary update
     updateSummary();
 
 })();

@@ -1,6 +1,7 @@
 /* ============================================================
    ELITE FITNESS – GOLDEN RATIO STYLES
-   Mobile-Fixed Version with Working Theme Toggle
+   Based on 1.618:1 ratio & Fibonacci sequence
+   Mobile-Fixed Version
    ============================================================ */
 
 /* ============================================================
@@ -36,7 +37,7 @@
     --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-    /* Golden Ratio Spacing */
+    /* Golden Ratio Spacing (Fibonacci: 8, 13, 21, 34, 55, 89) */
     --space-xs: 8px;
     --space-sm: 13px;
     --space-md: 21px;
@@ -224,7 +225,7 @@ small, .small-text {
 }
 
 /* ============================================================
-   THEME TOGGLE (Mobile-Friendly)
+   THEME TOGGLE (floating) – WILL BE OVERRIDDEN BY NAVBAR VERSION
    ============================================================ */
 .theme-toggle-wrapper {
     position: fixed;
@@ -382,11 +383,12 @@ small, .small-text {
     background: transparent;
     border: none;
     padding: 8px;
-    min-height: 44px;
-    min-width: 44px;
+    min-height: 48px;
+    min-width: 48px;
     justify-content: center;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
+    z-index: 1001;
 }
 
 .hamburger span {
@@ -1192,7 +1194,7 @@ small, .small-text {
 }
 
 /* ============================================================
-   MOBILE RESPONSIVE FIXES
+   MOBILE RESPONSIVE FIXES (existing)
    ============================================================ */
 @media (max-width: 768px) {
     /* Prevent horizontal scroll */
@@ -1212,26 +1214,9 @@ small, .small-text {
         overflow-x: hidden;
     }
 
-    /* Theme Toggle Mobile */
+    /* Theme Toggle (floating) hidden – will be overridden by navbar version */
     .theme-toggle-wrapper {
-        top: 10px;
-        right: 12px;
-    }
-
-    .theme-toggle {
-        padding: 6px 12px;
-        font-size: 13px;
-        min-height: 40px;
-        min-width: 40px;
-    }
-
-    .theme-toggle .toggle-label {
         display: none;
-    }
-
-    .theme-toggle .icon-sun,
-    .theme-toggle .icon-moon {
-        font-size: 18px;
     }
 
     /* Navbar Mobile */
@@ -1674,5 +1659,94 @@ small, .small-text {
     .hero-btns .btn-outline {
         font-size: 14px;
         padding: 12px 16px;
+    }
+}
+
+/* ============================================================
+   NEW: NAVBAR LAYOUT FIX (theme toggle + hamburger)
+   ============================================================ */
+
+.navbar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+/* Theme toggle inside navbar */
+.navbar .theme-toggle {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 40px;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    box-shadow: var(--shadow-sm);
+    transition: background 0.3s ease, border-color 0.3s ease;
+    font-family: var(--font);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    min-height: 40px;
+    min-width: 40px;
+}
+
+.navbar .theme-toggle:active {
+    transform: scale(0.95);
+}
+
+.navbar .theme-toggle .toggle-label {
+    display: inline;
+}
+
+/* Mobile adjustments for navbar theme toggle */
+@media (max-width: 768px) {
+    .navbar .theme-toggle .toggle-label {
+        display: none;
+    }
+    .navbar .theme-toggle {
+        padding: 4px 10px;
+        font-size: 14px;
+        min-height: 40px;
+        min-width: 40px;
+    }
+}
+
+/* Hamburger touch area (already defined above, but ensure it's here) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 8px;
+    min-height: 48px;
+    min-width: 48px;
+    justify-content: center;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    z-index: 1001;
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+    .nav-links {
+        top: 70px;
+        z-index: 999;
     }
 }

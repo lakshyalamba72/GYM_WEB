@@ -27,28 +27,26 @@
 <body>
 
     <!-- ============================================================
-    THEME TOGGLE (floating)
-    ============================================================ -->
-    <div class="theme-toggle-wrapper">
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-            <span class="icon-sun"><i class="fas fa-sun"></i></span>
-            <span class="icon-moon"><i class="fas fa-moon"></i></span>
-            <span class="toggle-label">Theme</span>
-        </button>
-    </div>
-
-    <!-- ============================================================
-    NAVBAR
+    NAVBAR (with theme toggle inside)
     ============================================================ -->
     <nav class="navbar" id="navbar">
         <div class="container">
             <a href="index.html" class="nav-logo">ELITE<span>FITNESS</span></a>
 
-            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+            <div class="nav-right">
+                <!-- Theme Toggle moved inside navbar -->
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <span class="icon-sun"><i class="fas fa-sun"></i></span>
+                    <span class="icon-moon"><i class="fas fa-moon"></i></span>
+                    <span class="toggle-label">Theme</span>
+                </button>
+
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
 
             <ul class="nav-links" id="navLinks">
                 <li><a href="#about">About</a></li>
