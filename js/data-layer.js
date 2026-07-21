@@ -1,6 +1,5 @@
 // ============================================================
 //  DATA LAYER (Mock Backend using localStorage)
-//  Replace functions with fetch() calls later
 // ============================================================
 
 const DB = {
@@ -83,7 +82,8 @@ function getMemberMemberships(memberId) {
 }
 
 function getActiveMemberships() {
-    return getMemberships().filter(m => m.isActive && m.endDate >= today());
+    const todayStr = today();
+    return getMemberships().filter(m => m.isActive && m.endDate >= todayStr);
 }
 
 function getExpiringMemberships(days = 7) {
@@ -94,7 +94,8 @@ function getExpiringMemberships(days = 7) {
 }
 
 function getExpiredMemberships() {
-    return getMemberships().filter(m => m.endDate < today() || !m.isActive);
+    const todayStr = today();
+    return getMemberships().filter(m => m.endDate < todayStr || !m.isActive);
 }
 
 function createMembership(data) {
@@ -104,7 +105,7 @@ function createMembership(data) {
     const newMembership = {
         id: generateId(),
         memberId: data.memberId,
-        type: data.type || 'gym', // 'gym' or 'gym_pt'
+        type: data.type || 'gym',
         durationMonths: data.durationMonths,
         basePrice: data.basePrice,
         discountApplied: data.discountApplied || 0,
@@ -144,7 +145,6 @@ function renewMembership(id, durationMonths, basePrice, discount = 0) {
         paymentStatus: 'paid',
         isActive: true
     });
-    // Add payment history entry
     addPaymentHistory({
         membershipId: id,
         amount: finalPrice,
@@ -190,7 +190,7 @@ function createDiscountCode(data) {
     const newCode = {
         id: generateId(),
         code: data.code,
-        type: data.type || 'fixed', // fixed or percentage
+        type: data.type || 'fixed',
         value: data.value,
         validUntil: data.validUntil || null,
         usageLimit: data.usageLimit || null,
@@ -239,28 +239,43 @@ function getAdmins() {
 
 function addAdmin(data) {
     const admins = getAdmins();
-    // Simple password hashing mock (for demo)
-    const hashedPassword = btoa(data.password); // not secure, just for demo
-    const newAdmin = {
-        id: generateId(),
-        email: data.email,
-        password: hashedPassword,
-        name: data.name,
-        createdAt: today()
-    };
-    admins.push(newAdmin);
+    const hashedPassword = btoa(data.password);
+    // Check if admin with same email exists, update if so
+    const existingIndex = admins.findIndex(a => a.email === data.email);
+    if (existingIndex !== -1) {
+        admins[existingIndex] = { ...admins[existingIndex], password: hashedPassword, name: data.name };
+    } else {
+        const newAdmin = {
+            id: generateId(),
+            email: data.email,
+            password: hashedPassword,
+            name: data.name,
+            createdAt: today()
+        };
+        admins.push(newAdmin);
+    }
     DB.set('admins', admins);
-    return newAdmin;
+    return admins;
 }
 
 function verifyAdmin(email, password) {
     const admins = getAdmins();
+    // If no admins, add default
+    if (admins.length === 0) {
+        addAdmin({ email: 'lakshyalamba72@gmail.com', password: 'lakshya1', name: 'Admin' });
+        const newAdmins = getAdmins();
+        const admin = newAdmins.find(a => a.email === email && a.password === btoa(password));
+        return admin || null;
+    }
     const admin = admins.find(a => a.email === email && a.password === btoa(password));
     return admin || null;
 }
 
 // ----- Initialize with sample data -----
 function initSampleData() {
+    // Always ensure admin exists with correct credentials
+    addAdmin({ email: 'lakshyalamba72@gmail.com', password: 'lakshya1', name: 'Admin' });
+
     if (DB.get('initialized')) return;
 
     // Sample members
@@ -270,30 +285,34 @@ function initSampleData() {
     ];
     members.forEach(m => addMember(m));
 
-    // Sample memberships
     const allMembers = getMembers();
     const member1 = allMembers[0];
     const member2 = allMembers[1];
-    createMembership({
-        memberId: member1.id,
-        type: 'gym_pt',
-        durationMonths: 3,
-        basePrice: 4000,
-        discountApplied: 0,
-        finalPrice: 4000,
-        paymentStatus: 'paid'
-    });
-    createMembership({
-        memberId: member2.id,
-        type: 'gym',
-        durationMonths: 1,
-        basePrice: 1500,
-        discountApplied: 200,
-        finalPrice: 1300,
-        paymentStatus: 'paid'
-    });
+    
+    if (member1) {
+        createMembership({
+            memberId: member1.id,
+            type: 'gym_pt',
+            durationMonths: 3,
+            basePrice: 10000,
+            discountApplied: 0,
+            finalPrice: 10000,
+            paymentStatus: 'paid'
+        });
+    }
+    
+    if (member2) {
+        createMembership({
+            memberId: member2.id,
+            type: 'gym',
+            durationMonths: 1,
+            basePrice: 1500,
+            discountApplied: 200,
+            finalPrice: 1300,
+            paymentStatus: 'paid'
+        });
+    }
 
-    // Sample discount code
     createDiscountCode({
         code: 'STUDENT200',
         type: 'fixed',
@@ -301,9 +320,6 @@ function initSampleData() {
         validUntil: '2026-12-31',
         usageLimit: 50
     });
-
-    // Sample admin
-    addAdmin({ email: 'admin@elitefitness.com', password: 'admin123', name: 'Admin' });
 
     DB.set('initialized', true);
 }

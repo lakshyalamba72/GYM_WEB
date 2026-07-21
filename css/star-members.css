@@ -1,0 +1,298 @@
+/* ============================================================
+   ELITE FITNESS – STAR MEMBERS STYLES
+   ============================================================ */
+
+/* ----- PAGE HEADER ----- */
+.star-members {
+    padding-top: 100px;
+    padding-bottom: 60px;
+    background: var(--bg-body);
+    min-height: 100vh;
+}
+
+.star-members .section-label {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    margin-bottom: 8px;
+    display: block;
+    text-align: center;
+}
+
+.star-members .section-title {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.star-members .section-title .highlight {
+    color: var(--accent);
+}
+
+.star-members .section-desc {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    line-height: 1.7;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* ----- STAR MEMBER CARD ----- */
+.star-member-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-light);
+    padding: 32px;
+    margin-bottom: 40px;
+    transition: all 0.3s ease;
+}
+
+.star-member-card:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-md);
+}
+
+/* Header */
+.star-member-header {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.star-member-header img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--accent);
+    flex-shrink: 0;
+}
+
+.star-member-info h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.star-member-info p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.star-member-info p i {
+    color: var(--accent);
+    width: 20px;
+}
+
+.star-member-info .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #0F0F0F;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 16px;
+    border-radius: 40px;
+    margin-top: 8px;
+}
+
+/* Toggle Button */
+.star-member-card .toggle-split {
+    margin-bottom: 16px;
+}
+
+/* ----- WORKOUT SPLIT ----- */
+.workout-split {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-light);
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.workout-split h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--accent);
+}
+
+.workout-split h4 i {
+    margin-right: 8px;
+}
+
+.workout-split table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.workout-split th {
+    background: var(--bg-body);
+    color: var(--accent);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+    border-bottom: 2px solid var(--accent);
+}
+
+.workout-split td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-secondary);
+    vertical-align: middle;
+}
+
+.workout-split tr:hover td {
+    background: var(--accent-dim);
+}
+
+.workout-split .day-label {
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 80px;
+    display: inline-block;
+}
+
+.workout-split .exercise-cell {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.workout-split .exercise-cell img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid var(--border-light);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.workout-split .exercise-cell img:hover {
+    transform: scale(1.05);
+    border-color: var(--accent);
+}
+
+.workout-split .exercise-cell .exercise-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.workout-split .exercise-cell .exercise-detail {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* ----- RESPONSIVE ----- */
+@media (max-width: 768px) {
+    .star-members {
+        padding-top: 80px;
+        padding-bottom: 40px;
+    }
+
+    .star-member-card {
+        padding: 20px;
+    }
+
+    .star-member-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+
+    .star-member-header img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .star-member-info p {
+        justify-content: center;
+    }
+
+    .workout-split table {
+        font-size: 12px;
+    }
+
+    .workout-split th,
+    .workout-split td {
+        padding: 6px 8px;
+    }
+
+    .workout-split .exercise-cell {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .workout-split .exercise-cell img {
+        width: 100%;
+        height: auto;
+        max-width: 120px;
+    }
+
+    .workout-split .day-label {
+        min-width: 60px;
+        font-size: 12px;
+    }
+
+    .star-member-card .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .star-member-card {
+        padding: 16px;
+    }
+
+    .star-member-header img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .star-member-info h2 {
+        font-size: 22px;
+    }
+
+    .workout-split h4 {
+        font-size: 16px;
+    }
+
+    .workout-split table {
+        font-size: 11px;
+    }
+
+    .workout-split th,
+    .workout-split td {
+        padding: 4px 6px;
+    }
+
+    .workout-split .exercise-cell .exercise-name {
+        font-size: 13px;
+    }
+}

@@ -1,13 +1,30 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Elite Fitness – Star Members</title>
+
+    <!-- Theme Script (must run before page loads) -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <!-- MAIN STYLES -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- STAR MEMBERS STYLES -->
     <link rel="stylesheet" href="css/star-members.css" />
 </head>
 <body>
@@ -29,6 +46,7 @@
     ============================================================ -->
     <section class="star-members">
         <div class="container">
+
             <div style="text-align:center; margin-bottom:48px;">
                 <span class="section-label">Our Star Members</span>
                 <h1 class="section-title">Real People, <span class="highlight">Real Results</span></h1>
@@ -38,7 +56,7 @@
             <!-- Star Member 1: Rahul -->
             <div class="star-member-card">
                 <div class="star-member-header">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80" alt="Rahul Sharma" />
+                    <img src="https://ui-avatars.com/api/?name=Rahul+Sharma&background=00C853&color=fff&size=200" alt="Rahul Sharma" />
                     <div class="star-member-info">
                         <h2>Rahul Sharma</h2>
                         <p><i class="fas fa-calendar-alt"></i> Member since: Jan 2024</p>
@@ -51,15 +69,89 @@
                 <div class="workout-split" id="split-rahul" style="display:none;">
                     <h4><i class="fas fa-calendar-week"></i> Weekly Workout Split</h4>
                     <table>
-                        <thead><tr><th>Day</th><th>Exercise</th></tr></thead>
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Exercise</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            <tr><td><span class="day-label">Monday</span></td><td><div class="exercise-cell"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=100&q=80" alt="Bench Press" /><div><div class="exercise-name">Bench Press</div><div class="exercise-detail">4 sets × 10 reps</div></div></div></td></tr>
-                            <tr><td><span class="day-label">Tuesday</span></td><td><div class="exercise-cell"><img src="https://images.unsplash.com/photo-1581009146145-b5a5b36c6ef5?w=100&q=80" alt="Deadlift" /><div><div class="exercise-name">Deadlift</div><div class="exercise-detail">4 sets × 8 reps</div></div></div></td></tr>
-                            <tr><td><span class="day-label">Wednesday</span></td><td><div class="exercise-cell"><img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=100&q=80" alt="Shoulder Press" /><div><div class="exercise-name">Shoulder Press</div><div class="exercise-detail">4 sets × 10 reps</div></div></div></td></tr>
-                            <tr><td><span class="day-label">Thursday</span></td><td><div class="exercise-cell"><img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=100&q=80" alt="Leg Press" /><div><div class="exercise-name">Leg Press</div><div class="exercise-detail">4 sets × 12 reps</div></div></div></td></tr>
-                            <tr><td><span class="day-label">Friday</span></td><td><div class="exercise-cell"><img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=100&q=80" alt="Bicep Curls" /><div><div class="exercise-name">Bicep Curls</div><div class="exercise-detail">3 sets × 12 reps</div></div></div></td></tr>
-                            <tr><td><span class="day-label">Saturday</span></td><td><div class="exercise-cell"><img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=100&q=80" alt="Cardio" /><div><div class="exercise-name">HIIT Cardio</div><div class="exercise-detail">30 mins</div></div></div></td></tr>
-                            <tr><td><span class="day-label">Sunday</span></td><td style="color:var(--accent);font-weight:600;">Rest Day – Recovery & Stretching</td></tr>
+                            <tr>
+                                <td><span class="day-label">Monday</span></td>
+                                <td>
+                                    <div class="exercise-cell">
+                                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=100&q=80" alt="Bench Press" />
+                                        <div>
+                                            <div class="exercise-name">Bench Press</div>
+                                            <div class="exercise-detail">4 sets × 10 reps</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="day-label">Tuesday</span></td>
+                                <td>
+                                    <div class="exercise-cell">
+                                        <img src="https://images.unsplash.com/photo-1581009146145-b5a5b36c6ef5?w=100&q=80" alt="Deadlift" />
+                                        <div>
+                                            <div class="exercise-name">Deadlift</div>
+                                            <div class="exercise-detail">4 sets × 8 reps</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="day-label">Wednesday</span></td>
+                                <td>
+                                    <div class="exercise-cell">
+                                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=100&q=80" alt="Shoulder Press" />
+                                        <div>
+                                            <div class="exercise-name">Shoulder Press</div>
+                                            <div class="exercise-detail">4 sets × 10 reps</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="day-label">Thursday</span></td>
+                                <td>
+                                    <div class="exercise-cell">
+                                        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=100&q=80" alt="Leg Press" />
+                                        <div>
+                                            <div class="exercise-name">Leg Press</div>
+                                            <div class="exercise-detail">4 sets × 12 reps</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="day-label">Friday</span></td>
+                                <td>
+                                    <div class="exercise-cell">
+                                        <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=100&q=80" alt="Bicep Curls" />
+                                        <div>
+                                            <div class="exercise-name">Bicep Curls</div>
+                                            <div class="exercise-detail">3 sets × 12 reps</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="day-label">Saturday</span></td>
+                                <td>
+                                    <div class="exercise-cell">
+                                        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=100&q=80" alt="Cardio" />
+                                        <div>
+                                            <div class="exercise-name">HIIT Cardio</div>
+                                            <div class="exercise-detail">30 mins</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="day-label">Sunday</span></td>
+                                <td style="color:var(--accent);font-weight:600;">Rest Day – Recovery & Stretching</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -68,7 +160,7 @@
             <!-- Star Member 2: Priya -->
             <div class="star-member-card">
                 <div class="star-member-header">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80" alt="Priya Patel" />
+                    <img src="https://ui-avatars.com/api/?name=Priya+Patel&background=00C853&color=fff&size=200" alt="Priya Patel" />
                     <div class="star-member-info">
                         <h2>Priya Patel</h2>
                         <p><i class="fas fa-calendar-alt"></i> Member since: March 2024</p>
@@ -81,15 +173,89 @@
                 <div class="workout-split" id="split-priya" style="display:none;">
                     <h4><i class="fas fa-calendar-week"></i> Weekly Workout Split</h4>
                     <table>
-                        <thead><tr><th>Day</th><th>Exercise</th></tr></thead>
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Exercise</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            <tr><td><span class="day-label">Monday</span></td><td><div class="exercise-cell"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=100&q=80" alt="Dumbbell Squats" /><div><div class="exercise-name">Dumbbell Squats</div><div class="exercise-detail">4 sets × 15 reps</div></div></div></td></tr>
-                            <tr><td><span class="day-label">Tuesday</span></td><td><div class="exercise-cell"><img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=100&q=80" alt="Lat Pulldown" /><div><div class="exercise-name">Lat Pulldown</div><div class="exercise-detail">4 sets × 12 reps</div></div></div></td></tr>
-                            <tr><td><span class="day-label">Wednesday</span></td><td><div class="exercise-cell"><img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=100&q=80" alt="Incline Walking" /><div><div class="exercise-name">Incline Walking</div><div class="exercise-detail">45 mins</div></div></div></td></tr>
-                            <tr><td><span class="day-label">Thursday</span></td><td><div class="exercise-cell"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=100&q=80" alt="Chest Press" /><div><div class="exercise-name">Chest Press</div><div class="exercise-detail">4 sets × 12 reps</div></div></div></td></tr>
-                            <tr><td><span class="day-label">Friday</span></td><td><div class="exercise-cell"><img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=100&q=80" alt="Dumbbell Lunges" /><div><div class="exercise-name">Dumbbell Lunges</div><div class="exercise-detail">4 sets × 12 reps</div></div></div></td></tr>
-                            <tr><td><span class="day-label">Saturday</span></td><td><div class="exercise-cell"><img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=100&q=80" alt="Cardio" /><div><div class="exercise-name">Steady State Cardio</div><div class="exercise-detail">40 mins</div></div></div></td></tr>
-                            <tr><td><span class="day-label">Sunday</span></td><td style="color:var(--accent);font-weight:600;">Rest Day – Recovery & Mobility</td></tr>
+                            <tr>
+                                <td><span class="day-label">Monday</span></td>
+                                <td>
+                                    <div class="exercise-cell">
+                                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=100&q=80" alt="Dumbbell Squats" />
+                                        <div>
+                                            <div class="exercise-name">Dumbbell Squats</div>
+                                            <div class="exercise-detail">4 sets × 15 reps</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="day-label">Tuesday</span></td>
+                                <td>
+                                    <div class="exercise-cell">
+                                        <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=100&q=80" alt="Lat Pulldown" />
+                                        <div>
+                                            <div class="exercise-name">Lat Pulldown</div>
+                                            <div class="exercise-detail">4 sets × 12 reps</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="day-label">Wednesday</span></td>
+                                <td>
+                                    <div class="exercise-cell">
+                                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=100&q=80" alt="Incline Walking" />
+                                        <div>
+                                            <div class="exercise-name">Incline Walking</div>
+                                            <div class="exercise-detail">45 mins</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="day-label">Thursday</span></td>
+                                <td>
+                                    <div class="exercise-cell">
+                                        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=100&q=80" alt="Chest Press" />
+                                        <div>
+                                            <div class="exercise-name">Chest Press</div>
+                                            <div class="exercise-detail">4 sets × 12 reps</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="day-label">Friday</span></td>
+                                <td>
+                                    <div class="exercise-cell">
+                                        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=100&q=80" alt="Dumbbell Lunges" />
+                                        <div>
+                                            <div class="exercise-name">Dumbbell Lunges</div>
+                                            <div class="exercise-detail">4 sets × 12 reps</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="day-label">Saturday</span></td>
+                                <td>
+                                    <div class="exercise-cell">
+                                        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=100&q=80" alt="Cardio" />
+                                        <div>
+                                            <div class="exercise-name">Steady State Cardio</div>
+                                            <div class="exercise-detail">40 mins</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="day-label">Sunday</span></td>
+                                <td style="color:var(--accent);font-weight:600;">Rest Day – Recovery & Mobility</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -107,6 +273,10 @@
         </div>
     </footer>
 
+    <!-- ============================================================
+    SCRIPTS
+    ============================================================ -->
     <script src="js/star-members.js"></script>
+
 </body>
 </html>
