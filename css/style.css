@@ -1,6 +1,7 @@
 /* ============================================================
    ELITE FITNESS – GOLDEN RATIO STYLES
    Based on 1.618:1 ratio & Fibonacci sequence
+   Mobile-Fixed Version
    ============================================================ */
 
 /* ============================================================
@@ -79,14 +80,19 @@
 html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 body {
     font-family: var(--font);
     background: var(--bg-body);
     color: var(--text-primary);
-    line-height: 1.618; /* Golden Ratio line-height */
+    line-height: 1.618;
     transition: background 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
 }
 
 img {
@@ -103,6 +109,8 @@ a {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--space-lg);
+    width: 100%;
+    overflow-x: hidden;
 }
 
 /* ============================================================
@@ -145,7 +153,7 @@ small, .small-text {
 }
 
 /* ============================================================
-   BUTTONS – Golden Ratio Padding
+   BUTTONS
    ============================================================ */
 .btn-primary {
     display: inline-flex;
@@ -191,6 +199,28 @@ small, .small-text {
 .btn-outline:hover {
     border-color: var(--accent);
     color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.btn-blue {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    background: var(--accent);
+    color: #0F0F0F;
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: var(--font);
+    min-height: 44px;
+}
+
+.btn-blue:hover {
+    background: var(--accent-hover);
     transform: translateY(-2px);
 }
 
@@ -334,8 +364,41 @@ small, .small-text {
     background: var(--accent-hover) !important;
 }
 
+.admin-link i {
+    margin-right: 4px;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 4px;
+}
+
+.hamburger span {
+    display: block;
+    width: 26px;
+    height: 2.5px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
 /* ============================================================
-   HERO – Golden Ratio Grid
+   HERO
    ============================================================ */
 .hero {
     padding: 140px 0 var(--space-xxl);
@@ -358,7 +421,7 @@ small, .small-text {
 
 .hero-grid {
     display: grid;
-    grid-template-columns: 1fr 1.618fr; /* Golden Ratio */
+    grid-template-columns: 1fr 1.618fr;
     gap: var(--space-xl);
     align-items: center;
     position: relative;
@@ -416,7 +479,7 @@ small, .small-text {
     overflow: hidden;
     background: var(--bg-card);
     box-shadow: var(--shadow-lg);
-    aspect-ratio: 1.618/1; /* Golden Ratio */
+    aspect-ratio: 1.618/1;
     border: 1px solid var(--border-light);
 }
 
@@ -427,7 +490,7 @@ small, .small-text {
 }
 
 /* ============================================================
-   SECTIONS – Golden Ratio Spacing
+   SECTIONS
    ============================================================ */
 .section {
     padding: var(--space-xxl) 0;
@@ -469,7 +532,7 @@ small, .small-text {
 }
 
 /* ============================================================
-   GRIDS – Golden Ratio Proportions
+   GRIDS
    ============================================================ */
 .grid-2 {
     display: grid;
@@ -485,7 +548,7 @@ small, .small-text {
 }
 
 /* ============================================================
-   FEATURES – Golden Ratio Cards
+   FEATURES
    ============================================================ */
 .feature-grid {
     display: grid;
@@ -654,7 +717,7 @@ small, .small-text {
 }
 
 /* ============================================================
-   TRAINERS – Golden Ratio Grid
+   TRAINERS
    ============================================================ */
 .trainer-grid {
     display: grid;
@@ -699,7 +762,7 @@ small, .small-text {
 }
 
 /* ============================================================
-   FACILITIES – Golden Ratio Grid
+   FACILITIES
    ============================================================ */
 .facility-grid {
     display: grid;
@@ -1117,6 +1180,29 @@ small, .small-text {
 }
 
 /* ============================================================
+   MOBILE FIXES – OVERFLOW, BUTTONS, LAYOUT
+   ============================================================ */
+
+/* Prevent horizontal scroll on all devices */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+}
+
+* {
+    max-width: 100%;
+}
+
+/* Fix container overflow */
+.container {
+    max-width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+    overflow-x: hidden;
+}
+
+/* ============================================================
    RESPONSIVE – Maintain Golden Ratio on Mobile
    ============================================================ */
 @media (max-width: 1024px) {
@@ -1180,76 +1266,370 @@ small, .small-text {
     }
 
     .hero {
-        padding: 120px 0 var(--space-xl);
+        padding: 100px 0 40px;
+        min-height: auto;
     }
 
-    .hero h1 {
-        font-size: 36px;
+    .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .hero-text h1 {
+        font-size: 28px;
+        line-height: 1.1;
+    }
+
+    .hero-text p {
+        font-size: 15px;
+        max-width: 100%;
+    }
+
+    .hero-btns {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .hero-btns .btn-primary,
+    .hero-btns .btn-outline {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 20px;
+        font-size: 15px;
     }
 
     .hero-stats {
-        gap: var(--space-lg);
-        flex-wrap: wrap;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        padding-top: 16px;
     }
 
     .hero-stats .stat-number {
-        font-size: 22px;
+        font-size: 20px;
+    }
+
+    .hero-stats .stat-label {
+        font-size: 12px;
+    }
+
+    .hero-image {
+        aspect-ratio: 4/3;
+        max-height: 300px;
+    }
+
+    .hero-image img {
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .section {
+        padding: 40px 0;
+    }
+
+    .section-title {
+        font-size: 26px;
+        line-height: 1.2;
+    }
+
+    .section-desc {
+        font-size: 15px;
+        max-width: 100%;
+    }
+
+    .grid-2 {
+        grid-template-columns: 1fr;
+        gap: 24px;
     }
 
     .grid-3 {
         grid-template-columns: 1fr;
+        gap: 16px;
     }
 
     .feature-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
     }
 
     .facility-grid {
         grid-template-columns: 1fr 1fr;
+        gap: 12px;
     }
 
     .class-grid {
         grid-template-columns: 1fr 1fr;
-    }
-
-    .footer-grid {
-        grid-template-columns: 1fr;
-        gap: var(--space-lg);
-    }
-
-    .footer-bottom {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .contact-grid {
-        grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .trainer-grid {
         grid-template-columns: 1fr;
+        gap: 16px;
+        max-width: 100%;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .format-card {
+        padding: 20px;
+    }
+
+    .format-card .price {
+        font-size: 28px;
+    }
+
+    .format-card .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .feature-item {
+        padding: 16px 12px;
+    }
+
+    .feature-item i {
+        font-size: 22px;
+    }
+
+    .feature-item h4 {
+        font-size: 14px;
+    }
+
+    .facility-item {
+        padding: 16px 12px;
+    }
+
+    .facility-item i {
+        font-size: 20px;
+    }
+
+    .class-card {
+        padding: 16px 12px;
+    }
+
+    .class-card i {
+        font-size: 20px;
+    }
+
+    .checkout-wrapper {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 16px;
+    }
+
+    .payment-methods {
+        gap: 8px;
+    }
+
+    .payment-methods button {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+
+    .summary-line {
+        padding: 6px 0;
+        font-size: 14px;
+    }
+
+    .summary-line.total {
+        font-size: 16px;
+    }
+
+    .checkout-wrapper .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .navbar {
+        padding: 10px 0;
+    }
+
+    .navbar .container {
+        padding: 0 16px;
+    }
+
+    .nav-logo {
+        font-size: 18px;
+    }
+
+    .nav-links {
+        padding: 16px;
+        gap: 12px;
+        top: 60px;
+    }
+
+    .nav-links a {
+        font-size: 14px;
+        padding: 10px 0;
+    }
+
+    .nav-cta {
+        font-size: 13px !important;
+        padding: 8px 16px !important;
+    }
+
+    .hamburger span {
+        width: 22px;
+        height: 2px;
     }
 
     .theme-toggle-wrapper {
-        top: var(--space-sm);
-        right: var(--space-md);
+        top: 10px;
+        right: 12px;
     }
 
     .theme-toggle {
-        padding: var(--space-xs) var(--space-sm);
+        padding: 4px 10px;
         font-size: 12px;
+        gap: 6px;
     }
 
     .theme-toggle .toggle-label {
         display: none;
     }
 
-    .navbar .container {
-        padding: 0 var(--space-md);
+    .theme-toggle .icon-sun,
+    .theme-toggle .icon-moon {
+        font-size: 16px;
     }
 
-    .checkout-wrapper {
-        padding: var(--space-md);
+    .floating {
+        bottom: 12px;
+        right: 12px;
+        gap: 8px;
+    }
+
+    .floating .whatsapp {
+        width: 48px;
+        height: 48px;
+        font-size: 1.8rem;
+    }
+
+    .floating .back-top {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .nav-links .admin-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        border: 1px solid var(--border-light);
+        border-radius: 8px;
+        padding: 8px 12px;
+        margin-top: 4px;
+    }
+
+    .nav-links .admin-link i {
+        font-size: 14px;
+    }
+
+    .bmi-box {
+        padding: 20px;
+    }
+
+    .bmi-box input {
+        padding: 12px 14px;
+        font-size: 15px;
+        min-height: 44px;
+    }
+
+    .bmi-result .bmi-number {
+        font-size: 2.5rem;
+    }
+
+    .offer-banner {
+        padding: 24px 16px;
+    }
+
+    .offer-banner .countdown {
+        gap: 12px;
+        font-size: 1.8rem;
+        flex-wrap: wrap;
+    }
+
+    .offer-banner .countdown span {
+        padding: 6px 12px;
+        min-width: 55px;
+    }
+
+    .offer-banner .btn-primary {
+        font-size: 1rem;
+        padding: 10px 24px;
+    }
+
+    .faq-question {
+        padding: 14px 16px;
+        font-size: 14px;
+    }
+
+    .faq-answer {
+        padding: 0 16px;
+        font-size: 14px;
+    }
+
+    .faq-item.active .faq-answer {
+        padding: 0 16px 16px;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .contact-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .contact-actions .btn-primary,
+    .contact-actions .btn-outline {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .contact-map iframe {
+        height: 200px;
+    }
+
+    .testimonial-card {
+        padding: 20px;
+    }
+
+    .testimonial-card blockquote {
+        font-size: 15px;
+    }
+
+    .testimonial-card img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .row,
+    .grid,
+    .flex {
+        flex-wrap: wrap;
+    }
+
+    /* Fix any element causing horizontal scroll */
+    * {
+        max-width: 100%;
+        word-wrap: break-word;
+    }
+
+    /* Fix tables on mobile */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 }
 

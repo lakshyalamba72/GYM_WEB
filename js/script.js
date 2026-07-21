@@ -1,24 +1,49 @@
 // ============================================================
 //  ELITE FITNESS – MAIN JAVASCRIPT
 //  Theme, Nav, Interactions, BMI, Countdown, Checkout, etc.
+//  Mobile-Fixed Version
 // ============================================================
 
 (function() {
     'use strict';
 
-    // ----- THEME TOGGLE -----
+    // ----- THEME TOGGLE (Mobile-Friendly) -----
     const themeToggle = document.getElementById('themeToggle');
     const html = document.documentElement;
 
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    // Load saved theme (with fallback for mobile)
+    let savedTheme = localStorage.getItem('theme');
+    if (!savedTheme) {
+        // Check if user prefers dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            savedTheme = 'dark';
+        } else {
+            savedTheme = 'light';
+        }
+        localStorage.setItem('theme', savedTheme);
+    }
     html.setAttribute('data-theme', savedTheme);
 
     if (themeToggle) {
-        themeToggle.addEventListener('click', function() {
+        themeToggle.addEventListener('click', function(e) {
+            e.preventDefault();
             const current = html.getAttribute('data-theme');
             const next = current === 'light' ? 'dark' : 'light';
             html.setAttribute('data-theme', next);
             localStorage.setItem('theme', next);
+            
+            // Update toggle button icons
+            const sunIcon = this.querySelector('.icon-sun');
+            const moonIcon = this.querySelector('.icon-moon');
+            if (sunIcon && moonIcon) {
+                if (next === 'dark') {
+                    sunIcon.style.display = 'inline';
+                    moonIcon.style.display = 'none';
+                } else {
+                    sunIcon.style.display = 'none';
+                    moonIcon.style.display = 'inline';
+                }
+            }
         });
     }
 
@@ -27,26 +52,43 @@
     const navLinks = document.getElementById('navLinks');
 
     if (hamburger) {
-        hamburger.addEventListener('click', function() {
+        hamburger.addEventListener('click', function(e) {
+            e.stopPropagation();
             this.classList.toggle('active');
             navLinks.classList.toggle('open');
+            // Update aria-expanded for accessibility
+            const isOpen = navLinks.classList.contains('open');
+            this.setAttribute('aria-expanded', isOpen);
         });
 
+        // Close menu on link click
         navLinks.querySelectorAll('a').forEach(function(link) {
             link.addEventListener('click', function() {
                 hamburger.classList.remove('active');
                 navLinks.classList.remove('open');
+                hamburger.setAttribute('aria-expanded', 'false');
             });
         });
     }
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (navLinks && navLinks.classList.contains('open')) {
+            if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('open');
+                hamburger.setAttribute('aria-expanded', 'false');
+            }
+        }
+    });
 
     // ----- STICKY NAVBAR -----
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', function() {
         if (window.scrollY > 50) {
-            navbar.style.boxShadow = 'var(--shadow-sm)';
+            navbar.classList.add('scrolled');
         } else {
-            navbar.style.boxShadow = 'none';
+            navbar.classList.remove('scrolled');
         }
     });
 
@@ -61,7 +103,8 @@
             }
         });
 
-        backTop.addEventListener('click', function() {
+        backTop.addEventListener('click', function(e) {
+            e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
@@ -74,7 +117,7 @@
             e.preventDefault();
             const target = document.querySelector(href);
             if (target) {
-                const offsetTop = target.getBoundingClientRect().top + window.pageYOffset - 80;
+                const offsetTop = target.getBoundingClientRect().top + window.pageYOffset - 70;
                 window.scrollTo({ top: offsetTop, behavior: 'smooth' });
             }
         });
@@ -150,7 +193,7 @@
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    // ----- TESTIMONIAL CAROUSEL -----
+    // ----- TESTIMONIAL CAROUSEL (Mobile-Friendly) -----
     const track = document.getElementById('testimonialTrack');
     const dots = document.querySelectorAll('#dotsContainer span');
 
@@ -159,13 +202,17 @@
         const totalSlides = dots.length;
         let startX = 0,
             endX = 0;
+        let isDragging = false;
 
         let autoSlide = setInterval(function() {
-            goTo((currentIndex + 1) % totalSlides);
+            if (!isDragging) {
+                goTo((currentIndex + 1) % totalSlides);
+            }
         }, 4500);
 
         function goTo(index) {
             currentIndex = index;
+            track.style.transition = 'transform 0.5s ease';
             track.style.transform = 'translateX(-' + index * 100 + '%)';
             dots.forEach(function(d, i) {
                 d.classList.toggle('active', i === index);
@@ -176,12 +223,21 @@
             d.addEventListener('click', function() {
                 clearInterval(autoSlide);
                 goTo(parseInt(this.dataset.index));
+                autoSlide = setInterval(function() {
+                    goTo((currentIndex + 1) % totalSlides);
+                }, 4500);
             });
         });
 
+        // Touch support
         track.addEventListener('touchstart', function(e) {
             startX = e.changedTouches[0].screenX;
-        });
+            isDragging = false;
+        }, { passive: true });
+
+        track.addEventListener('touchmove', function(e) {
+            isDragging = true;
+        }, { passive: true });
 
         track.addEventListener('touchend', function(e) {
             endX = e.changedTouches[0].screenX;
@@ -193,8 +249,12 @@
                 } else {
                     goTo((currentIndex - 1 + totalSlides) % totalSlides);
                 }
+                autoSlide = setInterval(function() {
+                    goTo((currentIndex + 1) % totalSlides);
+                }, 4500);
             }
-        });
+            isDragging = false;
+        }, { passive: true });
     }
 
     // ----- FAQ ACCORDION -----
@@ -209,7 +269,7 @@
         });
     });
 
-    // ----- CHECKOUT: PLAN SELECTION (from URL params) -----
+    // ----- CHECKOUT -----
     const urlParams = new URLSearchParams(window.location.search);
     const planParam = urlParams.get('plan');
     const selectedPlanName = document.getElementById('selectedPlanName');
@@ -231,9 +291,6 @@
         currentPrice = planData[planParam].price;
         if (selectedPlanName) selectedPlanName.textContent = currentPlan;
         if (summaryPlanPrice) summaryPlanPrice.textContent = '₹' + currentPrice.toFixed(2);
-    } else {
-        if (selectedPlanName) selectedPlanName.textContent = 'Pro';
-        if (summaryPlanPrice) summaryPlanPrice.textContent = '₹4,000.00';
     }
 
     function updateSummary() {
@@ -253,7 +310,6 @@
         const gst = total * 0.18;
         const finalTotal = total + gst;
 
-        // Update PT row
         const ptRow = document.getElementById('ptSummaryRow');
         const ptPriceEl = document.getElementById('summaryPtPrice');
         if (ptRow && ptPriceEl) {
@@ -265,7 +321,6 @@
             }
         }
 
-        // Update discount row
         const discountRow = document.getElementById('discountSummaryRow');
         const discountEl = document.getElementById('summaryDiscount');
         if (discountRow && discountEl) {
@@ -305,7 +360,6 @@
                 return;
             }
 
-            // Check against data layer
             const discount = window.DB ? window.DB.validateDiscountCode(code) : null;
 
             if (code === 'STUDENT200' || (discount && discount.value === 200)) {
@@ -329,7 +383,7 @@
         });
     }
 
-    // ----- PLAN BUTTONS (from membership cards) -----
+    // ----- PLAN BUTTONS -----
     document.querySelectorAll('.format-card .btn-primary').forEach(function(btn) {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -339,13 +393,11 @@
             currentPlan = planName;
             currentPrice = price;
             if (selectedPlanName) selectedPlanName.textContent = planName;
-            // Scroll to checkout
             document.getElementById('checkout').scrollIntoView({ behavior: 'smooth' });
             updateSummary();
         });
     });
 
-    // Initial summary update
     updateSummary();
 
 })();
