@@ -104,6 +104,18 @@
                 font-size: 20px;
             }
         }
+
+        /* Hamburger override – ensure it's always on top and clickable */
+        .hamburger {
+            z-index: 1001 !important;
+            pointer-events: auto !important;
+            touch-action: manipulation !important;
+            cursor: pointer !important;
+        }
+        .nav-right {
+            z-index: 1002 !important;
+            position: relative;
+        }
     </style>
 </head>
 <body>
@@ -122,7 +134,8 @@
                     <span class="toggle-label">Theme</span>
                 </button>
 
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <!-- Hamburger with inline onclick fallback -->
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" onclick="toggleMenu(event)">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -142,11 +155,8 @@
     </nav>
 
     <!-- ============================================================
-    HERO – ABOUT – FEATURES – PLANS – CHECKOUT – TRAINERS – FACILITIES
-    CLASSES – BMI – OFFERS – FAQ – TESTIMONIALS – CONTACT
+    REST OF SECTIONS (unchanged – kept compact for space)
     ============================================================ -->
-
-    <!-- ===== HERO ===== -->
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-grid">
@@ -171,7 +181,6 @@
         </div>
     </section>
 
-    <!-- ===== ABOUT ===== -->
     <section class="section" id="about">
         <div class="container">
             <div class="grid-2">
@@ -188,7 +197,6 @@
         </div>
     </section>
 
-    <!-- ===== WHY CHOOSE US ===== -->
     <section class="section section-alt" id="features">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -205,7 +213,6 @@
         </div>
     </section>
 
-    <!-- ===== MEMBERSHIP PLANS ===== -->
     <section class="section" id="plans">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 48px;">
@@ -254,7 +261,6 @@
         </div>
     </section>
 
-    <!-- ===== CHECKOUT ===== -->
     <section class="section section-alt" id="checkout">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -301,7 +307,6 @@
         </div>
     </section>
 
-    <!-- ===== TRAINERS ===== -->
     <section class="section" id="trainers">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 48px;">
@@ -332,7 +337,6 @@
         </div>
     </section>
 
-    <!-- ===== FACILITIES ===== -->
     <section class="section section-alt" id="facilities">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -352,7 +356,6 @@
         </div>
     </section>
 
-    <!-- ===== GROUP CLASSES ===== -->
     <section class="section" id="classes">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -368,7 +371,6 @@
         </div>
     </section>
 
-    <!-- ===== BMI CALCULATOR ===== -->
     <section class="section section-alt" id="bmi">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -388,7 +390,6 @@
         </div>
     </section>
 
-    <!-- ===== SPECIAL OFFERS ===== -->
     <section class="section" id="offers">
         <div class="container">
             <div class="offer-banner">
@@ -405,7 +406,6 @@
         </div>
     </section>
 
-    <!-- ===== FAQ ===== -->
     <section class="section section-alt" id="faq">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -422,7 +422,6 @@
         </div>
     </section>
 
-    <!-- ===== TESTIMONIALS ===== -->
     <section class="section" id="testimonials">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -444,7 +443,6 @@
         </div>
     </section>
 
-    <!-- ===== CONTACT ===== -->
     <section class="section section-alt" id="contact">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -471,7 +469,6 @@
         </div>
     </section>
 
-    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -514,24 +511,18 @@
         </div>
     </footer>
 
-    <!-- ============================================================
-    MODAL – Privacy Policy & Terms & Conditions
-    ============================================================ -->
+    <!-- MODAL -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-box">
             <button class="modal-close" onclick="closeModal()">&times;</button>
             <div id="modalContent">
                 <h2 id="modalTitle">Privacy Policy</h2>
-                <div id="modalBody">
-                    <p>Loading...</p>
-                </div>
+                <div id="modalBody"><p>Loading...</p></div>
             </div>
         </div>
     </div>
 
-    <!-- ============================================================
-    FLOATING BUTTONS
-    ============================================================ -->
+    <!-- FLOATING BUTTONS -->
     <div class="floating">
         <a href="https://wa.me/15551234567" target="_blank" class="whatsapp" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
         <button class="back-top" id="backTop" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
@@ -545,7 +536,7 @@
 
     <script>
         // ============================================================
-        // MODAL FUNCTIONS with Smooth Animation
+        // MODAL FUNCTIONS
         // ============================================================
         function openModal(type) {
             var overlay = document.getElementById('modalOverlay');
@@ -624,50 +615,66 @@
             document.body.style.overflow = '';
         }
 
-        // Close modal on outside click
+        // Close modal on outside click and ESC
         document.getElementById('modalOverlay').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
+            if (e.target === this) closeModal();
         });
-
-        // Close modal on ESC key
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
+            if (e.key === 'Escape') closeModal();
         });
 
         // ============================================================
-        // HAMBURGER MENU – FIXED
+        // HAMBURGER MENU – FIXED WITH INLINE FALLBACK
         // ============================================================
+        function toggleMenu(event) {
+            if (event) event.stopPropagation();
+            var hamburger = document.getElementById('hamburger');
+            var navLinks = document.getElementById('navLinks');
+            if (hamburger && navLinks) {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('open');
+            }
+        }
+
+        // Also attach event listener for modern browsers (backup)
         document.addEventListener('DOMContentLoaded', function() {
             var hamburger = document.getElementById('hamburger');
             var navLinks = document.getElementById('navLinks');
 
-            if (hamburger && navLinks) {
-                hamburger.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    this.classList.toggle('active');
-                    navLinks.classList.toggle('open');
-                });
-
-                navLinks.querySelectorAll('a').forEach(function(link) {
-                    link.addEventListener('click', function() {
-                        hamburger.classList.remove('active');
-                        navLinks.classList.remove('open');
+            if (hamburger) {
+                // Remove any previous listeners to avoid duplicates
+                var newHamburger = hamburger.cloneNode(true);
+                hamburger.parentNode.replaceChild(newHamburger, hamburger);
+                // Re-assign
+                var freshHamburger = document.getElementById('hamburger');
+                if (freshHamburger) {
+                    freshHamburger.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        this.classList.toggle('active');
+                        document.getElementById('navLinks').classList.toggle('open');
                     });
-                });
-
-                document.addEventListener('click', function(e) {
-                    if (navLinks.classList.contains('open')) {
-                        if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
-                            hamburger.classList.remove('active');
-                            navLinks.classList.remove('open');
-                        }
-                    }
-                });
+                }
             }
+
+            // Close on outside click
+            document.addEventListener('click', function(e) {
+                var menu = document.getElementById('navLinks');
+                var hamburgerBtn = document.getElementById('hamburger');
+                if (menu && menu.classList.contains('open')) {
+                    if (!menu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+                        menu.classList.remove('open');
+                        hamburgerBtn.classList.remove('active');
+                    }
+                }
+            });
+
+            // Close on link click
+            document.querySelectorAll('#navLinks a').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    document.getElementById('navLinks').classList.remove('open');
+                    document.getElementById('hamburger').classList.remove('active');
+                });
+            });
         });
     </script>
 
