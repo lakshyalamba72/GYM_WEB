@@ -144,7 +144,6 @@
     <!-- ============================================================
     HERO – ABOUT – FEATURES – PLANS – CHECKOUT – TRAINERS – FACILITIES
     CLASSES – BMI – OFFERS – FAQ – TESTIMONIALS – CONTACT
-    (All sections remain exactly as before – I've kept them compact for space)
     ============================================================ -->
 
     <!-- ===== HERO ===== -->
@@ -494,8 +493,8 @@
                     <ul>
                         <li><a href="#faq">FAQ</a></li>
                         <li><a href="#contact">Contact</a></li>
-                        <li><a href="#" onclick="openModal('privacy')">Privacy Policy</a></li>
-                        <li><a href="#" onclick="openModal('terms')">Terms & Conditions</a></li>
+                        <li><a href="#" onclick="openModal('privacy'); return false;">Privacy Policy</a></li>
+                        <li><a href="#" onclick="openModal('terms'); return false;">Terms & Conditions</a></li>
                     </ul>
                 </div>
                 <div>
@@ -647,14 +646,12 @@
             var navLinks = document.getElementById('navLinks');
 
             if (hamburger && navLinks) {
-                // Use click event only – works on all browsers
                 hamburger.addEventListener('click', function(e) {
                     e.stopPropagation();
                     this.classList.toggle('active');
                     navLinks.classList.toggle('open');
                 });
 
-                // Close menu on link click
                 navLinks.querySelectorAll('a').forEach(function(link) {
                     link.addEventListener('click', function() {
                         hamburger.classList.remove('active');
@@ -662,7 +659,6 @@
                     });
                 });
 
-                // Close menu when clicking outside
                 document.addEventListener('click', function(e) {
                     if (navLinks.classList.contains('open')) {
                         if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
