@@ -20,7 +20,21 @@
 
     <style>
         /* ============================================================
-           MODAL STYLES (same as before)
+           GOLDEN RATIO VARIABLES (1.618:1)
+           Fibonacci: 8, 13, 21, 34, 55, 89, 144
+           ============================================================ */
+        :root {
+            --gr-xs: 8px;
+            --gr-sm: 13px;
+            --gr-md: 21px;
+            --gr-lg: 34px;
+            --gr-xl: 55px;
+            --gr-xxl: 89px;
+            --gr-ratio: 1.618;
+        }
+
+        /* ============================================================
+           MODAL STYLES with Golden Ratio
            ============================================================ */
         .modal-overlay {
             position: fixed;
@@ -34,7 +48,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: var(--gr-md);
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -46,7 +60,7 @@
         .modal-box {
             background: var(--bg-card);
             border-radius: var(--radius-lg);
-            padding: 40px 32px;
+            padding: var(--gr-xl) var(--gr-lg);
             max-width: 600px;
             width: 100%;
             max-height: 80vh;
@@ -55,7 +69,7 @@
             box-shadow: var(--shadow-lg);
             position: relative;
             transform: translateY(20px) scale(0.95);
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
             opacity: 0;
         }
         .modal-overlay.active .modal-box {
@@ -63,38 +77,55 @@
             opacity: 1;
         }
         .modal-box h2 {
-            font-size: 24px;
+            font-size: clamp(28px, 3vw, 34px);
             font-weight: 800;
-            margin-bottom: 16px;
+            margin-bottom: var(--gr-md);
             color: var(--text-primary);
+            letter-spacing: -0.5px;
         }
-        .modal-box p, .modal-box ul {
+        .modal-box p,
+        .modal-box ul {
             color: var(--text-secondary);
-            line-height: 1.8;
-            font-size: 14px;
-            margin-bottom: 12px;
+            line-height: 1.618;
+            font-size: clamp(15px, 1.2vw, 17px);
+            margin-bottom: var(--gr-md);
         }
-        .modal-box ul { padding-left: 20px; }
+        .modal-box ul {
+            padding-left: var(--gr-lg);
+        }
+        .modal-box ul li {
+            margin-bottom: var(--gr-sm);
+        }
+        .modal-box strong {
+            color: var(--accent);
+        }
         .modal-close {
             position: absolute;
-            top: 16px;
-            right: 20px;
+            top: var(--gr-md);
+            right: var(--gr-md);
             background: transparent;
             border: none;
             color: var(--text-muted);
-            font-size: 28px;
+            font-size: 32px;
             cursor: pointer;
             line-height: 1;
             transition: color 0.2s ease;
+            padding: var(--gr-xs);
         }
-        .modal-close:hover { color: var(--text-primary); }
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
         @media (max-width: 480px) {
-            .modal-box { padding: 24px 16px; }
-            .modal-box h2 { font-size: 20px; }
+            .modal-box {
+                padding: var(--gr-lg) var(--gr-md);
+            }
+            .modal-box h2 {
+                font-size: 24px;
+            }
         }
 
         /* ============================================================
-           PURE CSS HAMBURGER – FIXED FOR BRAVE & CHROME
+           PURE CSS HAMBURGER – SMOOTH ANIMATION + GOLDEN RATIO
            ============================================================ */
 
         /* Hide checkbox completely */
@@ -112,7 +143,7 @@
             flex-direction: column;
             gap: 5px;
             cursor: pointer;
-            padding: 8px;
+            padding: var(--gr-sm);
             min-height: 48px;
             min-width: 48px;
             justify-content: center;
@@ -152,43 +183,152 @@
             }
 
             .nav-links {
-                display: none !important;
-                flex-direction: column;
-                background: var(--bg-nav);
-                backdrop-filter: blur(16px);
                 position: absolute;
-                top: 70px;
+                top: 72px;
                 left: 0;
                 right: 0;
-                padding: 16px 20px;
-                gap: 12px;
+                background: var(--bg-nav);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
                 border-bottom: 1px solid var(--border-light);
                 box-shadow: var(--shadow-md);
+                padding: var(--gr-lg) var(--gr-md);
+                display: flex;
+                flex-direction: column;
+                gap: var(--gr-md);
                 align-items: stretch;
                 text-align: center;
-                max-height: 80vh;
-                overflow-y: auto;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                transform: translateY(-10px) scaleY(0.95);
+                transform-origin: top center;
+                transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                            opacity 0.4s ease,
+                            transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                            padding 0.4s ease;
+                pointer-events: none;
                 z-index: 999;
+                border-radius: 0 0 var(--radius) var(--radius);
             }
 
-            /* When checkbox is checked, show the menu */
+            /* When checkbox is checked, show the menu with smooth animation */
             .menu-toggle:checked ~ .nav-links {
-                display: flex !important;
+                max-height: 80vh;
+                opacity: 1;
+                transform: translateY(0) scaleY(1);
+                pointer-events: auto;
+                padding: var(--gr-lg) var(--gr-md);
             }
 
-            /* Also handle if the checkbox is inside a different order */
-            .menu-toggle:checked ~ .nav-right .nav-links {
-                display: flex !important;
+            .nav-links li {
+                opacity: 0;
+                transform: translateY(-8px);
+                transition: opacity 0.35s ease 0.1s, transform 0.35s ease 0.1s;
+            }
+            .menu-toggle:checked ~ .nav-links li {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .menu-toggle:checked ~ .nav-links li:nth-child(2) { transition-delay: 0.13s; }
+            .menu-toggle:checked ~ .nav-links li:nth-child(3) { transition-delay: 0.16s; }
+            .menu-toggle:checked ~ .nav-links li:nth-child(4) { transition-delay: 0.19s; }
+            .menu-toggle:checked ~ .nav-links li:nth-child(5) { transition-delay: 0.22s; }
+            .menu-toggle:checked ~ .nav-links li:nth-child(6) { transition-delay: 0.25s; }
+            .menu-toggle:checked ~ .nav-links li:nth-child(7) { transition-delay: 0.28s; }
+
+            .nav-links a {
+                font-size: 18px;
+                font-weight: 600;
+                padding: var(--gr-sm) 0;
+                color: var(--text-primary);
+                display: block;
+                border-bottom: 1px solid transparent;
+                transition: border-color 0.2s ease, color 0.2s ease;
+                letter-spacing: 0.3px;
+            }
+            .nav-links a:hover {
+                color: var(--accent);
+            }
+            .nav-links a::after {
+                display: none;
+            }
+
+            .nav-links .admin-link {
+                border: 1.5px solid var(--accent);
+                border-radius: var(--radius);
+                padding: var(--gr-sm) var(--gr-md);
+                margin-top: var(--gr-sm);
+                background: var(--accent-dim);
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .nav-links .admin-link i {
+                margin-right: var(--gr-sm);
+            }
+
+            .nav-links .nav-cta {
+                background: var(--accent);
+                color: #0F0F0F !important;
+                padding: var(--gr-sm) var(--gr-md);
+                border-radius: 40px;
+                font-weight: 700 !important;
+                font-size: 16px !important;
+                width: 100%;
+                text-align: center;
+                border: none;
+                margin-top: var(--gr-sm);
+            }
+            .nav-links .nav-cta:hover {
+                background: var(--accent-hover) !important;
             }
         }
 
-        /* Force desktop: hide hamburger, show nav-links */
+        /* Force desktop: hide hamburger, show nav-links inline */
         @media (min-width: 769px) {
             .hamburger-label {
                 display: none !important;
             }
             .nav-links {
                 display: flex !important;
+                position: static;
+                background: transparent;
+                backdrop-filter: none;
+                box-shadow: none;
+                padding: 0;
+                max-height: none;
+                opacity: 1;
+                transform: none;
+                pointer-events: auto;
+                flex-direction: row;
+                gap: var(--gr-lg);
+                border-radius: 0;
+                border-bottom: none;
+            }
+            .nav-links li {
+                opacity: 1;
+                transform: none;
+            }
+            .nav-links a {
+                font-size: 14px;
+                padding: 0;
+                border-bottom: none;
+            }
+            .nav-links .admin-link {
+                border: none;
+                padding: 0;
+                background: transparent;
+                color: var(--text-secondary);
+                margin-top: 0;
+            }
+            .nav-links .admin-link i {
+                margin-right: 4px;
+            }
+            .nav-links .nav-cta {
+                padding: var(--gr-xs) var(--gr-md);
+                font-size: 13px !important;
+                width: auto;
+                margin-top: 0;
             }
         }
 
@@ -196,7 +336,7 @@
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: var(--gr-sm);
             flex-shrink: 0;
             z-index: 1002;
             position: relative;
@@ -211,22 +351,269 @@
         }
         .nav-logo {
             flex-shrink: 0;
+            font-size: clamp(20px, 2.5vw, 26px);
         }
 
-        /* Extra: ensure the checkbox toggles the menu correctly on Brave */
-        .menu-toggle:checked ~ .nav-links {
-            display: flex !important;
+        /* Navbar theme toggle inside */
+        .navbar .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 40px;
+            padding: var(--gr-xs) var(--gr-md);
+            display: flex;
+            align-items: center;
+            gap: var(--gr-sm);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+            transition: background 0.3s ease, border-color 0.3s ease;
+            font-family: var(--font);
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            min-height: 40px;
+            min-width: 40px;
         }
-
-        /* Debug: hamburger label should be visible on mobile */
+        .navbar .theme-toggle:active {
+            transform: scale(0.95);
+        }
+        .navbar .theme-toggle .toggle-label {
+            display: inline;
+        }
         @media (max-width: 768px) {
-            .hamburger-label {
-                display: flex !important;
-                background: transparent !important;
-                border: none !important;
+            .navbar .theme-toggle .toggle-label {
+                display: none;
             }
-            .hamburger-label span {
-                background: var(--text-primary) !important;
+            .navbar .theme-toggle {
+                padding: var(--gr-xs) var(--gr-sm);
+                font-size: 14px;
+                min-height: 40px;
+                min-width: 40px;
+            }
+        }
+
+        /* ============================================================
+           GOLDEN RATIO APPLIED TO OTHER ELEMENTS
+           ============================================================ */
+        .container {
+            padding: 0 var(--gr-lg);
+        }
+        .section {
+            padding: var(--gr-xxl) 0;
+        }
+        .section-title {
+            font-size: clamp(32px, 4vw, 44px);
+            margin-bottom: var(--gr-md);
+        }
+        .section-desc {
+            font-size: clamp(16px, 1.2vw, 18px);
+            line-height: 1.618;
+        }
+        .format-card {
+            padding: var(--gr-lg);
+        }
+        .format-card .price {
+            font-size: 32px;
+        }
+        .format-card ul li {
+            padding: var(--gr-xs) 0;
+            gap: var(--gr-sm);
+        }
+        .feature-item {
+            padding: var(--gr-lg) var(--gr-md);
+        }
+        .feature-item i {
+            font-size: 28px;
+            margin-bottom: var(--gr-sm);
+        }
+        .feature-item h4 {
+            font-size: 18px;
+        }
+        .trainer-card .info {
+            padding: var(--gr-md);
+        }
+        .trainer-card h4 {
+            font-size: 20px;
+            margin-bottom: var(--gr-xs);
+        }
+        .facility-item {
+            padding: var(--gr-md);
+        }
+        .facility-item i {
+            font-size: 2rem;
+            margin-bottom: var(--gr-sm);
+        }
+        .class-card {
+            padding: var(--gr-md);
+        }
+        .class-card i {
+            font-size: 2rem;
+            margin-bottom: var(--gr-sm);
+        }
+        .bmi-box {
+            padding: var(--gr-lg);
+        }
+        .bmi-box input {
+            padding: var(--gr-sm) var(--gr-md);
+            margin-bottom: var(--gr-md);
+        }
+        .offer-banner {
+            padding: var(--gr-xl) var(--gr-lg);
+        }
+        .offer-banner .countdown {
+            gap: var(--gr-lg);
+            margin: var(--gr-md) 0;
+        }
+        .faq-question {
+            padding: var(--gr-md) var(--gr-md);
+            gap: var(--gr-sm);
+        }
+        .faq-answer {
+            padding: 0 var(--gr-md);
+        }
+        .faq-item.active .faq-answer {
+            padding: 0 var(--gr-md) var(--gr-md);
+        }
+        .testimonial-card {
+            padding: var(--gr-lg);
+        }
+        .testimonial-card img {
+            margin: 0 auto var(--gr-md);
+        }
+        .contact-info p {
+            gap: var(--gr-sm);
+            margin-bottom: var(--gr-sm);
+        }
+        .contact-actions {
+            gap: var(--gr-sm);
+            margin-top: var(--gr-md);
+        }
+        .footer-grid {
+            gap: var(--gr-xl);
+            margin-bottom: var(--gr-xl);
+        }
+        .footer h4 {
+            margin-bottom: var(--gr-md);
+        }
+        .footer ul li {
+            margin-bottom: var(--gr-xs);
+        }
+        .footer-social {
+            gap: var(--gr-md);
+        }
+        .footer-bottom {
+            padding-top: var(--gr-md);
+            gap: var(--gr-sm);
+        }
+        .floating {
+            bottom: var(--gr-lg);
+            right: var(--gr-lg);
+            gap: var(--gr-sm);
+        }
+
+        /* Mobile specific golden ratio overrides */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 var(--gr-md);
+            }
+            .section {
+                padding: var(--gr-xl) 0;
+            }
+            .format-card {
+                padding: var(--gr-md);
+            }
+            .format-card .price {
+                font-size: 28px;
+            }
+            .feature-item {
+                padding: var(--gr-md) var(--gr-sm);
+            }
+            .feature-item i {
+                font-size: 22px;
+            }
+            .facility-item {
+                padding: var(--gr-sm);
+            }
+            .facility-item i {
+                font-size: 1.6rem;
+            }
+            .class-card {
+                padding: var(--gr-sm);
+            }
+            .class-card i {
+                font-size: 1.6rem;
+            }
+            .bmi-box {
+                padding: var(--gr-md);
+            }
+            .offer-banner {
+                padding: var(--gr-lg) var(--gr-md);
+            }
+            .offer-banner .countdown {
+                gap: var(--gr-md);
+                font-size: 1.8rem;
+                flex-wrap: wrap;
+            }
+            .offer-banner .countdown span {
+                padding: var(--gr-sm) var(--gr-md);
+                min-width: 55px;
+            }
+            .faq-question {
+                padding: var(--gr-sm) var(--gr-md);
+                font-size: 15px;
+            }
+            .testimonial-card {
+                padding: var(--gr-md);
+            }
+            .contact-grid {
+                gap: var(--gr-lg);
+            }
+            .footer-grid {
+                gap: var(--gr-lg);
+            }
+            .floating {
+                bottom: var(--gr-md);
+                right: var(--gr-md);
+                gap: var(--gr-sm);
+            }
+            .floating .whatsapp {
+                width: 50px;
+                height: 50px;
+                font-size: 1.8rem;
+            }
+            .floating .back-top {
+                width: 42px;
+                height: 42px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 var(--gr-sm);
+            }
+            .section {
+                padding: var(--gr-lg) 0;
+            }
+            .section-title {
+                font-size: 26px;
+            }
+            .format-card .price {
+                font-size: 24px;
+            }
+            .hero-text h1 {
+                font-size: 28px;
+            }
+            .hero-text p {
+                font-size: 15px;
+            }
+            .modal-box {
+                padding: var(--gr-lg) var(--gr-md);
+            }
+            .modal-box h2 {
+                font-size: 22px;
             }
         }
     </style>
@@ -234,12 +621,12 @@
 <body>
 
     <!-- ============================================================
-    NAVBAR with Pure CSS Hamburger
+    NAVBAR with Smooth Hamburger
     ============================================================ -->
     <nav class="navbar" id="navbar">
         <div class="container">
 
-            <!-- Hidden checkbox – MUST be before the nav-links for CSS sibling selectors -->
+            <!-- Hidden checkbox – MUST be before nav-links -->
             <input type="checkbox" id="menu-toggle" class="menu-toggle" />
 
             <a href="index.html" class="nav-logo">ELITE<span>FITNESS</span></a>
