@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
 
-    <!-- Font Awesome -->
+    <!-- Font Awesome (only for icons, not hamburger) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <!-- MAIN STYLES -->
@@ -27,20 +27,21 @@
 <body>
 
     <!-- ============================================================
-    NAVBAR (with theme toggle inside)
+    NAVBAR – Fixed Hamburger (Pure CSS, no Font Awesome)
     ============================================================ -->
     <nav class="navbar" id="navbar">
         <div class="container">
             <a href="index.html" class="nav-logo">ELITE<span>FITNESS</span></a>
 
             <div class="nav-right">
-                <!-- Theme Toggle moved inside navbar -->
+                <!-- Theme Toggle -->
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
                     <span class="icon-sun"><i class="fas fa-sun"></i></span>
                     <span class="icon-moon"><i class="fas fa-moon"></i></span>
                     <span class="toggle-label">Theme</span>
                 </button>
 
+                <!-- Pure CSS Hamburger (no Font Awesome) -->
                 <button class="hamburger" id="hamburger" aria-label="Toggle menu">
                     <span></span>
                     <span></span>
@@ -61,8 +62,9 @@
     </nav>
 
     <!-- ============================================================
-    HERO
+    REST OF THE SECTIONS (unchanged from your current file)
     ============================================================ -->
+    <!-- HERO -->
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-grid">
@@ -98,29 +100,20 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="hero-image">
-                    <img
-                    src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80"
-                    alt="Elite Fitness Gym"
-                    loading="lazy"
-                    />
+                    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" alt="Elite Fitness Gym" loading="lazy" />
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ============================================================
-    ABOUT
-    ============================================================ -->
+    <!-- ABOUT -->
     <section class="section" id="about">
         <div class="container">
             <div class="grid-2">
                 <div>
                     <span class="section-label">About Elite Fitness</span>
-                    <h2 class="section-title">
-                        More Than a Gym – <span class="highlight">A Lifestyle</span>
-                    </h2>
+                    <h2 class="section-title">More Than a Gym – <span class="highlight">A Lifestyle</span></h2>
                     <p class="section-desc">
                         We combine science-backed training, premium equipment, and a supportive community
                         to help you achieve results that last. Whether you're a beginner or a seasoned athlete,
@@ -132,74 +125,38 @@
                     </p>
                 </div>
                 <div>
-                    <img
-                    src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=800&q=80"
-                    alt="Elite Fitness Interior"
-                    loading="lazy"
-                    style="width:100%; border-radius:var(--radius-lg); box-shadow:var(--shadow-md);"
-                    />
+                    <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=800&q=80" alt="Elite Fitness Interior" loading="lazy" style="width:100%; border-radius:var(--radius-lg); box-shadow:var(--shadow-md);" />
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ============================================================
-    WHY CHOOSE US
-    ============================================================ -->
+    <!-- WHY CHOOSE US -->
     <section class="section section-alt" id="features">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
                 <span class="section-label">Why Elite Fitness</span>
-                <h2 class="section-title">
-                    Built on <span class="highlight">Real Science</span>, Not Just Hype
-                </h2>
-                <p class="section-desc" style="margin:0 auto;">
-                    Every aspect of our gym is designed with your results in mind.
-                </p>
+                <h2 class="section-title">Built on <span class="highlight">Real Science</span>, Not Just Hype</h2>
+                <p class="section-desc" style="margin:0 auto;">Every aspect of our gym is designed with your results in mind.</p>
             </div>
-
             <div class="feature-grid">
-                <div class="feature-item">
-                    <i class="fas fa-dumbbell"></i>
-                    <h4>Premium Equipment</h4>
-                    <p>Top-tier machines and free weights for every muscle group.</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-user-graduate"></i>
-                    <h4>Certified Trainers</h4>
-                    <p>Science-based coaches with real-world experience.</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-apple-alt"></i>
-                    <h4>Diet Guidance</h4>
-                    <p>Personalized nutrition plans tailored to your goals.</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-clock"></i>
-                    <h4>Flexible Timings</h4>
-                    <p>Open 5 AM – 12 AM, 365 days a year. No excuses.</p>
-                </div>
+                <div class="feature-item"><i class="fas fa-dumbbell"></i><h4>Premium Equipment</h4><p>Top-tier machines and free weights for every muscle group.</p></div>
+                <div class="feature-item"><i class="fas fa-user-graduate"></i><h4>Certified Trainers</h4><p>Science-based coaches with real-world experience.</p></div>
+                <div class="feature-item"><i class="fas fa-apple-alt"></i><h4>Diet Guidance</h4><p>Personalized nutrition plans tailored to your goals.</p></div>
+                <div class="feature-item"><i class="fas fa-clock"></i><h4>Flexible Timings</h4><p>Open 5 AM – 12 AM, 365 days a year. No excuses.</p></div>
             </div>
         </div>
     </section>
 
-    <!-- ============================================================
-    MEMBERSHIP PLANS
-    ============================================================ -->
+    <!-- MEMBERSHIP PLANS -->
     <section class="section" id="plans">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 48px;">
                 <span class="section-label">Membership Plans</span>
-                <h2 class="section-title">
-                    Choose the <span class="highlight">Right Plan</span> for You
-                </h2>
-                <p class="section-desc" style="margin:0 auto;">
-                    Flexible options to match your commitment level and goals.
-                </p>
+                <h2 class="section-title">Choose the <span class="highlight">Right Plan</span> for You</h2>
+                <p class="section-desc" style="margin:0 auto;">Flexible options to match your commitment level and goals.</p>
             </div>
-
             <div class="grid-3">
-                <!-- Starter 1 Month -->
                 <div class="format-card">
                     <h3>Starter</h3>
                     <div class="subtitle">1 Month Membership</div>
@@ -211,8 +168,6 @@
                     </ul>
                     <a href="#checkout" class="btn-primary" style="width:100%; justify-content:center;">Join Now</a>
                 </div>
-
-                <!-- Pro 3 Months – Most Popular -->
                 <div class="format-card" style="border-color:var(--accent);">
                     <span class="popular">Best Value</span>
                     <h3>Pro</h3>
@@ -226,8 +181,6 @@
                     </ul>
                     <a href="#checkout" class="btn-primary" style="width:100%; justify-content:center;">Join Now</a>
                 </div>
-
-                <!-- Elite 6 Months -->
                 <div class="format-card">
                     <h3>Elite</h3>
                     <div class="subtitle">6 Month Membership</div>
@@ -244,16 +197,13 @@
         </div>
     </section>
 
-    <!-- ============================================================
-    CHECKOUT
-    ============================================================ -->
+    <!-- CHECKOUT -->
     <section class="section section-alt" id="checkout">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
                 <span class="section-label">Secure Checkout</span>
                 <h2 class="section-title">Complete Your <span class="highlight">Membership</span></h2>
             </div>
-
             <div class="checkout-wrapper" id="checkoutWrapper">
                 <div>
                     <h3>Selected Plan: <span id="selectedPlanName">Pro</span></h3>
@@ -266,7 +216,6 @@
                         </div>
                         <div id="discountMessage" style="margin-top:0.5rem; font-size:0.9rem;"></div>
                     </div>
-
                     <div style="margin:1.5rem 0;">
                         <label style="display:flex; align-items:center; gap:12px; cursor:pointer;">
                             <input type="checkbox" id="ptAddon" style="width:20px; height:20px; accent-color:var(--accent);" />
@@ -277,7 +226,6 @@
                             One-on-one coaching with a certified trainer, tailored to your goals.
                         </p>
                     </div>
-
                     <label style="display:block;font-size:0.9rem;color:var(--text-secondary);margin-bottom:0.5rem;">Payment Method</label>
                     <div class="payment-methods">
                         <button class="active"><i class="fas fa-mobile-alt"></i> UPI</button>
@@ -285,7 +233,6 @@
                         <button><i class="fas fa-wallet"></i> Wallet</button>
                     </div>
                 </div>
-
                 <div>
                     <h3>Summary</h3>
                     <div class="summary-line"><span>Plan</span><span id="summaryPlanPrice">₹4,000.00</span></div>
@@ -299,21 +246,15 @@
         </div>
     </section>
 
-    <!-- ============================================================
-    TRAINERS
-    ============================================================ -->
+    <!-- TRAINERS -->
     <section class="section" id="trainers">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 48px;">
                 <span class="section-label">Our Trainers</span>
                 <h2 class="section-title">Learn from the <span class="highlight">Best</span></h2>
-                <p class="section-desc" style="margin:0 auto;">
-                    Certified professionals dedicated to your success.
-                </p>
+                <p class="section-desc" style="margin:0 auto;">Certified professionals dedicated to your success.</p>
             </div>
-
             <div class="trainer-grid">
-                <!-- Jeff Nippard -->
                 <div class="trainer-card">
                     <img src="images/trainer-jeff.webp" alt="Jeff Nippard" loading="lazy" />
                     <div class="info">
@@ -323,8 +264,6 @@
                         <button class="btn-primary" style="padding:0.4rem 1.2rem;font-size:0.8rem;margin-top:0.5rem;">Book Session</button>
                     </div>
                 </div>
-
-                <!-- Chris Bumstead -->
                 <div class="trainer-card">
                     <img src="images/trainer-chris.webp" alt="Chris Bumstead" loading="lazy" />
                     <div class="info">
@@ -338,9 +277,7 @@
         </div>
     </section>
 
-    <!-- ============================================================
-    FACILITIES
-    ============================================================ -->
+    <!-- FACILITIES -->
     <section class="section section-alt" id="facilities">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -360,9 +297,7 @@
         </div>
     </section>
 
-    <!-- ============================================================
-    GROUP CLASSES
-    ============================================================ -->
+    <!-- GROUP CLASSES -->
     <section class="section" id="classes">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -378,9 +313,7 @@
         </div>
     </section>
 
-    <!-- ============================================================
-    BMI CALCULATOR
-    ============================================================ -->
+    <!-- BMI CALCULATOR -->
     <section class="section section-alt" id="bmi">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -400,9 +333,7 @@
         </div>
     </section>
 
-    <!-- ============================================================
-    SPECIAL OFFERS
-    ============================================================ -->
+    <!-- SPECIAL OFFERS -->
     <section class="section" id="offers">
         <div class="container">
             <div class="offer-banner">
@@ -419,9 +350,7 @@
         </div>
     </section>
 
-    <!-- ============================================================
-    FAQ
-    ============================================================ -->
+    <!-- FAQ -->
     <section class="section section-alt" id="faq">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -438,9 +367,7 @@
         </div>
     </section>
 
-    <!-- ============================================================
-    TESTIMONIALS
-    ============================================================ -->
+    <!-- TESTIMONIALS -->
     <section class="section" id="testimonials">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -462,9 +389,7 @@
         </div>
     </section>
 
-    <!-- ============================================================
-    CONTACT
-    ============================================================ -->
+    <!-- CONTACT -->
     <section class="section section-alt" id="contact">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -491,9 +416,7 @@
         </div>
     </section>
 
-    <!-- ============================================================
-    FOOTER
-    ============================================================ -->
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -536,9 +459,7 @@
         </div>
     </footer>
 
-    <!-- ============================================================
-    FLOATING BUTTONS
-    ============================================================ -->
+    <!-- FLOATING BUTTONS -->
     <div class="floating">
         <a href="https://wa.me/15551234567" target="_blank" class="whatsapp" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
         <button class="back-top" id="backTop" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
@@ -550,37 +471,48 @@
     <script src="js/data-layer.js"></script>
     <script src="js/script.js"></script>
 
-    <!-- Mobile Menu Script -->
+    <!-- Mobile Menu Script (additional fallback) -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const hamburger = document.getElementById('hamburger');
             const navLinks = document.getElementById('navLinks');
 
-            if (hamburger) {
+            if (hamburger && navLinks) {
+                // Toggle menu on click (works on both desktop & mobile)
                 hamburger.addEventListener('click', function(e) {
                     e.stopPropagation();
                     this.classList.toggle('active');
                     navLinks.classList.toggle('open');
                 });
-            }
 
-            // Close menu when clicking outside
-            document.addEventListener('click', function(e) {
-                if (navLinks && navLinks.classList.contains('open')) {
-                    if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+                // Also handle touch events for mobile (fallback)
+                hamburger.addEventListener('touchstart', function(e) {
+                    // Prevent double-firing on mobile
+                    if (!this.click) {
+                        e.preventDefault();
+                        this.classList.toggle('active');
+                        navLinks.classList.toggle('open');
+                    }
+                }, { passive: false });
+
+                // Close menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (navLinks.classList.contains('open')) {
+                        if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+                            hamburger.classList.remove('active');
+                            navLinks.classList.remove('open');
+                        }
+                    }
+                });
+
+                // Close menu on link click
+                navLinks.querySelectorAll('a').forEach(function(link) {
+                    link.addEventListener('click', function() {
                         hamburger.classList.remove('active');
                         navLinks.classList.remove('open');
-                    }
-                }
-            });
-
-            // Close menu on link click
-            navLinks.querySelectorAll('a').forEach(function(link) {
-                link.addEventListener('click', function() {
-                    hamburger.classList.remove('active');
-                    navLinks.classList.remove('open');
+                    });
                 });
-            });
+            }
         });
     </script>
 
