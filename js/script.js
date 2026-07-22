@@ -1,7 +1,7 @@
 // ============================================================
 //  ELITE FITNESS – MAIN JAVASCRIPT
 //  Theme, Nav, Interactions, BMI, Countdown, Carousel, FAQ
-//  Golden Ratio spacing applied throughout
+//  + Login‑state aware nav link
 // ============================================================
 
 (function() {
@@ -100,7 +100,6 @@
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
 
-                // Trigger counter animation on numbers with data-target
                 const nums = entry.target.querySelectorAll('.num[data-target]');
                 nums.forEach(function(num) {
                     const target = parseFloat(num.dataset.target);
@@ -236,7 +235,6 @@
             });
         });
 
-        // Touch events for swiping
         track.addEventListener('touchstart', function(e) {
             startX = e.changedTouches[0].screenX;
             isDragging = false;
@@ -284,6 +282,31 @@
                 const scrolled = window.scrollY;
                 hero.style.backgroundPositionY = scrolled * 0.3 + 'px';
             }, { passive: true });
+        }
+    }
+
+    // ============================================================
+    //  NEW: UPDATE LOGIN BUTTON BASED ON SESSION
+    // ============================================================
+    const memberLink = document.querySelector('.nav-cta');
+    if (memberLink) {
+        const session = sessionStorage.getItem('eliteMemberSession');
+        if (session) {
+            try {
+                const member = JSON.parse(session);
+                // Show the member's name or "My Dashboard"
+                // Use name if available, else fallback
+                const displayName = member.name ? member.name : 'My Dashboard';
+                memberLink.textContent = displayName;
+                // Keep the href pointing to dashboard.html
+                // If you want to change the link to something else, you can set it here.
+                // memberLink.href = 'dashboard.html'; // already set
+            } catch (e) {
+                // If session is invalid, keep as Login
+                memberLink.textContent = 'Login';
+            }
+        } else {
+            memberLink.textContent = 'Login';
         }
     }
 
