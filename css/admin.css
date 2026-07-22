@@ -304,7 +304,7 @@
 }
 
 /* ============================================================
-   ADMIN MODALS (Edit Member + Assign Plan)
+   ADMIN MODALS (Edit Member + Assign Plan + Confirm)
    ============================================================ */
 .admin-modal-overlay {
     position: fixed;
@@ -439,6 +439,56 @@
     color: var(--text-primary);
 }
 
+/* Confirm Modal specific */
+#confirmModal .admin-modal-box {
+    max-width: 420px;
+}
+#confirmMessage {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: var(--gr-lg);
+}
+
+/* ============================================================
+   ADMIN HAMBURGER (mobile)
+   ============================================================ */
+.admin-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 8px;
+    min-height: 48px;
+    min-width: 48px;
+    justify-content: center;
+    z-index: 1001;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.admin-hamburger span {
+    display: block;
+    width: 26px;
+    height: 2.5px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+.admin-hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+.admin-hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+.admin-hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
 /* ============================================================
    RESPONSIVE
    ============================================================ */
@@ -505,6 +555,58 @@
     }
     .admin-modal-box .modal-actions button {
         width: 100%;
+    }
+
+    /* Admin Hamburger */
+    .admin-hamburger {
+        display: flex;
+    }
+
+    #adminNavLinks {
+        display: none;
+        flex-direction: column;
+        background: var(--bg-nav);
+        backdrop-filter: blur(16px);
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        padding: var(--gr-md) var(--gr-lg);
+        gap: var(--gr-sm);
+        border-bottom: 1px solid var(--border-light);
+        box-shadow: var(--shadow-md);
+        z-index: 999;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    #adminNavLinks.open {
+        display: flex;
+    }
+
+    #adminNavLinks li {
+        list-style: none;
+    }
+
+    #adminNavLinks a {
+        display: block;
+        padding: var(--gr-sm) var(--gr-md);
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-primary);
+        border-radius: var(--radius);
+        transition: background 0.2s ease;
+    }
+
+    #adminNavLinks a:hover {
+        background: var(--accent-dim);
+    }
+
+    #adminNavLinks #adminLogoutBtn {
+        color: #ff4757;
+    }
+    #adminNavLinks #adminLogoutBtn:hover {
+        background: rgba(255, 71, 87, 0.1);
     }
 }
 

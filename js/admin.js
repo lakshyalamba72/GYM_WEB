@@ -1,6 +1,6 @@
 // ============================================================
 //  ELITE FITNESS – ADMIN JAVASCRIPT
-//  Complete: Login, Dashboard, Modals, CRUD Operations
+//  Complete: Login, Dashboard, Modals (no browser popups)
 // ============================================================
 
 (function() {
@@ -97,7 +97,6 @@
                     if (loginError) loginError.textContent = '❌ Invalid email or password. Please try again.';
                 }
             } else {
-                // Fallback hardcoded check (if DB not loaded)
                 if (email === 'lakshyalamba72@gmail.com' && password === 'lakshya1') {
                     const admin = { email: email, name: 'Admin' };
                     sessionStorage.setItem('eliteAdminSession', JSON.stringify(admin));
@@ -261,6 +260,59 @@
     }
 
     // ============================================================
+    //  CONFIRM MODAL (replaces browser confirm)
+    // ============================================================
+    let confirmCallback = null;
+
+    window.showConfirmModal = function(message, title, callback) {
+        const modal = document.getElementById('confirmModal');
+        const msgEl = document.getElementById('confirmMessage');
+        const titleEl = document.getElementById('confirmTitle');
+
+        if (titleEl) titleEl.textContent = title || 'Confirm Action';
+        if (msgEl) msgEl.textContent = message;
+
+        if (modal) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        confirmCallback = callback;
+    };
+
+    window.closeConfirmModal = function() {
+        const modal = document.getElementById('confirmModal');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        confirmCallback = null;
+    };
+
+    // Confirm Yes button
+    const confirmYesBtn = document.getElementById('confirmYesBtn');
+    if (confirmYesBtn) {
+        confirmYesBtn.addEventListener('click', function() {
+            if (typeof confirmCallback === 'function') {
+                confirmCallback();
+            }
+            closeConfirmModal();
+        });
+    }
+
+    // Close on outside click & ESC
+    const confirmModal = document.getElementById('confirmModal');
+    if (confirmModal) {
+        confirmModal.addEventListener('click', function(e) {
+            if (e.target === this) closeConfirmModal();
+        });
+    }
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeConfirmModal();
+        }
+    });
+
+    // ============================================================
     //  GLOBAL FUNCTIONS (exposed to HTML onclick)
     // ============================================================
 
@@ -329,19 +381,13 @@
         });
     }
 
-    // Close edit modal on outside click & ESC
+    // Close edit modal on outside click
     const editModal = document.getElementById('editMemberModal');
     if (editModal) {
         editModal.addEventListener('click', function(e) {
             if (e.target === this) window.closeEditMemberModal();
         });
     }
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            window.closeEditMemberModal();
-            window.closeAssignPlanModal();
-        }
-    });
 
     // ----- ASSIGN PLAN MODAL -----
     window.openAssignPlanModal = function(memberId) {
@@ -415,26 +461,34 @@
 
             const memberships = window.DB.getMemberships();
             const existing = memberships.find(m => m.memberId === memberId && m.isActive);
-            if (existing) {
-                if (!confirm(`This member already has an active membership. Cancel it and assign new plan?`)) {
-                    return;
+
+            function proceedAssign() {
+                if (existing) {
+                    window.DB.cancelMembership(existing.id);
                 }
-                window.DB.cancelMembership(existing.id);
+                window.DB.createMembership({
+                    memberId: memberId,
+                    type: planType,
+                    durationMonths: durationMonths,
+                    basePrice: basePrice,
+                    discountApplied: discount,
+                    finalPrice: finalPrice,
+                    paymentStatus: 'paid'
+                });
+                alert('✅ Plan assigned successfully to ' + member.name + '!');
+                window.closeAssignPlanModal();
+                window.location.reload();
             }
 
-            window.DB.createMembership({
-                memberId: memberId,
-                type: planType,
-                durationMonths: durationMonths,
-                basePrice: basePrice,
-                discountApplied: discount,
-                finalPrice: finalPrice,
-                paymentStatus: 'paid'
-            });
-
-            alert('✅ Plan assigned successfully to ' + member.name + '!');
-            window.closeAssignPlanModal();
-            window.location.reload();
+            if (existing) {
+                showConfirmModal(
+                    `This member already has an active membership. Cancel it and assign new plan?`,
+                    'Cancel Existing Plan?',
+                    proceedAssign
+                );
+            } else {
+                proceedAssign();
+            }
         });
     }
 
@@ -462,11 +516,15 @@
         const duration = membership.durationMonths || 1;
         const price = membership.basePrice || 1500;
 
-        if (confirm(`Renew this membership for another ${duration} month(s)? No payment required.`)) {
-            window.DB.renewMembership(membershipId, duration, price, 0);
-            alert('✅ Membership renewed successfully!');
-            window.location.reload();
-        }
+        showConfirmModal(
+            `Renew this membership for another ${duration} month(s)? No payment required.`,
+            'Renew Membership',
+            function() {
+                window.DB.renewMembership(membershipId, duration, price, 0);
+                alert('✅ Membership renewed successfully!');
+                window.location.reload();
+            }
+        );
     };
 
     // ----- CANCEL MEMBERSHIP -----
@@ -482,14 +540,18 @@
             return;
         }
 
-        if (confirm('Are you sure you want to cancel this membership? This cannot be undone.')) {
-            window.DB.cancelMembership(membershipId);
-            alert('✅ Membership cancelled successfully.');
-            window.location.reload();
-        }
+        showConfirmModal(
+            'Are you sure you want to cancel this membership? This cannot be undone.',
+            'Cancel Membership',
+            function() {
+                window.DB.cancelMembership(membershipId);
+                alert('✅ Membership cancelled successfully.');
+                window.location.reload();
+            }
+        );
     };
 
-    // ----- TOGGLE PT (Add or Remove Personal Training) -----
+    // ----- TOGGLE PT -----
     window.togglePT = function(membershipId) {
         if (!window.DB) {
             alert('Database not available.');
@@ -506,16 +568,21 @@
         const currentType = membership.type;
         const newType = currentType === 'gym' ? 'gym_pt' : 'gym';
         const action = currentType === 'gym' ? 'Add' : 'Remove';
+        const actionText = action === 'Add' ? 'add' : 'remove';
 
-        if (confirm(`${action} Personal Training for ${member ? member.name : 'this member'}?`)) {
-            window.DB.updateMembership(membershipId, { 
-                type: newType,
-                basePrice: newType === 'gym_pt' ? 10000 : 4000,
-                finalPrice: newType === 'gym_pt' ? 10000 : 4000
-            });
-            alert(`✅ Personal Training ${action === 'Add' ? 'added to' : 'removed from'} membership.`);
-            window.location.reload();
-        }
+        showConfirmModal(
+            `${action} Personal Training for ${member ? member.name : 'this member'}?`,
+            `${action} PT`,
+            function() {
+                window.DB.updateMembership(membershipId, { 
+                    type: newType,
+                    basePrice: newType === 'gym_pt' ? 10000 : 4000,
+                    finalPrice: newType === 'gym_pt' ? 10000 : 4000
+                });
+                alert(`✅ Personal Training ${action === 'Add' ? 'added to' : 'removed from'} membership.`);
+                window.location.reload();
+            }
+        );
     };
 
 })();
