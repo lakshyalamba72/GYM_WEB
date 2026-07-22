@@ -1,6 +1,6 @@
 // ============================================================
 //  ELITE FITNESS – ADMIN JAVASCRIPT
-//  Complete: Login, Dashboard, Modals (no browser popups)
+//  Updated with per‑month student discount and price preview
 // ============================================================
 
 (function() {
@@ -264,7 +264,7 @@
     }
 
     // ============================================================
-    //  CONFIRM MODAL (replaces browser confirm)
+    //  CONFIRM MODAL
     // ============================================================
     let confirmCallback = null;
 
@@ -292,7 +292,6 @@
         confirmCallback = null;
     };
 
-    // Confirm Yes button
     const confirmYesBtn = document.getElementById('confirmYesBtn');
     if (confirmYesBtn) {
         confirmYesBtn.addEventListener('click', function() {
@@ -303,7 +302,6 @@
         });
     }
 
-    // Close on outside click & ESC
     const confirmModal = document.getElementById('confirmModal');
     if (confirmModal) {
         confirmModal.addEventListener('click', function(e) {
@@ -317,7 +315,7 @@
     });
 
     // ============================================================
-    //  GLOBAL FUNCTIONS (exposed to HTML onclick)
+    //  GLOBAL FUNCTIONS
     // ============================================================
 
     // ----- EDIT MEMBER MODAL -----
@@ -333,15 +331,10 @@
             return;
         }
 
-        const idField = document.getElementById('editMemberId');
-        const nameField = document.getElementById('editMemberName');
-        const phoneField = document.getElementById('editMemberPhone');
-        const addressField = document.getElementById('editMemberAddress');
-
-        if (idField) idField.value = memberId;
-        if (nameField) nameField.value = member.name || '';
-        if (phoneField) phoneField.value = member.phone || '';
-        if (addressField) addressField.value = member.address || '';
+        document.getElementById('editMemberId').value = memberId;
+        document.getElementById('editMemberName').value = member.name || '';
+        document.getElementById('editMemberPhone').value = member.phone || '';
+        document.getElementById('editMemberAddress').value = member.address || '';
 
         const modal = document.getElementById('editMemberModal');
         if (modal) {
@@ -358,7 +351,6 @@
         }
     };
 
-    // Edit Member Form Submit
     const editForm = document.getElementById('editMemberForm');
     if (editForm) {
         editForm.addEventListener('submit', function(e) {
@@ -385,7 +377,6 @@
         });
     }
 
-    // Close edit modal on outside click
     const editModal = document.getElementById('editMemberModal');
     if (editModal) {
         editModal.addEventListener('click', function(e) {
@@ -393,7 +384,43 @@
         });
     }
 
-    // ----- ASSIGN PLAN MODAL -----
+    // ============================================================
+    //  ASSIGN PLAN MODAL (with per-month discount + price preview)
+    // ============================================================
+
+    // Helper to update price preview
+    function updateAssignPlanSummary() {
+        const planType = document.getElementById('assignPlanType').value;
+        const duration = parseInt(document.getElementById('assignPlanDuration').value);
+        const discountChecked = document.getElementById('assignPlanStudentDiscount').checked;
+        const basePrice = window.DB ? window.DB.getBasePrice(duration, planType) : 0;
+        const discountPerMonth = discountChecked ? 200 : 0;
+        const totalDiscount = discountPerMonth * duration;
+        const finalPrice = Math.max(0, basePrice - totalDiscount);
+
+        const previewEl = document.getElementById('assignPlanPricePreview');
+        if (previewEl) {
+            previewEl.innerHTML = `
+                <div style="margin-top:var(--gr-sm);padding:var(--gr-sm);background:var(--bg-body);border-radius:8px;border:1px solid var(--border-light);">
+                    <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--text-secondary);">
+                        <span>Base Price:</span>
+                        <span>₹${basePrice}</span>
+                    </div>
+                    ${totalDiscount > 0 ? `
+                    <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--accent);">
+                        <span>Student Discount (₹${discountPerMonth} × ${duration} months):</span>
+                        <span>-₹${totalDiscount}</span>
+                    </div>
+                    ` : ''}
+                    <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;color:var(--text-primary);border-top:1px solid var(--border-light);padding-top:var(--gr-xs);margin-top:var(--gr-xs);">
+                        <span>Final Price:</span>
+                        <span style="color:var(--accent);">₹${finalPrice}</span>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
     window.openAssignPlanModal = function(memberId) {
         if (!window.DB) {
             alert('Database not available.');
@@ -406,15 +433,11 @@
             return;
         }
 
-        const idField = document.getElementById('assignPlanMemberId');
-        const typeField = document.getElementById('assignPlanType');
-        const durationField = document.getElementById('assignPlanDuration');
-        const discountField = document.getElementById('assignPlanStudentDiscount');
-
-        if (idField) idField.value = memberId;
-        if (typeField) typeField.value = 'gym';
-        if (durationField) durationField.value = '3';
-        if (discountField) discountField.checked = false;
+        document.getElementById('assignPlanMemberId').value = memberId;
+        document.getElementById('assignPlanType').value = 'gym';
+        document.getElementById('assignPlanDuration').value = '3';
+        document.getElementById('assignPlanStudentDiscount').checked = false;
+        updateAssignPlanSummary();
 
         const modal = document.getElementById('assignPlanModal');
         if (modal) {
@@ -430,6 +453,15 @@
             document.body.style.overflow = '';
         }
     };
+
+    // Attach event listeners for price preview updates
+    const planTypeSelect = document.getElementById('assignPlanType');
+    const durationSelect = document.getElementById('assignPlanDuration');
+    const discountCheckbox = document.getElementById('assignPlanStudentDiscount');
+
+    if (planTypeSelect) planTypeSelect.addEventListener('change', updateAssignPlanSummary);
+    if (durationSelect) durationSelect.addEventListener('change', updateAssignPlanSummary);
+    if (discountCheckbox) discountCheckbox.addEventListener('change', updateAssignPlanSummary);
 
     // Assign Plan Form Submit
     const assignForm = document.getElementById('assignPlanForm');
@@ -447,15 +479,10 @@
             const durationMonths = parseInt(document.getElementById('assignPlanDuration').value);
             const studentDiscount = document.getElementById('assignPlanStudentDiscount').checked;
 
-            const prices = {
-                1: { gym: 1500, gym_pt: 7500 },
-                3: { gym: 4000, gym_pt: 10000 },
-                6: { gym: 7500, gym_pt: 15000 }
-            };
-
-            let basePrice = prices[durationMonths]?.[planType] || 4000;
-            let discount = studentDiscount ? 200 : 0;
-            let finalPrice = basePrice - discount;
+            const basePrice = window.DB.getBasePrice(durationMonths, planType);
+            const discountPerMonth = studentDiscount ? 200 : 0;
+            const totalDiscount = discountPerMonth * durationMonths;
+            const finalPrice = Math.max(0, basePrice - totalDiscount);
 
             const member = window.DB.getMember(memberId);
             if (!member) {
@@ -475,7 +502,7 @@
                     type: planType,
                     durationMonths: durationMonths,
                     basePrice: basePrice,
-                    discountApplied: discount,
+                    discountApplied: totalDiscount,
                     finalPrice: finalPrice,
                     paymentStatus: 'paid'
                 });
@@ -496,7 +523,6 @@
         });
     }
 
-    // Close assign modal on outside click
     const assignModal = document.getElementById('assignPlanModal');
     if (assignModal) {
         assignModal.addEventListener('click', function(e) {
@@ -572,7 +598,6 @@
         const currentType = membership.type;
         const newType = currentType === 'gym' ? 'gym_pt' : 'gym';
         const action = currentType === 'gym' ? 'Add' : 'Remove';
-        const actionText = action === 'Add' ? 'add' : 'remove';
 
         showConfirmModal(
             `${action} Personal Training for ${member ? member.name : 'this member'}?`,

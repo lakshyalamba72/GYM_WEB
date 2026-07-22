@@ -179,9 +179,8 @@
     </section>
 
     <!-- ============================================================
-    MODALS
+    EDIT MEMBER MODAL
     ============================================================ -->
-    <!-- Edit Member Modal -->
     <div class="admin-modal-overlay" id="editMemberModal">
         <div class="admin-modal-box">
             <button class="admin-modal-close" onclick="closeEditMemberModal()">&times;</button>
@@ -208,7 +207,9 @@
         </div>
     </div>
 
-    <!-- Assign Plan Modal -->
+    <!-- ============================================================
+    ASSIGN PLAN MODAL (with price preview)
+    ============================================================ -->
     <div class="admin-modal-overlay" id="assignPlanModal">
         <div class="admin-modal-box">
             <button class="admin-modal-close" onclick="closeAssignPlanModal()">&times;</button>
@@ -232,8 +233,12 @@
                 </div>
                 <div class="form-group" style="display:flex; align-items:center; gap:12px; margin-bottom:var(--gr-md);">
                     <input type="checkbox" id="assignPlanStudentDiscount" style="width:20px; height:20px; accent-color:var(--accent); cursor:pointer;" />
-                    <label for="assignPlanStudentDiscount" style="font-size:14px; color:var(--text-secondary); cursor:pointer;">Apply Student Discount (₹200 off)</label>
+                    <label for="assignPlanStudentDiscount" style="font-size:14px; color:var(--text-secondary); cursor:pointer;">Apply Student Discount <span style="color:var(--accent);">(₹200 off per month)</span></label>
                 </div>
+
+                <!-- Price preview -->
+                <div id="assignPlanPricePreview" style="margin:var(--gr-sm) 0 var(--gr-md);"></div>
+
                 <div class="modal-actions">
                     <button type="submit" class="btn-primary">Assign Plan</button>
                     <button type="button" class="btn-outline" onclick="closeAssignPlanModal()">Cancel</button>
@@ -242,7 +247,9 @@
         </div>
     </div>
 
-    <!-- Confirm Modal -->
+    <!-- ============================================================
+    CONFIRM MODAL
+    ============================================================ -->
     <div class="admin-modal-overlay" id="confirmModal">
         <div class="admin-modal-box" style="max-width:420px;">
             <button class="admin-modal-close" onclick="closeConfirmModal()">&times;</button>
@@ -255,7 +262,9 @@
         </div>
     </div>
 
-    <!-- Forgot Password Modal -->
+    <!-- ============================================================
+    FORGOT PASSWORD MODAL
+    ============================================================ -->
     <div class="admin-modal-overlay" id="forgotPasswordModal">
         <div class="admin-modal-box" style="max-width:420px;">
             <button class="admin-modal-close" onclick="closeForgotPasswordModal()">&times;</button>
@@ -281,10 +290,11 @@
     <script src="js/data-layer.js"></script>
     <script src="js/admin.js"></script>
 
+    <!-- Admin Hamburger Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const hamburger = document.getElementById('adminHamburger');
-            const navLinks = document.getElementById('adminNavLinks');
+            var hamburger = document.getElementById('adminHamburger');
+            var navLinks = document.getElementById('adminNavLinks');
 
             if (hamburger && navLinks) {
                 hamburger.addEventListener('click', function(e) {
@@ -311,10 +321,10 @@
             }
 
             // ----- FORGOT PASSWORD -----
-            const forgotLink = document.getElementById('forgotPasswordLink');
-            const forgotModal = document.getElementById('forgotPasswordModal');
-            const forgotForm = document.getElementById('forgotPasswordForm');
-            const forgotMessage = document.getElementById('forgotPasswordMessage');
+            var forgotLink = document.getElementById('forgotPasswordLink');
+            var forgotModal = document.getElementById('forgotPasswordModal');
+            var forgotForm = document.getElementById('forgotPasswordForm');
+            var forgotMessage = document.getElementById('forgotPasswordMessage');
 
             if (forgotLink) {
                 forgotLink.addEventListener('click', function(e) {
@@ -337,15 +347,15 @@
             if (forgotForm) {
                 forgotForm.addEventListener('submit', function(e) {
                     e.preventDefault();
-                    const email = document.getElementById('forgotPasswordEmail').value.trim();
+                    var email = document.getElementById('forgotPasswordEmail').value.trim();
                     if (!email) {
                         forgotMessage.textContent = '⚠️ Please enter your email.';
                         forgotMessage.style.color = '#ffa502';
                         return;
                     }
                     if (window.DB) {
-                        const admins = window.DB.getAdmins();
-                        const exists = admins.some(a => a.email === email);
+                        var admins = window.DB.getAdmins();
+                        var exists = admins.some(function(a) { return a.email === email; });
                         if (exists) {
                             forgotMessage.textContent = '✅ Password reset link sent to ' + email + ' (Demo)';
                             forgotMessage.style.color = 'var(--accent)';

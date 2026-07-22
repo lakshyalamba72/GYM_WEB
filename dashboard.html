@@ -1,177 +1,339 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Elite Fitness – Member Dashboard</title>
+
+    <script>
+        (function() {
+            var savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/dashboard.css" />
+
+    <style>
+        /* ============================================================
+           GOLDEN RATIO VARIABLES (reuse from root or define here)
+           ============================================================ */
+        :root {
+            --gr-xs: 8px;
+            --gr-sm: 13px;
+            --gr-md: 21px;
+            --gr-lg: 34px;
+            --gr-xl: 55px;
+            --gr-xxl: 89px;
+        }
+
+        /* ============================================================
+           MEMBER LOGIN – CLEAN & AESTHETIC
+           ============================================================ */
+        .member-login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--bg-body);
+            padding: var(--gr-md);
+            width: 100%;
+        }
+
+        .member-login-box {
+            background: var(--bg-card);
+            padding: var(--gr-xl) var(--gr-lg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+            max-width: 440px;
+            width: 100%;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.4s ease;
+        }
+        .member-login-box:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+        }
+
+        .member-login-box .login-icon {
+            text-align: center;
+            font-size: 48px;
+            color: var(--accent);
+            margin-bottom: var(--gr-md);
+            display: block;
+        }
+        .member-login-box h2 {
+            font-size: 28px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: var(--gr-xs);
+            color: var(--text-primary);
+        }
+        .member-login-box .login-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: var(--gr-lg);
+        }
+
+        .member-login-box .form-group {
+            margin-bottom: var(--gr-md);
+        }
+        .member-login-box .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: var(--gr-xs);
+        }
+        .member-login-box .form-group input {
+            width: 100%;
+            padding: var(--gr-sm) var(--gr-md);
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
+            background: var(--bg-body);
+            color: var(--text-primary);
+            font-size: 15px;
+            min-height: 48px;
+            font-family: var(--font);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .member-login-box .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-dim);
+        }
+        .member-login-box .form-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .member-login-box .btn-primary {
+            width: 100%;
+            justify-content: center;
+            padding: var(--gr-sm);
+            font-size: 16px;
+            margin-top: var(--gr-sm);
+            min-height: 48px;
+        }
+
+        .member-login-error {
+            color: #ff4757;
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: var(--gr-sm);
+            min-height: 24px;
+        }
+
+        .member-login-footer {
+            text-align: center;
+            margin-top: var(--gr-md);
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .member-login-footer a {
+            color: var(--accent);
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+        .member-login-footer a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* Hide dashboard initially */
+        #memberDashboard {
+            display: none;
+        }
+        body.logged-in #memberLoginForm {
+            display: none !important;
+        }
+        body.logged-in #memberDashboard {
+            display: block !important;
+        }
+
+        /* ============================================================
+           RESPONSIVE (golden ratio)
+           ============================================================ */
+        @media (max-width: 480px) {
+            .member-login-box {
+                padding: var(--gr-lg) var(--gr-md);
+            }
+            .member-login-box h2 {
+                font-size: 24px;
+            }
+            .member-login-box .login-icon {
+                font-size: 36px;
+            }
+        }
+    </style>
 </head>
 <body>
 
     <!-- ============================================================
-    NAVBAR
+    MEMBER LOGIN FORM (Clean & Aesthetic)
     ============================================================ -->
-    <nav class="navbar" id="navbar">
-        <div class="container">
-            <a href="index.html" class="nav-logo">ELITE<span>FITNESS</span></a>
-            <ul class="nav-links">
-                <li><a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a></li>
-                <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- ============================================================
-    DASHBOARD
-    ============================================================ -->
-    <section class="dashboard">
-        <div class="container">
-
-            <!-- Welcome Header -->
-            <div class="dashboard-header">
-                <div>
-                    <h1>👋 Welcome Back, <span id="memberName">Member</span></h1>
-                    <p>Here's your membership overview and progress.</p>
-                </div>
-                <div class="member-avatar">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80" alt="Member" id="memberAvatar" />
+    <section id="memberLoginForm">
+        <div class="member-login-container">
+            <div class="member-login-box">
+                <span class="login-icon"><i class="fas fa-user-circle"></i></span>
+                <h2>Member Login</h2>
+                <p class="login-subtitle">Enter your credentials to access your dashboard.</p>
+                <form id="memberLoginFormElement">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="memberEmail" placeholder="your@email.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="memberPassword" placeholder="Enter password" required />
+                    </div>
+                    <div id="memberLoginError" class="member-login-error"></div>
+                    <button type="submit" class="btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
+                </form>
+                <div class="member-login-footer">
+                    <a href="index.html">← Back to Home</a>
                 </div>
             </div>
-
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
-                    <div class="stat-info">
-                        <div class="stat-number" id="daysRemaining">--</div>
-                        <div class="stat-label">Days Remaining</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-dumbbell"></i></div>
-                    <div class="stat-info">
-                        <div class="stat-number" id="memberPlan">--</div>
-                        <div class="stat-label">Current Plan</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
-                    <div class="stat-info">
-                        <div class="stat-number" id="memberEndDate">--</div>
-                        <div class="stat-label">Expiry Date</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-rupee-sign"></i></div>
-                    <div class="stat-info">
-                        <div class="stat-number" id="totalSpent">₹0</div>
-                        <div class="stat-label">Total Spent</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Two Column Layout -->
-            <div class="dashboard-grid">
-
-                <!-- Left Column -->
-                <div class="dashboard-left">
-
-                    <!-- Membership Card -->
-                    <div class="card">
-                        <h3><i class="fas fa-id-card"></i> My Membership</h3>
-                        <div class="membership-details">
-                            <div class="detail-row"><span class="label">Plan Type</span><span class="value" id="planType">--</span></div>
-                            <div class="detail-row"><span class="label">Start Date</span><span class="value" id="startDate">--</span></div>
-                            <div class="detail-row"><span class="label">End Date</span><span class="value" id="endDate">--</span></div>
-                            <div class="detail-row"><span class="label">Status</span><span class="status-badge active" id="statusBadge">✅ Active</span></div>
-                        </div>
-                        <div class="card-actions">
-                            <button class="btn-primary" id="renewBtn"><i class="fas fa-sync-alt"></i> Renew Now</button>
-                            <button class="btn-outline" id="upgradeBtn"><i class="fas fa-arrow-up"></i> Upgrade Plan</button>
-                        </div>
-                    </div>
-
-                    <!-- Discount Card -->
-                    <div class="card">
-                        <h3><i class="fas fa-tag"></i> Apply Discount</h3>
-                        <p style="color:var(--text-secondary);font-size:0.9rem;">Enter your student discount code to get ₹200 off.</p>
-                        <div class="discount-input">
-                            <input type="text" id="discountCodeInput" placeholder="Enter code (e.g., STUDENT200)" />
-                            <button class="btn-blue" id="applyDiscountBtn">Apply</button>
-                        </div>
-                        <div id="discountMessage" style="margin-top:0.5rem;font-size:0.9rem;"></div>
-                    </div>
-
-                    <!-- Quick Actions -->
-                    <div class="card">
-                        <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
-                        <div class="quick-actions">
-                            <button class="btn-blue" id="downloadInvoiceBtn"><i class="fas fa-file-pdf"></i> Download Invoice</button>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Right Column -->
-                <div class="dashboard-right">
-
-                    <!-- Profile Card -->
-                    <div class="card">
-                        <h3><i class="fas fa-user-edit"></i> My Profile</h3>
-                        <form id="profileForm">
-                            <div class="form-group">
-                                <label>Full Name</label>
-                                <input type="text" id="profileName" />
-                            </div>
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" id="profileEmail" disabled />
-                                <small style="color:var(--text-muted);">Email cannot be changed</small>
-                            </div>
-                            <div class="form-group">
-                                <label>Phone</label>
-                                <input type="tel" id="profilePhone" />
-                            </div>
-                            <div class="form-group">
-                                <label>Address</label>
-                                <input type="text" id="profileAddress" />
-                            </div>
-                            <button type="submit" class="btn-primary" style="width:100%;"><i class="fas fa-save"></i> Update Profile</button>
-                        </form>
-                    </div>
-
-                    <!-- Payment History -->
-                    <div class="card" id="paymentHistoryCard">
-                        <h3><i class="fas fa-receipt"></i> Payment History</h3>
-                        <div class="payment-history" id="paymentHistoryContainer">
-                            <p style="color:var(--text-muted);">Loading...</p>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
         </div>
     </section>
 
     <!-- ============================================================
-    FOOTER
+    MEMBER DASHBOARD (logged-in view – unchanged)
     ============================================================ -->
-    <footer class="footer">
-        <div class="container">
-            <p style="text-align:center;color:var(--text-muted);font-size:0.85rem;">&copy; 2026 Elite Fitness. All rights reserved.</p>
+    <section id="memberDashboard">
+        <nav class="navbar" id="navbar">
+            <div class="container">
+                <a href="index.html" class="nav-logo">ELITE<span>FITNESS</span></a>
+                <ul class="nav-links">
+                    <li><a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a></li>
+                    <li><a href="#" id="memberLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="dashboard">
+            <div class="container">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>👋 Welcome Back, <span id="memberName">Member</span></h1>
+                        <p>Here's your membership overview and progress.</p>
+                    </div>
+                    <div class="member-avatar">
+                        <img src="https://ui-avatars.com/api/?name=Lakshya&background=00C853&color=fff&size=200" alt="Member" id="memberAvatar" />
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                        <div class="stat-info">
+                            <div class="stat-number" id="daysRemaining">--</div>
+                            <div class="stat-label">Days Remaining</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-dumbbell"></i></div>
+                        <div class="stat-info">
+                            <div class="stat-number" id="memberPlan">--</div>
+                            <div class="stat-label">Current Plan</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+                        <div class="stat-info">
+                            <div class="stat-number" id="memberEndDate">--</div>
+                            <div class="stat-label">Expiry Date</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-rupee-sign"></i></div>
+                        <div class="stat-info">
+                            <div class="stat-number" id="totalSpent">₹0</div>
+                            <div class="stat-label">Total Spent</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-left">
+                        <div class="card">
+                            <h3><i class="fas fa-id-card"></i> My Membership</h3>
+                            <div class="membership-details">
+                                <div class="detail-row"><span class="label">Plan Type</span><span class="value" id="planType">--</span></div>
+                                <div class="detail-row"><span class="label">Start Date</span><span class="value" id="startDate">--</span></div>
+                                <div class="detail-row"><span class="label">End Date</span><span class="value" id="endDate">--</span></div>
+                                <div class="detail-row"><span class="label">Status</span><span class="status-badge active" id="statusBadge">✅ Active</span></div>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-primary" id="renewBtn"><i class="fas fa-sync-alt"></i> Renew Now</button>
+                                <button class="btn-outline" id="upgradeBtn"><i class="fas fa-arrow-up"></i> Upgrade Plan</button>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3><i class="fas fa-tag"></i> Apply Discount</h3>
+                            <p style="color:var(--text-secondary);font-size:0.9rem;">Enter your student discount code to get ₹200 off.</p>
+                            <div class="discount-input">
+                                <input type="text" id="discountCodeInput" placeholder="Enter code (e.g., STUDENT200)" />
+                                <button class="btn-blue" id="applyDiscountBtn">Apply</button>
+                            </div>
+                            <div id="discountMessage" style="margin-top:0.5rem;font-size:0.9rem;"></div>
+                        </div>
+
+                        <div class="card">
+                            <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                            <div class="quick-actions">
+                                <button class="btn-blue" id="downloadInvoiceBtn"><i class="fas fa-file-pdf"></i> Download Invoice</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-right">
+                        <div class="card">
+                            <h3><i class="fas fa-user-edit"></i> My Profile</h3>
+                            <form id="profileForm">
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" id="profileName" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" id="profileEmail" disabled />
+                                    <small style="color:var(--text-muted);">Email cannot be changed</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input type="tel" id="profilePhone" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    <input type="text" id="profileAddress" />
+                                </div>
+                                <button type="submit" class="btn-primary" style="width:100%;"><i class="fas fa-save"></i> Update Profile</button>
+                            </form>
+                        </div>
+
+                        <div class="card" id="paymentHistoryCard">
+                            <h3><i class="fas fa-receipt"></i> Payment History</h3>
+                            <div class="payment-history" id="paymentHistoryContainer">
+                                <p style="color:var(--text-muted);">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
+    </section>
 
     <!-- ============================================================
     SCRIPTS
     ============================================================ -->
     <script src="js/data-layer.js"></script>
     <script src="js/dashboard.js"></script>
+
 </body>
 </html>

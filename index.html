@@ -107,14 +107,71 @@
         }
 
         /* ============================================================
-           PURE CSS HAMBURGER – CLEAN & AESTHETIC
+           NAVBAR – Even Golden Ratio Spacing
            ============================================================ */
-        .menu-toggle {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-            pointer-events: none;
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            gap: var(--gr-sm);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--gr-lg);
+        }
+
+        .nav-logo {
+            flex-shrink: 0;
+            font-size: clamp(20px, 2.5vw, 26px);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: var(--gr-lg);
+            list-style: none;
+            flex: 1 1 auto;
+            justify-content: center;
+            padding: 0 var(--gr-sm);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: var(--gr-sm);
+            flex-shrink: 0;
+            z-index: 1002;
+            position: relative;
+        }
+
+        .navbar .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 40px;
+            padding: var(--gr-xs) var(--gr-md);
+            display: flex;
+            align-items: center;
+            gap: var(--gr-sm);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+            transition: background 0.3s ease, border-color 0.3s ease;
+            font-family: var(--font);
+            touch-action: manipulation;
+            min-height: 40px;
+            min-width: 40px;
+        }
+        .navbar .theme-toggle:active { transform: scale(0.95); }
+        .navbar .theme-toggle .toggle-label { display: inline; }
+        @media (max-width: 768px) {
+            .navbar .theme-toggle .toggle-label { display: none; }
+            .navbar .theme-toggle { padding: var(--gr-xs) var(--gr-sm); font-size: 14px; }
+        }
+
+        .desktop-link {
+            display: inline-block;
         }
 
         .hamburger-label {
@@ -144,14 +201,12 @@
             pointer-events: none;
         }
 
-        .menu-toggle:checked ~ .nav-right .hamburger-label span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        .menu-toggle:checked ~ .nav-right .hamburger-label span:nth-child(2) {
+        .menu-toggle {
+            position: absolute;
             opacity: 0;
-        }
-        .menu-toggle:checked ~ .nav-right .hamburger-label span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
+            width: 0;
+            height: 0;
+            pointer-events: none;
         }
 
         @media (max-width: 768px) {
@@ -181,6 +236,10 @@
                 transform: scale(0.95) translateY(-10px);
                 pointer-events: none;
                 z-index: 999;
+                flex: none;
+                justify-content: center;
+                width: 280px;
+                right: var(--gr-sm);
             }
 
             .menu-toggle:checked ~ .nav-links {
@@ -235,9 +294,12 @@
             .nav-links .mobile-link i {
                 margin-right: var(--gr-xs);
             }
+
+            .desktop-link {
+                display: none !important;
+            }
         }
 
-        /* Desktop: hide hamburger, show standard nav */
         @media (min-width: 769px) {
             .hamburger-label {
                 display: none !important;
@@ -248,7 +310,7 @@
                 background: transparent;
                 backdrop-filter: none;
                 border: none;
-                padding: 0;
+                padding: 0 var(--gr-sm);
                 gap: var(--gr-lg);
                 box-shadow: none;
                 opacity: 1;
@@ -256,6 +318,8 @@
                 pointer-events: auto;
                 flex-direction: row;
                 width: auto;
+                flex: 1 1 auto;
+                justify-content: center;
             }
             .nav-links li {
                 opacity: 1;
@@ -269,6 +333,7 @@
                 font-size: 14px;
                 font-weight: 500;
                 color: var(--text-secondary);
+                transition: color 0.2s ease;
             }
             .nav-links .mobile-link:hover {
                 background: transparent;
@@ -296,51 +361,6 @@
                 background: var(--accent-hover);
             }
         }
-
-        /* Theme toggle & nav layout */
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: var(--gr-sm);
-            flex-shrink: 0;
-            z-index: 1002;
-            position: relative;
-        }
-        .navbar .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: nowrap;
-        }
-        .nav-logo {
-            flex-shrink: 0;
-            font-size: clamp(20px, 2.5vw, 26px);
-        }
-        .navbar .theme-toggle {
-            background: var(--bg-card);
-            border: 1px solid var(--border-light);
-            border-radius: 40px;
-            padding: var(--gr-xs) var(--gr-md);
-            display: flex;
-            align-items: center;
-            gap: var(--gr-sm);
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
-            box-shadow: var(--shadow-sm);
-            transition: background 0.3s ease, border-color 0.3s ease;
-            font-family: var(--font);
-            touch-action: manipulation;
-            min-height: 40px;
-            min-width: 40px;
-        }
-        .navbar .theme-toggle:active { transform: scale(0.95); }
-        .navbar .theme-toggle .toggle-label { display: inline; }
-        @media (max-width: 768px) {
-            .navbar .theme-toggle .toggle-label { display: none; }
-            .navbar .theme-toggle { padding: var(--gr-xs) var(--gr-sm); font-size: 14px; }
-        }
     </style>
 </head>
 <body>
@@ -355,6 +375,19 @@
 
             <a href="index.html" class="nav-logo">ELITE<span>FITNESS</span></a>
 
+            <ul class="nav-links" id="navLinks">
+                <!-- Desktop-only links -->
+                <li class="desktop-link"><a href="#about">About</a></li>
+                <li class="desktop-link"><a href="#features">Features</a></li>
+                <li class="desktop-link"><a href="#plans">Plans</a></li>
+                <li class="desktop-link"><a href="#trainers">Trainers</a></li>
+
+                <!-- Mobile & Desktop links -->
+                <li><a href="star-members.html" class="mobile-link">Star Members</a></li>
+                <li><a href="admin.html" class="mobile-link admin-link"><i class="fas fa-user-shield"></i> Admin</a></li>
+                <li><a href="dashboard.html" class="mobile-link nav-cta">Login</a></li>
+            </ul>
+
             <div class="nav-right">
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
                     <span class="icon-sun"><i class="fas fa-sun"></i></span>
@@ -368,12 +401,6 @@
                     <span></span>
                 </label>
             </div>
-
-            <ul class="nav-links" id="navLinks">
-                <li><a href="star-members.html" class="mobile-link">Star Members</a></li>
-                <li><a href="admin.html" class="mobile-link admin-link"><i class="fas fa-user-shield"></i> Admin</a></li>
-                <li><a href="dashboard.html" class="mobile-link nav-cta">Login</a></li>
-            </ul>
 
         </div>
     </nav>
@@ -463,8 +490,9 @@
                         <li><i class="fas fa-check"></i> Locker room & showers</li>
                         <li><i class="fas fa-check"></i> 1 Group class / week</li>
                     </ul>
-                    <a href="#checkout" class="btn-primary" style="width:100%; justify-content:center;">Join Now</a>
+                    <a href="#checkout" class="btn-primary" data-plan="Starter" data-duration="1" style="width:100%; justify-content:center;">Join Now</a>
                 </div>
+
                 <div class="format-card" style="border-color:var(--accent);">
                     <span class="popular">Best Value</span>
                     <h3>Pro</h3>
@@ -476,8 +504,9 @@
                         <li><i class="fas fa-check"></i> 2 Personal training sessions</li>
                         <li><i class="fas fa-check"></i> Custom diet plan</li>
                     </ul>
-                    <a href="#checkout" class="btn-primary" style="width:100%; justify-content:center;">Join Now</a>
+                    <a href="#checkout" class="btn-primary" data-plan="Pro" data-duration="3" style="width:100%; justify-content:center;">Join Now</a>
                 </div>
+
                 <div class="format-card">
                     <h3>Elite</h3>
                     <div class="subtitle">6 Month Membership</div>
@@ -488,14 +517,14 @@
                         <li><i class="fas fa-check"></i> 24/7 keycard access</li>
                         <li><i class="fas fa-check"></i> Priority class booking</li>
                     </ul>
-                    <a href="#checkout" class="btn-primary" style="width:100%; justify-content:center;">Join Now</a>
+                    <a href="#checkout" class="btn-primary" data-plan="Elite" data-duration="6" style="width:100%; justify-content:center;">Join Now</a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ============================================================
-    CHECKOUT
+    CHECKOUT (with per‑month discount)
     ============================================================ -->
     <section class="section section-alt" id="checkout">
         <div class="container">
@@ -503,6 +532,7 @@
                 <span class="section-label">Secure Checkout</span>
                 <h2 class="section-title">Complete Your <span class="highlight">Membership</span></h2>
             </div>
+
             <div class="checkout-wrapper" id="checkoutWrapper">
                 <div>
                     <h3>Selected Plan: <span id="selectedPlanName">Pro</span></h3>
@@ -515,6 +545,7 @@
                         </div>
                         <div id="discountMessage" style="margin-top:0.5rem; font-size:0.9rem;"></div>
                     </div>
+
                     <div style="margin:1.5rem 0;">
                         <label style="display:flex; align-items:center; gap:12px; cursor:pointer;">
                             <input type="checkbox" id="ptAddon" style="width:20px; height:20px; accent-color:var(--accent);" />
@@ -523,6 +554,7 @@
                         </label>
                         <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px; margin-left:32px;">One-on-one coaching with a certified trainer, tailored to your goals.</p>
                     </div>
+
                     <label style="display:block;font-size:0.9rem;color:var(--text-secondary);margin-bottom:0.5rem;">Payment Method</label>
                     <div class="payment-methods">
                         <button class="active"><i class="fas fa-mobile-alt"></i> UPI</button>
@@ -530,6 +562,7 @@
                         <button><i class="fas fa-wallet"></i> Wallet</button>
                     </div>
                 </div>
+
                 <div>
                     <h3>Summary</h3>
                     <div class="summary-line"><span>Plan</span><span id="summaryPlanPrice">₹4,000.00</span></div>
@@ -886,6 +919,162 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeModal();
         });
+
+        // -------------------------------------------------------------
+        // CHECKOUT LOGIC (with per‑month discount)
+        // -------------------------------------------------------------
+        (function() {
+            // ----- Data -----
+            var planData = {
+                'Starter': { price: 1500, duration: 1 },
+                'Pro':     { price: 4000, duration: 3 },
+                'Elite':   { price: 7500, duration: 6 }
+            };
+
+            // PT addon per month
+            var PT_PRICE_PER_MONTH = 6000;
+
+            // DOM refs
+            var selectedPlanNameEl = document.getElementById('selectedPlanName');
+            var summaryPlanPriceEl = document.getElementById('summaryPlanPrice');
+            var summaryPtRow = document.getElementById('ptSummaryRow');
+            var summaryPtPriceEl = document.getElementById('summaryPtPrice');
+            var discountSummaryRow = document.getElementById('discountSummaryRow');
+            var discountSummaryEl = document.getElementById('summaryDiscount');
+            var summaryGstEl = document.getElementById('summaryGst');
+            var summaryTotalEl = document.getElementById('summaryTotal');
+            var ptCheckbox = document.getElementById('ptAddon');
+            var discountInput = document.getElementById('discountCodeInput');
+            var applyDiscountBtn = document.getElementById('applyDiscountBtn');
+            var discountMessageEl = document.getElementById('discountMessage');
+
+            // Current state
+            var currentPlan = 'Pro';
+            var currentPrice = 4000;
+            var currentDuration = 3;
+            var currentDiscountPerMonth = 0; // per month discount amount
+            var ptAddonActive = false;
+
+            // Helper: get base price for plan+duration
+            function getPlanPrice(planName) {
+                return planData[planName] ? planData[planName].price : 0;
+            }
+
+            function getPlanDuration(planName) {
+                return planData[planName] ? planData[planName].duration : 0;
+            }
+
+            // Calculate final total (includes PT, discount, GST)
+            function calculateTotal() {
+                var base = currentPrice;
+                var ptTotal = ptAddonActive ? PT_PRICE_PER_MONTH * currentDuration : 0;
+                var discountTotal = currentDiscountPerMonth * currentDuration;
+                var subtotal = base + ptTotal - discountTotal;
+                var gst = subtotal * 0.18;
+                var total = subtotal + gst;
+                return { subtotal, gst, total, discountTotal, ptTotal };
+            }
+
+            // Update the summary display
+            function updateSummary() {
+                var result = calculateTotal();
+                // Plan price (without discounts)
+                summaryPlanPriceEl.textContent = '₹' + currentPrice.toFixed(2);
+
+                // PT row
+                if (ptAddonActive) {
+                    summaryPtRow.style.display = 'flex';
+                    summaryPtPriceEl.textContent = '₹' + result.ptTotal.toFixed(2);
+                } else {
+                    summaryPtRow.style.display = 'none';
+                }
+
+                // Discount row
+                if (result.discountTotal > 0) {
+                    discountSummaryRow.style.display = 'flex';
+                    discountSummaryEl.textContent = '-₹' + result.discountTotal.toFixed(2);
+                } else {
+                    discountSummaryRow.style.display = 'none';
+                }
+
+                // GST and Total
+                summaryGstEl.textContent = '₹' + result.gst.toFixed(2);
+                summaryTotalEl.textContent = '₹' + result.total.toFixed(2);
+            }
+
+            // Apply a discount code
+            function applyDiscount() {
+                var code = discountInput.value.trim().toUpperCase();
+                if (!code) {
+                    discountMessageEl.innerHTML = '<span style="color:#ffa502;">⚠️ Please enter a discount code.</span>';
+                    return;
+                }
+
+                var discount = window.DB ? window.DB.validateDiscountCode(code) : null;
+                // For STUDENT200, per-month discount is 200
+                if (code === 'STUDENT200' || (discount && discount.value === 200)) {
+                    currentDiscountPerMonth = 200;
+                    discountMessageEl.innerHTML = '<span style="color:var(--accent);">✅ Student discount applied! ₹200 off per month (Total: ₹' + (200 * currentDuration) + ' off).</span>';
+                    updateSummary();
+                } else {
+                    currentDiscountPerMonth = 0;
+                    discountMessageEl.innerHTML = '<span style="color:#ff4757;">❌ Invalid code. Please try again.</span>';
+                    updateSummary();
+                }
+            }
+
+            // Handle plan selection from cards
+            document.querySelectorAll('.format-card .btn-primary').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var planName = this.getAttribute('data-plan');
+                    var duration = parseInt(this.getAttribute('data-duration')) || 1;
+                    if (planName && planData[planName]) {
+                        currentPlan = planName;
+                        currentPrice = planData[planName].price;
+                        currentDuration = planData[planName].duration;
+                        selectedPlanNameEl.textContent = planName;
+                        // Reset discount when switching plan
+                        currentDiscountPerMonth = 0;
+                        discountInput.value = '';
+                        discountMessageEl.innerHTML = '';
+                        // PT checkbox unchecked by default? Let's keep it unchecked.
+                        ptCheckbox.checked = false;
+                        ptAddonActive = false;
+                        updateSummary();
+                        // Scroll to checkout
+                        document.getElementById('checkout').scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // PT addon toggle
+            ptCheckbox.addEventListener('change', function() {
+                ptAddonActive = this.checked;
+                updateSummary();
+            });
+
+            // Apply discount button
+            applyDiscountBtn.addEventListener('click', applyDiscount);
+
+            // Proceed to payment (demo)
+            document.getElementById('proceedPaymentBtn').addEventListener('click', function() {
+                var total = summaryTotalEl.textContent;
+                alert('Payment of ' + total + ' processed successfully! (Demo)');
+            });
+
+            // Initial update
+            updateSummary();
+
+            // Ensure discount input can also be triggered by Enter key
+            discountInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    applyDiscount();
+                }
+            });
+
+        })();
     </script>
 
 </body>

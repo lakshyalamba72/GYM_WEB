@@ -1,5 +1,6 @@
 // ============================================================
 //  DATA LAYER (Mock Backend using localStorage)
+//  Updated: Student discount applies per month
 // ============================================================
 
 const DB = {
@@ -36,12 +37,23 @@ function getMember(id) {
     return getMembers().find(m => m.id === id);
 }
 
+function getMemberByEmail(email) {
+    return getMembers().find(m => m.email === email);
+}
+
+function verifyMember(email, password) {
+    const members = getMembers();
+    const member = members.find(m => m.email === email && m.password === password);
+    return member || null;
+}
+
 function addMember(data) {
     const members = getMembers();
     const newMember = {
         id: generateId(),
         name: data.name,
         email: data.email,
+        password: data.password || '',
         phone: data.phone || '',
         address: data.address || '',
         studentId: data.studentId || '',
@@ -98,6 +110,22 @@ function getExpiredMemberships() {
     return getMemberships().filter(m => m.endDate < todayStr || !m.isActive);
 }
 
+// ----- PRICE HELPERS (with per-month discount) -----
+function getBasePrice(durationMonths, planType) {
+    const prices = {
+        1: { gym: 1500, gym_pt: 7500 },
+        3: { gym: 4000, gym_pt: 10000 },
+        6: { gym: 7500, gym_pt: 15000 }
+    };
+    return prices[durationMonths]?.[planType] || 0;
+}
+
+function calculateFinalPrice(durationMonths, planType, discountPerMonth = 0) {
+    const base = getBasePrice(durationMonths, planType);
+    const totalDiscount = discountPerMonth * durationMonths;
+    return Math.max(0, base - totalDiscount);
+}
+
 function createMembership(data) {
     const memberships = getMemberships();
     const start = today();
@@ -108,7 +136,7 @@ function createMembership(data) {
         type: data.type || 'gym',
         durationMonths: data.durationMonths,
         basePrice: data.basePrice,
-        discountApplied: data.discountApplied || 0,
+        discountApplied: data.discountApplied || 0, // total discount (perMonth * months)
         finalPrice: data.finalPrice,
         startDate: start,
         endDate: end,
@@ -158,7 +186,7 @@ function cancelMembership(id) {
     return updateMembership(id, { isActive: false });
 }
 
-// ----- Discount Codes -----
+// ----- Discount Codes (with per-month logic) -----
 function getDiscountCodes() {
     return DB.get('discountCodes') || [];
 }
@@ -191,7 +219,7 @@ function createDiscountCode(data) {
         id: generateId(),
         code: data.code,
         type: data.type || 'fixed',
-        value: data.value,
+        value: data.value, // per-month discount value
         validUntil: data.validUntil || null,
         usageLimit: data.usageLimit || null,
         usedCount: 0,
@@ -240,7 +268,6 @@ function getAdmins() {
 function addAdmin(data) {
     const admins = getAdmins();
     const hashedPassword = btoa(data.password);
-    // Check if admin with same email exists, update if so
     const existingIndex = admins.findIndex(a => a.email === data.email);
     if (existingIndex !== -1) {
         admins[existingIndex] = { ...admins[existingIndex], password: hashedPassword, name: data.name };
@@ -260,7 +287,6 @@ function addAdmin(data) {
 
 function verifyAdmin(email, password) {
     const admins = getAdmins();
-    // If no admins, add default
     if (admins.length === 0) {
         addAdmin({ email: 'lakshyalamba72@gmail.com', password: 'lakshya1', name: 'Admin' });
         const newAdmins = getAdmins();
@@ -273,22 +299,24 @@ function verifyAdmin(email, password) {
 
 // ----- Initialize with sample data -----
 function initSampleData() {
-    // Always ensure admin exists with correct credentials
+    // Ensure admin exists
     addAdmin({ email: 'lakshyalamba72@gmail.com', password: 'lakshya1', name: 'Admin' });
 
     if (DB.get('initialized')) return;
 
     // Sample members
     const members = [
-        { name: 'Rahul Sharma', email: 'rahul@example.com', phone: '+91 98765 43210', address: 'Mumbai' },
-        { name: 'Priya Patel', email: 'priya@example.com', phone: '+91 98765 43211', address: 'Delhi' }
+        { name: 'Rahul Sharma', email: 'rahul@example.com', phone: '+91 98765 43210', address: 'Mumbai', password: 'rahul123' },
+        { name: 'Priya Patel', email: 'priya@example.com', phone: '+91 98765 43211', address: 'Delhi', password: 'priya123' },
+        { name: 'Lakshya', email: 'shadowop007x@gmail.com', phone: '+91 98765 43212', address: 'Noida', password: 'lakshya123' }
     ];
     members.forEach(m => addMember(m));
 
     const allMembers = getMembers();
     const member1 = allMembers[0];
     const member2 = allMembers[1];
-    
+    const member3 = allMembers[2];
+
     if (member1) {
         createMembership({
             memberId: member1.id,
@@ -300,23 +328,34 @@ function initSampleData() {
             paymentStatus: 'paid'
         });
     }
-    
     if (member2) {
         createMembership({
             memberId: member2.id,
             type: 'gym',
             durationMonths: 1,
             basePrice: 1500,
-            discountApplied: 200,
+            discountApplied: 200, // 200 * 1 month
             finalPrice: 1300,
             paymentStatus: 'paid'
         });
     }
+    if (member3) {
+        createMembership({
+            memberId: member3.id,
+            type: 'gym_pt',
+            durationMonths: 6,
+            basePrice: 15000,
+            discountApplied: 0,
+            finalPrice: 15000,
+            paymentStatus: 'paid'
+        });
+    }
 
+    // Student discount: ₹200 per month
     createDiscountCode({
         code: 'STUDENT200',
         type: 'fixed',
-        value: 200,
+        value: 200, // per month
         validUntil: '2026-12-31',
         usageLimit: 50
     });
@@ -327,10 +366,12 @@ function initSampleData() {
 // Run initialization
 initSampleData();
 
-// ----- Export for use in other scripts -----
+// ----- Export -----
 window.DB = {
     getMembers,
     getMember,
+    getMemberByEmail,
+    verifyMember,
     addMember,
     updateMember,
     deleteMember,
@@ -352,5 +393,7 @@ window.DB = {
     getPaymentHistory,
     addPaymentHistory,
     getAdmins,
-    verifyAdmin
+    verifyAdmin,
+    getBasePrice,
+    calculateFinalPrice
 };
