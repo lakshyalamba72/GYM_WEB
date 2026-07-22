@@ -20,7 +20,7 @@
 
     <style>
         /* ============================================================
-           MODAL STYLES with Smooth Animation
+           MODAL STYLES (same as before)
            ============================================================ */
         .modal-overlay {
             position: fixed;
@@ -68,19 +68,13 @@
             margin-bottom: 16px;
             color: var(--text-primary);
         }
-        .modal-box p {
+        .modal-box p, .modal-box ul {
             color: var(--text-secondary);
             line-height: 1.8;
             font-size: 14px;
             margin-bottom: 12px;
         }
-        .modal-box ul {
-            color: var(--text-secondary);
-            line-height: 1.8;
-            font-size: 14px;
-            padding-left: 20px;
-            margin-bottom: 12px;
-        }
+        .modal-box ul { padding-left: 20px; }
         .modal-close {
             position: absolute;
             top: 16px;
@@ -93,35 +87,122 @@
             line-height: 1;
             transition: color 0.2s ease;
         }
-        .modal-close:hover {
-            color: var(--text-primary);
-        }
+        .modal-close:hover { color: var(--text-primary); }
         @media (max-width: 480px) {
-            .modal-box {
-                padding: 24px 16px;
+            .modal-box { padding: 24px 16px; }
+            .modal-box h2 { font-size: 20px; }
+        }
+
+        /* ============================================================
+           PURE CSS HAMBURGER TOGGLE (no JS needed)
+           ============================================================ */
+        .menu-toggle {
+            display: none; /* hidden checkbox */
+        }
+
+        /* Hamburger icon (label) */
+        .hamburger-label {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+            min-height: 48px;
+            min-width: 48px;
+            justify-content: center;
+            z-index: 1001;
+            background: transparent;
+            border: none;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .hamburger-label span {
+            display: block;
+            width: 26px;
+            height: 2.5px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        /* When checkbox is checked, transform spans into X */
+        .menu-toggle:checked + .hamburger-label span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .menu-toggle:checked + .hamburger-label span:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-toggle:checked + .hamburger-label span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Show hamburger on mobile */
+        @media (max-width: 768px) {
+            .hamburger-label {
+                display: flex;
             }
-            .modal-box h2 {
-                font-size: 20px;
+            .nav-links {
+                display: none !important; /* hidden by default on mobile */
+                flex-direction: column;
+                background: var(--bg-nav);
+                backdrop-filter: blur(16px);
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                padding: 16px 20px;
+                gap: 12px;
+                border-bottom: 1px solid var(--border-light);
+                box-shadow: var(--shadow-md);
+                align-items: stretch;
+                text-align: center;
+                max-height: 80vh;
+                overflow-y: auto;
+                z-index: 999;
+            }
+            /* When checkbox is checked, show the menu */
+            .menu-toggle:checked ~ .nav-links {
+                display: flex !important;
             }
         }
 
-        /* Hamburger override – ensure it's always on top and clickable */
-        .hamburger {
-            z-index: 1001 !important;
-            pointer-events: auto !important;
-            touch-action: manipulation !important;
-            cursor: pointer !important;
-        }
+        /* Ensure theme toggle and hamburger sit together */
         .nav-right {
-            z-index: 1002 !important;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            z-index: 1002;
             position: relative;
+        }
+
+        /* Make sure the navbar container uses flex to keep items inline */
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+        }
+        .nav-logo {
+            flex-shrink: 0;
+        }
+        .nav-links {
+            flex: 1;
+            justify-content: flex-end;
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                flex: none;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
 
     <!-- ============================================================
-    NAVBAR
+    NAVBAR with Pure CSS Hamburger
     ============================================================ -->
     <nav class="navbar" id="navbar">
         <div class="container">
@@ -134,12 +215,13 @@
                     <span class="toggle-label">Theme</span>
                 </button>
 
-                <!-- Hamburger with inline onclick fallback -->
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu" onclick="toggleMenu(event)">
+                <!-- Pure CSS Hamburger: hidden checkbox + label -->
+                <input type="checkbox" id="menu-toggle" class="menu-toggle" />
+                <label for="menu-toggle" class="hamburger-label" aria-label="Toggle menu">
                     <span></span>
                     <span></span>
                     <span></span>
-                </button>
+                </label>
             </div>
 
             <ul class="nav-links" id="navLinks">
@@ -155,8 +237,9 @@
     </nav>
 
     <!-- ============================================================
-    REST OF SECTIONS (unchanged – kept compact for space)
+    ALL OTHER SECTIONS (unchanged – kept compact)
     ============================================================ -->
+    <!-- HERO -->
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-grid">
@@ -181,6 +264,7 @@
         </div>
     </section>
 
+    <!-- ABOUT -->
     <section class="section" id="about">
         <div class="container">
             <div class="grid-2">
@@ -197,6 +281,7 @@
         </div>
     </section>
 
+    <!-- WHY CHOOSE US -->
     <section class="section section-alt" id="features">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -213,6 +298,7 @@
         </div>
     </section>
 
+    <!-- MEMBERSHIP PLANS -->
     <section class="section" id="plans">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 48px;">
@@ -261,6 +347,7 @@
         </div>
     </section>
 
+    <!-- CHECKOUT -->
     <section class="section section-alt" id="checkout">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -307,6 +394,7 @@
         </div>
     </section>
 
+    <!-- TRAINERS -->
     <section class="section" id="trainers">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 48px;">
@@ -337,6 +425,7 @@
         </div>
     </section>
 
+    <!-- FACILITIES -->
     <section class="section section-alt" id="facilities">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -356,6 +445,7 @@
         </div>
     </section>
 
+    <!-- GROUP CLASSES -->
     <section class="section" id="classes">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -371,6 +461,7 @@
         </div>
     </section>
 
+    <!-- BMI CALCULATOR -->
     <section class="section section-alt" id="bmi">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -390,6 +481,7 @@
         </div>
     </section>
 
+    <!-- SPECIAL OFFERS -->
     <section class="section" id="offers">
         <div class="container">
             <div class="offer-banner">
@@ -406,6 +498,7 @@
         </div>
     </section>
 
+    <!-- FAQ -->
     <section class="section section-alt" id="faq">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -422,6 +515,7 @@
         </div>
     </section>
 
+    <!-- TESTIMONIALS -->
     <section class="section" id="testimonials">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -443,6 +537,7 @@
         </div>
     </section>
 
+    <!-- CONTACT -->
     <section class="section section-alt" id="contact">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -469,6 +564,7 @@
         </div>
     </section>
 
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -529,15 +625,13 @@
     </div>
 
     <!-- ============================================================
-    SCRIPTS
+    SCRIPTS (external + inline)
     ============================================================ -->
     <script src="js/data-layer.js"></script>
     <script src="js/script.js"></script>
 
     <script>
-        // ============================================================
-        // MODAL FUNCTIONS
-        // ============================================================
+        // MODAL FUNCTIONS (unchanged)
         function openModal(type) {
             var overlay = document.getElementById('modalOverlay');
             var title = document.getElementById('modalTitle');
@@ -615,7 +709,6 @@
             document.body.style.overflow = '';
         }
 
-        // Close modal on outside click and ESC
         document.getElementById('modalOverlay').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
@@ -623,59 +716,7 @@
             if (e.key === 'Escape') closeModal();
         });
 
-        // ============================================================
-        // HAMBURGER MENU – FIXED WITH INLINE FALLBACK
-        // ============================================================
-        function toggleMenu(event) {
-            if (event) event.stopPropagation();
-            var hamburger = document.getElementById('hamburger');
-            var navLinks = document.getElementById('navLinks');
-            if (hamburger && navLinks) {
-                hamburger.classList.toggle('active');
-                navLinks.classList.toggle('open');
-            }
-        }
-
-        // Also attach event listener for modern browsers (backup)
-        document.addEventListener('DOMContentLoaded', function() {
-            var hamburger = document.getElementById('hamburger');
-            var navLinks = document.getElementById('navLinks');
-
-            if (hamburger) {
-                // Remove any previous listeners to avoid duplicates
-                var newHamburger = hamburger.cloneNode(true);
-                hamburger.parentNode.replaceChild(newHamburger, hamburger);
-                // Re-assign
-                var freshHamburger = document.getElementById('hamburger');
-                if (freshHamburger) {
-                    freshHamburger.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        this.classList.toggle('active');
-                        document.getElementById('navLinks').classList.toggle('open');
-                    });
-                }
-            }
-
-            // Close on outside click
-            document.addEventListener('click', function(e) {
-                var menu = document.getElementById('navLinks');
-                var hamburgerBtn = document.getElementById('hamburger');
-                if (menu && menu.classList.contains('open')) {
-                    if (!menu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
-                        menu.classList.remove('open');
-                        hamburgerBtn.classList.remove('active');
-                    }
-                }
-            });
-
-            // Close on link click
-            document.querySelectorAll('#navLinks a').forEach(function(link) {
-                link.addEventListener('click', function() {
-                    document.getElementById('navLinks').classList.remove('open');
-                    document.getElementById('hamburger').classList.remove('active');
-                });
-            });
-        });
+        // Theme toggle is handled in script.js – no changes needed
     </script>
 
 </body>
