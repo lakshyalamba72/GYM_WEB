@@ -94,13 +94,19 @@
         }
 
         /* ============================================================
-           PURE CSS HAMBURGER TOGGLE (no JS needed)
+           PURE CSS HAMBURGER – FIXED FOR BRAVE & CHROME
            ============================================================ */
+
+        /* Hide checkbox completely */
         .menu-toggle {
-            display: none; /* hidden checkbox */
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            pointer-events: none;
         }
 
-        /* Hamburger icon (label) */
+        /* Hamburger label – always visible on mobile */
         .hamburger-label {
             display: none;
             flex-direction: column;
@@ -115,6 +121,7 @@
             border: none;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
+            position: relative;
         }
         .hamburger-label span {
             display: block;
@@ -124,26 +131,28 @@
             border-radius: 2px;
             transition: all 0.3s ease;
             transform-origin: center;
+            pointer-events: none;
         }
 
-        /* When checkbox is checked, transform spans into X */
-        .menu-toggle:checked + .hamburger-label span:nth-child(1) {
+        /* When checkbox is checked, transform to X */
+        .menu-toggle:checked ~ .nav-right .hamburger-label span:nth-child(1) {
             transform: rotate(45deg) translate(5px, 5px);
         }
-        .menu-toggle:checked + .hamburger-label span:nth-child(2) {
+        .menu-toggle:checked ~ .nav-right .hamburger-label span:nth-child(2) {
             opacity: 0;
         }
-        .menu-toggle:checked + .hamburger-label span:nth-child(3) {
+        .menu-toggle:checked ~ .nav-right .hamburger-label span:nth-child(3) {
             transform: rotate(-45deg) translate(5px, -5px);
         }
 
         /* Show hamburger on mobile */
         @media (max-width: 768px) {
             .hamburger-label {
-                display: flex;
+                display: flex !important;
             }
+
             .nav-links {
-                display: none !important; /* hidden by default on mobile */
+                display: none !important;
                 flex-direction: column;
                 background: var(--bg-nav);
                 backdrop-filter: blur(16px);
@@ -161,8 +170,24 @@
                 overflow-y: auto;
                 z-index: 999;
             }
+
             /* When checkbox is checked, show the menu */
             .menu-toggle:checked ~ .nav-links {
+                display: flex !important;
+            }
+
+            /* Also handle if the checkbox is inside a different order */
+            .menu-toggle:checked ~ .nav-right .nav-links {
+                display: flex !important;
+            }
+        }
+
+        /* Force desktop: hide hamburger, show nav-links */
+        @media (min-width: 769px) {
+            .hamburger-label {
+                display: none !important;
+            }
+            .nav-links {
                 display: flex !important;
             }
         }
@@ -177,7 +202,7 @@
             position: relative;
         }
 
-        /* Make sure the navbar container uses flex to keep items inline */
+        /* Navbar container fixes */
         .navbar .container {
             display: flex;
             align-items: center;
@@ -187,14 +212,21 @@
         .nav-logo {
             flex-shrink: 0;
         }
-        .nav-links {
-            flex: 1;
-            justify-content: flex-end;
+
+        /* Extra: ensure the checkbox toggles the menu correctly on Brave */
+        .menu-toggle:checked ~ .nav-links {
+            display: flex !important;
         }
+
+        /* Debug: hamburger label should be visible on mobile */
         @media (max-width: 768px) {
-            .nav-links {
-                flex: none;
-                justify-content: center;
+            .hamburger-label {
+                display: flex !important;
+                background: transparent !important;
+                border: none !important;
+            }
+            .hamburger-label span {
+                background: var(--text-primary) !important;
             }
         }
     </style>
@@ -206,6 +238,10 @@
     ============================================================ -->
     <nav class="navbar" id="navbar">
         <div class="container">
+
+            <!-- Hidden checkbox – MUST be before the nav-links for CSS sibling selectors -->
+            <input type="checkbox" id="menu-toggle" class="menu-toggle" />
+
             <a href="index.html" class="nav-logo">ELITE<span>FITNESS</span></a>
 
             <div class="nav-right">
@@ -215,8 +251,7 @@
                     <span class="toggle-label">Theme</span>
                 </button>
 
-                <!-- Pure CSS Hamburger: hidden checkbox + label -->
-                <input type="checkbox" id="menu-toggle" class="menu-toggle" />
+                <!-- Hamburger label (pure CSS) -->
                 <label for="menu-toggle" class="hamburger-label" aria-label="Toggle menu">
                     <span></span>
                     <span></span>
@@ -233,13 +268,13 @@
                 <li><a href="admin.html" class="admin-link"><i class="fas fa-user-shield"></i> Admin</a></li>
                 <li><a href="dashboard.html" class="nav-cta">Login</a></li>
             </ul>
+
         </div>
     </nav>
 
     <!-- ============================================================
-    ALL OTHER SECTIONS (unchanged – kept compact)
+    ALL OTHER SECTIONS (unchanged – kept compact for space)
     ============================================================ -->
-    <!-- HERO -->
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-grid">
@@ -264,7 +299,6 @@
         </div>
     </section>
 
-    <!-- ABOUT -->
     <section class="section" id="about">
         <div class="container">
             <div class="grid-2">
@@ -281,7 +315,6 @@
         </div>
     </section>
 
-    <!-- WHY CHOOSE US -->
     <section class="section section-alt" id="features">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -298,7 +331,6 @@
         </div>
     </section>
 
-    <!-- MEMBERSHIP PLANS -->
     <section class="section" id="plans">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 48px;">
@@ -347,7 +379,6 @@
         </div>
     </section>
 
-    <!-- CHECKOUT -->
     <section class="section section-alt" id="checkout">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -394,7 +425,6 @@
         </div>
     </section>
 
-    <!-- TRAINERS -->
     <section class="section" id="trainers">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 48px;">
@@ -425,7 +455,6 @@
         </div>
     </section>
 
-    <!-- FACILITIES -->
     <section class="section section-alt" id="facilities">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -445,7 +474,6 @@
         </div>
     </section>
 
-    <!-- GROUP CLASSES -->
     <section class="section" id="classes">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -461,7 +489,6 @@
         </div>
     </section>
 
-    <!-- BMI CALCULATOR -->
     <section class="section section-alt" id="bmi">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -481,7 +508,6 @@
         </div>
     </section>
 
-    <!-- SPECIAL OFFERS -->
     <section class="section" id="offers">
         <div class="container">
             <div class="offer-banner">
@@ -498,7 +524,6 @@
         </div>
     </section>
 
-    <!-- FAQ -->
     <section class="section section-alt" id="faq">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -515,7 +540,6 @@
         </div>
     </section>
 
-    <!-- TESTIMONIALS -->
     <section class="section" id="testimonials">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -537,7 +561,6 @@
         </div>
     </section>
 
-    <!-- CONTACT -->
     <section class="section section-alt" id="contact">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -564,7 +587,6 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -625,13 +647,13 @@
     </div>
 
     <!-- ============================================================
-    SCRIPTS (external + inline)
+    SCRIPTS
     ============================================================ -->
     <script src="js/data-layer.js"></script>
     <script src="js/script.js"></script>
 
     <script>
-        // MODAL FUNCTIONS (unchanged)
+        // MODAL FUNCTIONS
         function openModal(type) {
             var overlay = document.getElementById('modalOverlay');
             var title = document.getElementById('modalTitle');
@@ -715,8 +737,6 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeModal();
         });
-
-        // Theme toggle is handled in script.js – no changes needed
     </script>
 
 </body>
