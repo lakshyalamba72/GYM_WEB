@@ -361,6 +361,210 @@
                 background: var(--accent-hover);
             }
         }
+
+        /* ============================================================
+           CHECKOUT – CLEAN, AESTHETIC, GOLDEN RATIO
+           ============================================================ */
+        .checkout-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.618fr;
+            gap: var(--gr-xl);
+            background: var(--bg-card);
+            padding: var(--gr-xl) var(--gr-lg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-card);
+        }
+
+        .checkout-left {
+            display: flex;
+            flex-direction: column;
+            gap: var(--gr-md);
+        }
+
+        .checkout-left h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--gr-xs);
+        }
+
+        .checkout-left .plan-name {
+            color: var(--accent);
+        }
+
+        .checkout-left .sub-text {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: var(--gr-sm);
+        }
+
+        .coupon-group {
+            display: flex;
+            gap: var(--gr-sm);
+            align-items: center;
+        }
+        .coupon-group input {
+            flex: 1;
+            padding: var(--gr-sm) var(--gr-md);
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
+            background: var(--bg-body);
+            color: var(--text-primary);
+            font-size: 14px;
+            min-height: 44px;
+            font-family: var(--font);
+        }
+        .coupon-group input:focus {
+            outline: 2px solid var(--accent);
+            border-color: transparent;
+        }
+        .coupon-group .btn-outline {
+            padding: var(--gr-sm) var(--gr-lg);
+            min-height: 44px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .discount-message {
+            font-size: 14px;
+            margin-top: var(--gr-xs);
+        }
+
+        /* PT addon – now one line with nowrap */
+        .pt-addon-group {
+            display: flex;
+            align-items: center;
+            gap: var(--gr-sm);
+            flex-wrap: nowrap;
+            margin: var(--gr-sm) 0;
+            cursor: pointer;
+        }
+        .pt-addon-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .pt-addon-group label {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-primary);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .pt-addon-group .pt-price {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 15px;
+            white-space: nowrap;
+        }
+        .pt-addon-desc {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-left: calc(20px + var(--gr-sm));
+            margin-top: calc(-1 * var(--gr-xs));
+            margin-bottom: var(--gr-sm);
+            line-height: 1.5;
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--gr-sm);
+            margin: var(--gr-sm) 0;
+        }
+        .payment-methods button {
+            background: var(--bg-body);
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
+            padding: var(--gr-xs) var(--gr-md);
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: var(--font);
+            font-size: 13px;
+            min-height: 40px;
+        }
+        .payment-methods button.active {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+
+        /* Right side summary */
+        .checkout-right h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: var(--gr-md);
+            color: var(--text-primary);
+        }
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--gr-sm) 0;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+        .summary-line.total {
+            font-weight: 700;
+            font-size: 18px;
+            border-bottom: 2px solid var(--accent);
+            color: var(--text-primary);
+            padding-top: var(--gr-md);
+            margin-top: var(--gr-xs);
+        }
+        .summary-line .amount {
+            font-weight: 600;
+        }
+        .summary-line .amount.highlight {
+            color: var(--accent);
+        }
+
+        .proceed-btn {
+            width: 100%;
+            margin-top: var(--gr-lg);
+            justify-content: center;
+            padding: var(--gr-md);
+            font-size: 16px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .checkout-wrapper {
+                grid-template-columns: 1fr;
+                gap: var(--gr-lg);
+            }
+        }
+        @media (max-width: 768px) {
+            .pt-addon-group {
+                flex-wrap: wrap;
+            }
+            .pt-addon-group label {
+                white-space: normal;
+            }
+            .pt-addon-desc {
+                margin-left: 0;
+            }
+        }
+        @media (max-width: 480px) {
+            .checkout-wrapper {
+                padding: var(--gr-md);
+            }
+            .coupon-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .coupon-group .btn-outline {
+                width: 100%;
+                justify-content: center;
+            }
+            .payment-methods button {
+                flex: 1;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -370,38 +574,21 @@
     ============================================================ -->
     <nav class="navbar" id="navbar">
         <div class="container">
-
             <input type="checkbox" id="menu-toggle" class="menu-toggle" />
-
             <a href="index.html" class="nav-logo">ELITE<span>FITNESS</span></a>
-
             <ul class="nav-links" id="navLinks">
-                <!-- Desktop-only links -->
                 <li class="desktop-link"><a href="#about">About</a></li>
                 <li class="desktop-link"><a href="#features">Features</a></li>
                 <li class="desktop-link"><a href="#plans">Plans</a></li>
                 <li class="desktop-link"><a href="#trainers">Trainers</a></li>
-
-                <!-- Mobile & Desktop links -->
                 <li><a href="star-members.html" class="mobile-link">Star Members</a></li>
                 <li><a href="admin.html" class="mobile-link admin-link"><i class="fas fa-user-shield"></i> Admin</a></li>
                 <li><a href="dashboard.html" class="mobile-link nav-cta">Login</a></li>
             </ul>
-
             <div class="nav-right">
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    <span class="icon-sun"><i class="fas fa-sun"></i></span>
-                    <span class="icon-moon"><i class="fas fa-moon"></i></span>
-                    <span class="toggle-label">Theme</span>
-                </button>
-
-                <label for="menu-toggle" class="hamburger-label" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </label>
+                <button class="theme-toggle" id="themeToggle"><span class="icon-sun"><i class="fas fa-sun"></i></span><span class="icon-moon"><i class="fas fa-moon"></i></span><span class="toggle-label">Theme</span></button>
+                <label for="menu-toggle" class="hamburger-label"><span></span><span></span><span></span></label>
             </div>
-
         </div>
     </nav>
 
@@ -524,7 +711,7 @@
     </section>
 
     <!-- ============================================================
-    CHECKOUT (with per‑month discount)
+    CHECKOUT (with per‑month discount, PT addon one line)
     ============================================================ -->
     <section class="section section-alt" id="checkout">
         <div class="container">
@@ -534,43 +721,53 @@
             </div>
 
             <div class="checkout-wrapper" id="checkoutWrapper">
-                <div>
-                    <h3>Selected Plan: <span id="selectedPlanName">Pro</span></h3>
-                    <p style="color:var(--text-secondary);">Monthly recurring, cancel anytime.</p>
-                    <div style="margin:1.5rem 0;">
-                        <label style="display:block;font-size:0.9rem;color:var(--text-secondary);margin-bottom:0.3rem;">Coupon Code</label>
-                        <div style="display:flex; gap:10px;">
-                            <input type="text" id="discountCodeInput" placeholder="Enter code (e.g., STUDENT200)" style="flex:1; padding:0.8rem; border-radius:8px; border:1px solid var(--border-light); background:var(--bg-card); color:var(--text-primary);" />
+                <!-- Left column -->
+                <div class="checkout-left">
+                    <div>
+                        <h3>Selected Plan: <span class="plan-name" id="selectedPlanName">Pro</span></h3>
+                        <p class="sub-text">Monthly recurring, cancel anytime.</p>
+                    </div>
+
+                    <!-- Coupon -->
+                    <div>
+                        <label style="display:block;font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:var(--gr-xs);">Coupon Code</label>
+                        <div class="coupon-group">
+                            <input type="text" id="discountCodeInput" placeholder="Enter code (e.g., STUDENT200)" />
                             <button class="btn-outline" id="applyDiscountBtn">Apply</button>
                         </div>
-                        <div id="discountMessage" style="margin-top:0.5rem; font-size:0.9rem;"></div>
+                        <div class="discount-message" id="discountMessage"></div>
                     </div>
 
-                    <div style="margin:1.5rem 0;">
-                        <label style="display:flex; align-items:center; gap:12px; cursor:pointer;">
-                            <input type="checkbox" id="ptAddon" style="width:20px; height:20px; accent-color:var(--accent);" />
-                            <span style="font-weight:600;">Add Advanced Personal Training</span>
-                            <span style="color:var(--accent); font-weight:700;">(+₹6,000/month)</span>
-                        </label>
-                        <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px; margin-left:32px;">One-on-one coaching with a certified trainer, tailored to your goals.</p>
+                    <!-- PT Addon – now all on one line -->
+                    <div>
+                        <div class="pt-addon-group">
+                            <input type="checkbox" id="ptAddon" />
+                            <label for="ptAddon">Add Advanced Personal Training</label>
+                            <span class="pt-price">(+₹6,000/month)</span>
+                        </div>
+                        <p class="pt-addon-desc">One-on-one coaching with a certified trainer, tailored to your goals.</p>
                     </div>
 
-                    <label style="display:block;font-size:0.9rem;color:var(--text-secondary);margin-bottom:0.5rem;">Payment Method</label>
-                    <div class="payment-methods">
-                        <button class="active"><i class="fas fa-mobile-alt"></i> UPI</button>
-                        <button><i class="fas fa-credit-card"></i> Credit</button>
-                        <button><i class="fas fa-wallet"></i> Wallet</button>
+                    <!-- Payment Methods -->
+                    <div>
+                        <label style="display:block;font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:var(--gr-xs);">Payment Method</label>
+                        <div class="payment-methods">
+                            <button class="active"><i class="fas fa-mobile-alt"></i> UPI</button>
+                            <button><i class="fas fa-credit-card"></i> Credit</button>
+                            <button><i class="fas fa-wallet"></i> Wallet</button>
+                        </div>
                     </div>
                 </div>
 
-                <div>
+                <!-- Right column – Summary -->
+                <div class="checkout-right">
                     <h3>Summary</h3>
-                    <div class="summary-line"><span>Plan</span><span id="summaryPlanPrice">₹4,000.00</span></div>
-                    <div class="summary-line" id="ptSummaryRow" style="display:none;"><span>Advanced Personal Training</span><span id="summaryPtPrice">₹6,000.00</span></div>
-                    <div class="summary-line" id="discountSummaryRow" style="display:none;"><span>Discount</span><span id="summaryDiscount">-₹0.00</span></div>
-                    <div class="summary-line"><span>GST (18%)</span><span id="summaryGst">₹720.00</span></div>
-                    <div class="summary-line total"><span>Total</span><span id="summaryTotal">₹4,720.00</span></div>
-                    <button class="btn-primary" style="width:100%;margin-top:1.5rem;" id="proceedPaymentBtn"><i class="fas fa-lock"></i> Proceed to Payment</button>
+                    <div class="summary-line"><span>Plan</span><span class="amount" id="summaryPlanPrice">₹4,000.00</span></div>
+                    <div class="summary-line" id="ptSummaryRow" style="display:none;"><span>Advanced Personal Training</span><span class="amount" id="summaryPtPrice">₹6,000.00</span></div>
+                    <div class="summary-line" id="discountSummaryRow" style="display:none;"><span>Discount</span><span class="amount" id="summaryDiscount">-₹0.00</span></div>
+                    <div class="summary-line"><span>GST (18%)</span><span class="amount" id="summaryGst">₹720.00</span></div>
+                    <div class="summary-line total"><span>Total</span><span class="amount highlight" id="summaryTotal">₹4,720.00</span></div>
+                    <button class="btn-primary proceed-btn" id="proceedPaymentBtn"><i class="fas fa-lock"></i> Proceed to Payment</button>
                 </div>
             </div>
         </div>
@@ -921,20 +1118,16 @@
         });
 
         // -------------------------------------------------------------
-        // CHECKOUT LOGIC (with per‑month discount)
+        // CHECKOUT LOGIC (with per‑month discount, no automatic scroll)
         // -------------------------------------------------------------
         (function() {
-            // ----- Data -----
             var planData = {
                 'Starter': { price: 1500, duration: 1 },
                 'Pro':     { price: 4000, duration: 3 },
                 'Elite':   { price: 7500, duration: 6 }
             };
-
-            // PT addon per month
             var PT_PRICE_PER_MONTH = 6000;
 
-            // DOM refs
             var selectedPlanNameEl = document.getElementById('selectedPlanName');
             var summaryPlanPriceEl = document.getElementById('summaryPlanPrice');
             var summaryPtRow = document.getElementById('ptSummaryRow');
@@ -948,23 +1141,12 @@
             var applyDiscountBtn = document.getElementById('applyDiscountBtn');
             var discountMessageEl = document.getElementById('discountMessage');
 
-            // Current state
             var currentPlan = 'Pro';
             var currentPrice = 4000;
             var currentDuration = 3;
-            var currentDiscountPerMonth = 0; // per month discount amount
+            var currentDiscountPerMonth = 0;
             var ptAddonActive = false;
 
-            // Helper: get base price for plan+duration
-            function getPlanPrice(planName) {
-                return planData[planName] ? planData[planName].price : 0;
-            }
-
-            function getPlanDuration(planName) {
-                return planData[planName] ? planData[planName].duration : 0;
-            }
-
-            // Calculate final total (includes PT, discount, GST)
             function calculateTotal() {
                 var base = currentPrice;
                 var ptTotal = ptAddonActive ? PT_PRICE_PER_MONTH * currentDuration : 0;
@@ -975,13 +1157,10 @@
                 return { subtotal, gst, total, discountTotal, ptTotal };
             }
 
-            // Update the summary display
             function updateSummary() {
                 var result = calculateTotal();
-                // Plan price (without discounts)
                 summaryPlanPriceEl.textContent = '₹' + currentPrice.toFixed(2);
 
-                // PT row
                 if (ptAddonActive) {
                     summaryPtRow.style.display = 'flex';
                     summaryPtPriceEl.textContent = '₹' + result.ptTotal.toFixed(2);
@@ -989,7 +1168,6 @@
                     summaryPtRow.style.display = 'none';
                 }
 
-                // Discount row
                 if (result.discountTotal > 0) {
                     discountSummaryRow.style.display = 'flex';
                     discountSummaryEl.textContent = '-₹' + result.discountTotal.toFixed(2);
@@ -997,21 +1175,17 @@
                     discountSummaryRow.style.display = 'none';
                 }
 
-                // GST and Total
                 summaryGstEl.textContent = '₹' + result.gst.toFixed(2);
                 summaryTotalEl.textContent = '₹' + result.total.toFixed(2);
             }
 
-            // Apply a discount code
             function applyDiscount() {
                 var code = discountInput.value.trim().toUpperCase();
                 if (!code) {
                     discountMessageEl.innerHTML = '<span style="color:#ffa502;">⚠️ Please enter a discount code.</span>';
                     return;
                 }
-
                 var discount = window.DB ? window.DB.validateDiscountCode(code) : null;
-                // For STUDENT200, per-month discount is 200
                 if (code === 'STUDENT200' || (discount && discount.value === 200)) {
                     currentDiscountPerMonth = 200;
                     discountMessageEl.innerHTML = '<span style="color:var(--accent);">✅ Student discount applied! ₹200 off per month (Total: ₹' + (200 * currentDuration) + ' off).</span>';
@@ -1023,7 +1197,7 @@
                 }
             }
 
-            // Handle plan selection from cards
+            // Plan selection from cards – now without forcing scroll
             document.querySelectorAll('.format-card .btn-primary').forEach(function(btn) {
                 btn.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -1034,30 +1208,31 @@
                         currentPrice = planData[planName].price;
                         currentDuration = planData[planName].duration;
                         selectedPlanNameEl.textContent = planName;
-                        // Reset discount when switching plan
                         currentDiscountPerMonth = 0;
                         discountInput.value = '';
                         discountMessageEl.innerHTML = '';
-                        // PT checkbox unchecked by default? Let's keep it unchecked.
                         ptCheckbox.checked = false;
                         ptAddonActive = false;
                         updateSummary();
-                        // Scroll to checkout
+                        // Smooth scroll to checkout only when user clicks
                         document.getElementById('checkout').scrollIntoView({ behavior: 'smooth' });
                     }
                 });
             });
 
-            // PT addon toggle
             ptCheckbox.addEventListener('change', function() {
                 ptAddonActive = this.checked;
                 updateSummary();
             });
 
-            // Apply discount button
             applyDiscountBtn.addEventListener('click', applyDiscount);
+            discountInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    applyDiscount();
+                }
+            });
 
-            // Proceed to payment (demo)
             document.getElementById('proceedPaymentBtn').addEventListener('click', function() {
                 var total = summaryTotalEl.textContent;
                 alert('Payment of ' + total + ' processed successfully! (Demo)');
@@ -1066,14 +1241,15 @@
             // Initial update
             updateSummary();
 
-            // Ensure discount input can also be triggered by Enter key
-            discountInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    applyDiscount();
-                }
+            // Payment method toggle
+            document.querySelectorAll('.payment-methods button').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.payment-methods button').forEach(function(b) { b.classList.remove('active'); });
+                    this.classList.add('active');
+                });
             });
 
+            // No automatic scroll on page load
         })();
     </script>
 

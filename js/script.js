@@ -1,12 +1,13 @@
 // ============================================================
 //  ELITE FITNESS – MAIN JAVASCRIPT
-//  Theme Toggle (mobile‑friendly) & interactions
+//  Theme, Nav, Interactions, BMI, Countdown, Carousel, FAQ
+//  Golden Ratio spacing applied throughout
 // ============================================================
 
 (function() {
     'use strict';
 
-    // ----- THEME TOGGLE (supports both click & touch) -----
+    // ----- THEME TOGGLE (supports click & touch) -----
     const themeToggle = document.getElementById('themeToggle');
     const html = document.documentElement;
 
@@ -35,7 +36,6 @@
     updateToggleIcons(savedTheme);
 
     function toggleTheme(e) {
-        // Prevent default for touch events
         if (e) e.preventDefault();
         const current = html.getAttribute('data-theme');
         const next = current === 'light' ? 'dark' : 'light';
@@ -48,37 +48,6 @@
         // Add both click and touchstart for mobile
         themeToggle.addEventListener('click', toggleTheme);
         themeToggle.addEventListener('touchstart', toggleTheme, { passive: false });
-    }
-
-    // ----- HAMBURGER MENU (mobile) -----
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('navLinks');
-
-    if (hamburger && navLinks) {
-        // Toggle menu on hamburger click/tap
-        hamburger.addEventListener('click', function(e) {
-            e.stopPropagation();
-            this.classList.toggle('active');
-            navLinks.classList.toggle('open');
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(e) {
-            if (navLinks.classList.contains('open')) {
-                if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
-                    hamburger.classList.remove('active');
-                    navLinks.classList.remove('open');
-                }
-            }
-        });
-
-        // Close menu on link click (including admin and star members)
-        navLinks.querySelectorAll('a').forEach(function(link) {
-            link.addEventListener('click', function() {
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('open');
-            });
-        });
     }
 
     // ----- STICKY NAVBAR -----
@@ -123,6 +92,45 @@
         });
     });
 
+    // ----- INTERSECTION OBSERVER (Fade-in + Counters) -----
+    const sections = document.querySelectorAll('section');
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+
+                // Trigger counter animation on numbers with data-target
+                const nums = entry.target.querySelectorAll('.num[data-target]');
+                nums.forEach(function(num) {
+                    const target = parseFloat(num.dataset.target);
+                    if (!num.dataset.counted) {
+                        num.dataset.counted = 'true';
+                        animateCounter(num, target);
+                    }
+                });
+            }
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+
+    sections.forEach(function(sec) {
+        observer.observe(sec);
+    });
+
+    function animateCounter(el, target) {
+        const isFloat = target % 1 !== 0;
+        let current = 0;
+        const increment = target / 40;
+        const timer = setInterval(function() {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            el.textContent = isFloat ? current.toFixed(1) : Math.floor(current);
+        }, 20);
+    }
+
     // ----- BMI CALCULATOR -----
     const calcBtn = document.getElementById('calcBmi');
     if (calcBtn) {
@@ -163,7 +171,7 @@
         });
     }
 
-    // ----- COUNTDOWN TIMER -----
+    // ----- COUNTDOWN TIMER (30 days from now) -----
     const targetDate = new Date();
     targetDate.setDate(targetDate.getDate() + 30);
 
@@ -268,136 +276,15 @@
         });
     });
 
-    // ----- CHECKOUT: PLAN SELECTION & SUMMARY -----
-    const urlParams = new URLSearchParams(window.location.search);
-    const planParam = urlParams.get('plan');
-    const selectedPlanName = document.getElementById('selectedPlanName');
-    const summaryPlanPrice = document.getElementById('summaryPlanPrice');
-
-    const planData = {
-        'Starter': { price: 1500, duration: 1 },
-        'Pro': { price: 4000, duration: 3 },
-        'Elite': { price: 7500, duration: 6 }
-    };
-
-    let currentPlan = 'Pro';
-    let currentPrice = 4000;
-    let currentDiscount = 0;
-    let ptAddonActive = false;
-
-    if (planParam && planData[planParam]) {
-        currentPlan = planParam;
-        currentPrice = planData[planParam].price;
-        if (selectedPlanName) selectedPlanName.textContent = currentPlan;
-        if (summaryPlanPrice) summaryPlanPrice.textContent = '₹' + currentPrice.toFixed(2);
-    }
-
-    function updateSummary() {
-        let total = currentPrice;
-        let ptPrice = 0;
-        let discount = currentDiscount;
-
-        if (ptAddonActive) {
-            ptPrice = 6000;
-            total += ptPrice;
+    // ----- PARALLAX HERO (Desktop only) -----
+    if (window.innerWidth > 768) {
+        const hero = document.querySelector('.hero');
+        if (hero) {
+            window.addEventListener('scroll', function() {
+                const scrolled = window.scrollY;
+                hero.style.backgroundPositionY = scrolled * 0.3 + 'px';
+            }, { passive: true });
         }
-
-        if (discount > 0) {
-            total -= discount;
-        }
-
-        const gst = total * 0.18;
-        const finalTotal = total + gst;
-
-        const ptRow = document.getElementById('ptSummaryRow');
-        const ptPriceEl = document.getElementById('summaryPtPrice');
-        if (ptRow && ptPriceEl) {
-            if (ptAddonActive) {
-                ptRow.style.display = 'flex';
-                ptPriceEl.textContent = '₹' + ptPrice.toFixed(2);
-            } else {
-                ptRow.style.display = 'none';
-            }
-        }
-
-        const discountRow = document.getElementById('discountSummaryRow');
-        const discountEl = document.getElementById('summaryDiscount');
-        if (discountRow && discountEl) {
-            if (discount > 0) {
-                discountRow.style.display = 'flex';
-                discountEl.textContent = '-₹' + discount.toFixed(2);
-            } else {
-                discountRow.style.display = 'none';
-            }
-        }
-
-        if (summaryPlanPrice) summaryPlanPrice.textContent = '₹' + currentPrice.toFixed(2);
-        document.getElementById('summaryGst').textContent = '₹' + gst.toFixed(2);
-        document.getElementById('summaryTotal').textContent = '₹' + finalTotal.toFixed(2);
     }
-
-    // ----- PT ADDON TOGGLE -----
-    const ptCheckbox = document.getElementById('ptAddon');
-    if (ptCheckbox) {
-        ptCheckbox.addEventListener('change', function() {
-            ptAddonActive = this.checked;
-            updateSummary();
-        });
-    }
-
-    // ----- DISCOUNT CODE -----
-    const discountInput = document.getElementById('discountCodeInput');
-    const applyDiscountBtn = document.getElementById('applyDiscountBtn');
-    const discountMessage = document.getElementById('discountMessage');
-
-    if (applyDiscountBtn && discountInput) {
-        applyDiscountBtn.addEventListener('click', function() {
-            const code = discountInput.value.trim().toUpperCase();
-
-            if (!code) {
-                discountMessage.innerHTML = '<span style="color:#ffa502;">⚠️ Please enter a discount code.</span>';
-                return;
-            }
-
-            const discount = window.DB ? window.DB.validateDiscountCode(code) : null;
-
-            if (code === 'STUDENT200' || (discount && discount.value === 200)) {
-                currentDiscount = 200;
-                discountMessage.innerHTML = '<span style="color:var(--accent);">✅ Discount applied! ₹200 off.</span>';
-                updateSummary();
-            } else {
-                currentDiscount = 0;
-                discountMessage.innerHTML = '<span style="color:#ff4757;">❌ Invalid code. Please try again.</span>';
-                updateSummary();
-            }
-        });
-    }
-
-    // ----- PAYMENT BUTTON -----
-    const proceedBtn = document.getElementById('proceedPaymentBtn');
-    if (proceedBtn) {
-        proceedBtn.addEventListener('click', function() {
-            const total = document.getElementById('summaryTotal').textContent;
-            alert('Payment of ' + total + ' processed successfully! (Demo)');
-        });
-    }
-
-    // ----- PLAN BUTTONS (from membership cards) -----
-    document.querySelectorAll('.format-card .btn-primary').forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const card = this.closest('.format-card');
-            const planName = card.querySelector('h3').textContent;
-            const price = parseFloat(card.querySelector('.price').textContent.replace(/[₹,]/g, ''));
-            currentPlan = planName;
-            currentPrice = price;
-            if (selectedPlanName) selectedPlanName.textContent = planName;
-            document.getElementById('checkout').scrollIntoView({ behavior: 'smooth' });
-            updateSummary();
-        });
-    });
-
-    // Initial summary update
-    updateSummary();
 
 })();
