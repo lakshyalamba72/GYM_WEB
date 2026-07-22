@@ -20,23 +20,28 @@
 
     <style>
         /* ============================================================
-           MODAL STYLES (for Privacy Policy & Terms)
+           MODAL STYLES with Smooth Animation
            ============================================================ */
         .modal-overlay {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
             z-index: 9999;
+            display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
         .modal-overlay.active {
-            display: flex;
+            opacity: 1;
+            visibility: visible;
         }
         .modal-box {
             background: var(--bg-card);
@@ -49,6 +54,13 @@
             border: 1px solid var(--border-light);
             box-shadow: var(--shadow-lg);
             position: relative;
+            transform: translateY(20px) scale(0.95);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+        .modal-overlay.active .modal-box {
+            transform: translateY(0) scale(1);
+            opacity: 1;
         }
         .modal-box h2 {
             font-size: 24px;
@@ -132,7 +144,7 @@
     <!-- ============================================================
     HERO – ABOUT – FEATURES – PLANS – CHECKOUT – TRAINERS – FACILITIES
     CLASSES – BMI – OFFERS – FAQ – TESTIMONIALS – CONTACT
-    (All sections remain exactly as before)
+    (All sections remain exactly as before – I've kept them compact for space)
     ============================================================ -->
 
     <!-- ===== HERO ===== -->
@@ -140,18 +152,9 @@
         <div class="container">
             <div class="hero-grid">
                 <div class="hero-text">
-                    <div class="hero-badge">
-                        <span class="dot"></span>
-                        Elite Fitness – Forge Your Legacy
-                    </div>
-                    <h1>
-                        Build Strength.<br />
-                        <span class="highlight">Build Confidence.</span>
-                    </h1>
-                    <p>
-                        A premium fitness ecosystem designed for those who demand the best.
-                        Science-based training, world-class equipment, and a community that pushes you.
-                    </p>
+                    <div class="hero-badge"><span class="dot"></span>Elite Fitness – Forge Your Legacy</div>
+                    <h1>Build Strength.<br /><span class="highlight">Build Confidence.</span></h1>
+                    <p>A premium fitness ecosystem designed for those who demand the best. Science-based training, world-class equipment, and a community that pushes you.</p>
                     <div class="hero-actions">
                         <a href="#plans" class="btn-primary"><i class="fas fa-arrow-right"></i> Join Now</a>
                         <a href="#contact" class="btn-outline"><i class="fas fa-calendar-check"></i> Free Trial</a>
@@ -543,7 +546,7 @@
 
     <script>
         // ============================================================
-        // MODAL FUNCTIONS
+        // MODAL FUNCTIONS with Smooth Animation
         // ============================================================
         function openModal(type) {
             var overlay = document.getElementById('modalOverlay');
@@ -637,14 +640,14 @@
         });
 
         // ============================================================
-        // MOBILE MENU – ADDITIONAL FIX
+        // HAMBURGER MENU – FIXED
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             var hamburger = document.getElementById('hamburger');
             var navLinks = document.getElementById('navLinks');
 
             if (hamburger && navLinks) {
-                // Click event (works on both desktop & mobile)
+                // Use click event only – works on all browsers
                 hamburger.addEventListener('click', function(e) {
                     e.stopPropagation();
                     this.classList.toggle('active');
