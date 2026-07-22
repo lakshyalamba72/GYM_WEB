@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Elite Fitness – Admin Panel</title>
 
-    <!-- Theme Script (must run before page loads) -->
     <script>
         (function() {
             var savedTheme = localStorage.getItem('theme') || 'dark';
@@ -13,24 +12,159 @@
         })();
     </script>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-
-    <!-- MAIN STYLES -->
     <link rel="stylesheet" href="css/style.css" />
-
-    <!-- ADMIN STYLES -->
     <link rel="stylesheet" href="css/admin.css" />
+
+    <style>
+        /* ============================================================
+           ADMIN SPECIFIC OVERRIDES (clutter fix)
+           ============================================================ */
+        .admin-card {
+            padding: var(--gr-lg) !important;
+            margin-bottom: var(--gr-xl) !important;
+        }
+        .admin-card h3 {
+            font-size: 22px;
+            margin-bottom: var(--gr-md);
+        }
+        .admin-card table {
+            font-size: 14px;
+        }
+        .admin-card th,
+        .admin-card td {
+            padding: var(--gr-sm) var(--gr-md) !important;
+        }
+        .admin-actions {
+            gap: var(--gr-xs);
+        }
+        .admin-actions .btn-primary,
+        .admin-actions .btn-outline {
+            padding: 4px 14px;
+            font-size: 12px;
+            min-height: 32px;
+        }
+        .stat-card {
+            padding: var(--gr-md) !important;
+        }
+        .stat-card .stat-number {
+            font-size: 32px;
+        }
+
+        /* ============================================================
+           MODAL STYLES (for edit & assign)
+           ============================================================ */
+        .admin-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--gr-md);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .admin-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .admin-modal-box {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--gr-xl) var(--gr-lg);
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            transform: translateY(20px) scale(0.95);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+            opacity: 0;
+        }
+        .admin-modal-overlay.active .admin-modal-box {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        .admin-modal-box h2 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: var(--gr-md);
+            color: var(--text-primary);
+        }
+        .admin-modal-box .form-group {
+            margin-bottom: var(--gr-md);
+        }
+        .admin-modal-box .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: var(--gr-xs);
+        }
+        .admin-modal-box .form-group input,
+        .admin-modal-box .form-group select {
+            width: 100%;
+            padding: var(--gr-sm) var(--gr-md);
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
+            background: var(--bg-body);
+            color: var(--text-primary);
+            font-size: 15px;
+            font-family: var(--font);
+            min-height: 44px;
+        }
+        .admin-modal-box .form-group input:focus,
+        .admin-modal-box .form-group select:focus {
+            outline: 2px solid var(--accent);
+            border-color: transparent;
+        }
+        .admin-modal-box .modal-actions {
+            display: flex;
+            gap: var(--gr-sm);
+            margin-top: var(--gr-md);
+        }
+        .admin-modal-box .modal-actions button {
+            flex: 1;
+            justify-content: center;
+        }
+        .admin-modal-close {
+            position: absolute;
+            top: var(--gr-md);
+            right: var(--gr-md);
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 28px;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s ease;
+        }
+        .admin-modal-close:hover {
+            color: var(--text-primary);
+        }
+        @media (max-width: 480px) {
+            .admin-modal-box {
+                padding: var(--gr-lg) var(--gr-md);
+            }
+        }
+    </style>
 </head>
 <body>
 
     <!-- ============================================================
-    ADMIN LOGIN FORM
+    ADMIN LOGIN FORM (same as before – kept compact)
     ============================================================ -->
     <section id="adminLoginForm" style="display:flex;">
         <div class="login-container">
@@ -67,18 +201,13 @@
     </section>
 
     <!-- ============================================================
-    ADMIN DASHBOARD
+    ADMIN DASHBOARD (with improved spacing)
     ============================================================ -->
     <section id="adminDashboard" style="display:none;">
         <nav class="navbar" id="navbar">
             <div class="container">
                 <a href="index.html" class="nav-logo">ELITE<span>FITNESS</span></a>
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-                <ul class="nav-links" id="navLinks">
+                <ul class="nav-links">
                     <li><a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a></li>
                     <li><a href="#" id="adminLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
@@ -175,45 +304,65 @@
     </section>
 
     <!-- ============================================================
-    ASSIGN PLAN MODAL
+    ADMIN MODALS (Edit Member & Assign Plan)
     ============================================================ -->
-    <div id="assignPlanModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:9999;align-items:center;justify-content:center;padding:20px;">
-        <div style="background:var(--bg-card);border-radius:var(--radius-lg);padding:40px;max-width:520px;width:100%;border:1px solid var(--border-light);box-shadow:var(--shadow-lg);position:relative;max-height:90vh;overflow-y:auto;">
-            <button onclick="closeAssignPlanModal()" style="position:absolute;top:16px;right:20px;background:transparent;border:none;color:var(--text-muted);font-size:28px;cursor:pointer;line-height:1;">&times;</button>
-            
-            <h2 style="font-size:26px;font-weight:800;margin-bottom:4px;color:var(--text-primary);">Assign Plan</h2>
-            <p style="color:var(--text-muted);margin-bottom:24px;font-size:14px;" id="assignPlanMemberName">For: <strong>Member Name</strong></p>
 
+    <!-- Edit Member Modal -->
+    <div class="admin-modal-overlay" id="editMemberModal">
+        <div class="admin-modal-box">
+            <button class="admin-modal-close" onclick="closeEditMemberModal()">&times;</button>
+            <h2>Edit Member</h2>
+            <form id="editMemberForm">
+                <input type="hidden" id="editMemberId" />
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="editMemberName" />
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="editMemberPhone" />
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" id="editMemberAddress" />
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                    <button type="button" class="btn-outline" onclick="closeEditMemberModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Assign Plan Modal (replacing browser prompt) -->
+    <div class="admin-modal-overlay" id="assignPlanModal">
+        <div class="admin-modal-box">
+            <button class="admin-modal-close" onclick="closeAssignPlanModal()">&times;</button>
+            <h2>Assign Plan</h2>
             <form id="assignPlanForm">
                 <input type="hidden" id="assignPlanMemberId" />
-
-                <div style="margin-bottom:20px;">
-                    <label style="display:block;font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:6px;">Select Plan Type</label>
-                    <select id="assignPlanType" style="width:100%;padding:12px 16px;border-radius:8px;border:1px solid var(--border-light);background:var(--bg-body);color:var(--text-primary);font-size:15px;font-family:var(--font);cursor:pointer;">
+                <div class="form-group">
+                    <label>Select Plan Type</label>
+                    <select id="assignPlanType">
                         <option value="gym">Premium (Gym Only) – ₹4,000 / 3 months</option>
                         <option value="gym_pt">Premium + PT – ₹10,000 / 3 months</option>
                     </select>
                 </div>
-
-                <div style="margin-bottom:20px;">
-                    <label style="display:block;font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:6px;">Duration</label>
-                    <select id="assignPlanDuration" style="width:100%;padding:12px 16px;border-radius:8px;border:1px solid var(--border-light);background:var(--bg-body);color:var(--text-primary);font-size:15px;font-family:var(--font);cursor:pointer;">
+                <div class="form-group">
+                    <label>Duration</label>
+                    <select id="assignPlanDuration">
                         <option value="1">1 Month – ₹1,500</option>
                         <option value="3" selected>3 Months – ₹4,000</option>
                         <option value="6">6 Months – ₹7,500</option>
                     </select>
                 </div>
-
-                <div style="margin-bottom:24px;">
-                    <label style="display:flex;align-items:center;gap:12px;cursor:pointer;">
-                        <input type="checkbox" id="assignPlanStudentDiscount" style="width:20px;height:20px;accent-color:var(--accent);cursor:pointer;" />
-                        <span style="color:var(--text-secondary);font-size:14px;">Apply Student Discount <span style="color:var(--accent);font-weight:600;">(₹200 off)</span></span>
-                    </label>
+                <div class="form-group" style="display:flex; align-items:center; gap:12px;">
+                    <input type="checkbox" id="assignPlanStudentDiscount" style="width:20px; height:20px; accent-color:var(--accent);" />
+                    <label for="assignPlanStudentDiscount" style="font-size:14px; color:var(--text-secondary);">Apply Student Discount (₹200 off)</label>
                 </div>
-
-                <div style="display:flex;gap:12px;">
-                    <button type="submit" class="btn-primary" style="flex:1;justify-content:center;padding:14px;">Assign Plan</button>
-                    <button type="button" onclick="closeAssignPlanModal()" class="btn-outline" style="flex:1;justify-content:center;padding:14px;">Cancel</button>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Assign Plan</button>
+                    <button type="button" class="btn-outline" onclick="closeAssignPlanModal()">Cancel</button>
                 </div>
             </form>
         </div>
@@ -224,40 +373,6 @@
     ============================================================ -->
     <script src="js/data-layer.js"></script>
     <script src="js/admin.js"></script>
-
-    <!-- Mobile Menu Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const hamburger = document.getElementById('hamburger');
-            const navLinks = document.getElementById('navLinks');
-
-            if (hamburger) {
-                hamburger.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    this.classList.toggle('active');
-                    navLinks.classList.toggle('open');
-                });
-            }
-
-            // Close menu when clicking outside
-            document.addEventListener('click', function(e) {
-                if (navLinks && navLinks.classList.contains('open')) {
-                    if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
-                        hamburger.classList.remove('active');
-                        navLinks.classList.remove('open');
-                    }
-                }
-            });
-
-            // Close menu on link click
-            navLinks.querySelectorAll('a').forEach(function(link) {
-                link.addEventListener('click', function() {
-                    hamburger.classList.remove('active');
-                    navLinks.classList.remove('open');
-                });
-            });
-        });
-    </script>
 
 </body>
 </html>

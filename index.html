@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Elite Fitness – Built for Scale. Built for India.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elite Fitness – Admin Panel</title>
 
+    <!-- Theme Script (must run before page loads) -->
     <script>
         (function() {
             var savedTheme = localStorage.getItem('theme') || 'dark';
@@ -12,1119 +13,232 @@
         })();
     </script>
 
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <!-- MAIN STYLES -->
     <link rel="stylesheet" href="css/style.css" />
 
-    <style>
-        /* ============================================================
-           GOLDEN RATIO VARIABLES (1.618:1)
-           Fibonacci: 8, 13, 21, 34, 55, 89, 144
-           ============================================================ */
-        :root {
-            --gr-xs: 8px;
-            --gr-sm: 13px;
-            --gr-md: 21px;
-            --gr-lg: 34px;
-            --gr-xl: 55px;
-            --gr-xxl: 89px;
-            --gr-ratio: 1.618;
-        }
-
-        /* ============================================================
-           MODAL STYLES with Golden Ratio
-           ============================================================ */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(4px);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: var(--gr-md);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        .modal-box {
-            background: var(--bg-card);
-            border-radius: var(--radius-lg);
-            padding: var(--gr-xl) var(--gr-lg);
-            max-width: 600px;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-            border: 1px solid var(--border-light);
-            box-shadow: var(--shadow-lg);
-            position: relative;
-            transform: translateY(20px) scale(0.95);
-            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
-            opacity: 0;
-        }
-        .modal-overlay.active .modal-box {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-        }
-        .modal-box h2 {
-            font-size: clamp(28px, 3vw, 34px);
-            font-weight: 800;
-            margin-bottom: var(--gr-md);
-            color: var(--text-primary);
-            letter-spacing: -0.5px;
-        }
-        .modal-box p,
-        .modal-box ul {
-            color: var(--text-secondary);
-            line-height: 1.618;
-            font-size: clamp(15px, 1.2vw, 17px);
-            margin-bottom: var(--gr-md);
-        }
-        .modal-box ul {
-            padding-left: var(--gr-lg);
-        }
-        .modal-box ul li {
-            margin-bottom: var(--gr-sm);
-        }
-        .modal-box strong {
-            color: var(--accent);
-        }
-        .modal-close {
-            position: absolute;
-            top: var(--gr-md);
-            right: var(--gr-md);
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-size: 32px;
-            cursor: pointer;
-            line-height: 1;
-            transition: color 0.2s ease;
-            padding: var(--gr-xs);
-        }
-        .modal-close:hover {
-            color: var(--text-primary);
-        }
-        @media (max-width: 480px) {
-            .modal-box {
-                padding: var(--gr-lg) var(--gr-md);
-            }
-            .modal-box h2 {
-                font-size: 24px;
-            }
-        }
-
-        /* ============================================================
-           PURE CSS HAMBURGER – SMOOTH ANIMATION + GOLDEN RATIO
-           ============================================================ */
-
-        /* Hide checkbox completely */
-        .menu-toggle {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-            pointer-events: none;
-        }
-
-        /* Hamburger label – always visible on mobile */
-        .hamburger-label {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: var(--gr-sm);
-            min-height: 48px;
-            min-width: 48px;
-            justify-content: center;
-            z-index: 1001;
-            background: transparent;
-            border: none;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
-            position: relative;
-        }
-        .hamburger-label span {
-            display: block;
-            width: 26px;
-            height: 2.5px;
-            background: var(--text-primary);
-            border-radius: 2px;
-            transition: all 0.3s ease;
-            transform-origin: center;
-            pointer-events: none;
-        }
-
-        /* When checkbox is checked, transform to X */
-        .menu-toggle:checked ~ .nav-right .hamburger-label span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        .menu-toggle:checked ~ .nav-right .hamburger-label span:nth-child(2) {
-            opacity: 0;
-        }
-        .menu-toggle:checked ~ .nav-right .hamburger-label span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
-
-        /* Show hamburger on mobile */
-        @media (max-width: 768px) {
-            .hamburger-label {
-                display: flex !important;
-            }
-
-            .nav-links {
-                position: absolute;
-                top: 72px;
-                left: 0;
-                right: 0;
-                background: var(--bg-nav);
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                border-bottom: 1px solid var(--border-light);
-                box-shadow: var(--shadow-md);
-                padding: var(--gr-lg) var(--gr-md);
-                display: flex;
-                flex-direction: column;
-                gap: var(--gr-md);
-                align-items: stretch;
-                text-align: center;
-                max-height: 0;
-                overflow: hidden;
-                opacity: 0;
-                transform: translateY(-10px) scaleY(0.95);
-                transform-origin: top center;
-                transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-                            opacity 0.4s ease,
-                            transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                            padding 0.4s ease;
-                pointer-events: none;
-                z-index: 999;
-                border-radius: 0 0 var(--radius) var(--radius);
-            }
-
-            /* When checkbox is checked, show the menu with smooth animation */
-            .menu-toggle:checked ~ .nav-links {
-                max-height: 80vh;
-                opacity: 1;
-                transform: translateY(0) scaleY(1);
-                pointer-events: auto;
-                padding: var(--gr-lg) var(--gr-md);
-            }
-
-            .nav-links li {
-                opacity: 0;
-                transform: translateY(-8px);
-                transition: opacity 0.35s ease 0.1s, transform 0.35s ease 0.1s;
-            }
-            .menu-toggle:checked ~ .nav-links li {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            .menu-toggle:checked ~ .nav-links li:nth-child(2) { transition-delay: 0.13s; }
-            .menu-toggle:checked ~ .nav-links li:nth-child(3) { transition-delay: 0.16s; }
-            .menu-toggle:checked ~ .nav-links li:nth-child(4) { transition-delay: 0.19s; }
-            .menu-toggle:checked ~ .nav-links li:nth-child(5) { transition-delay: 0.22s; }
-            .menu-toggle:checked ~ .nav-links li:nth-child(6) { transition-delay: 0.25s; }
-            .menu-toggle:checked ~ .nav-links li:nth-child(7) { transition-delay: 0.28s; }
-
-            .nav-links a {
-                font-size: 18px;
-                font-weight: 600;
-                padding: var(--gr-sm) 0;
-                color: var(--text-primary);
-                display: block;
-                border-bottom: 1px solid transparent;
-                transition: border-color 0.2s ease, color 0.2s ease;
-                letter-spacing: 0.3px;
-            }
-            .nav-links a:hover {
-                color: var(--accent);
-            }
-            .nav-links a::after {
-                display: none;
-            }
-
-            .nav-links .admin-link {
-                border: 1.5px solid var(--accent);
-                border-radius: var(--radius);
-                padding: var(--gr-sm) var(--gr-md);
-                margin-top: var(--gr-sm);
-                background: var(--accent-dim);
-                color: var(--accent);
-                font-weight: 700;
-            }
-            .nav-links .admin-link i {
-                margin-right: var(--gr-sm);
-            }
-
-            .nav-links .nav-cta {
-                background: var(--accent);
-                color: #0F0F0F !important;
-                padding: var(--gr-sm) var(--gr-md);
-                border-radius: 40px;
-                font-weight: 700 !important;
-                font-size: 16px !important;
-                width: 100%;
-                text-align: center;
-                border: none;
-                margin-top: var(--gr-sm);
-            }
-            .nav-links .nav-cta:hover {
-                background: var(--accent-hover) !important;
-            }
-        }
-
-        /* Force desktop: hide hamburger, show nav-links inline */
-        @media (min-width: 769px) {
-            .hamburger-label {
-                display: none !important;
-            }
-            .nav-links {
-                display: flex !important;
-                position: static;
-                background: transparent;
-                backdrop-filter: none;
-                box-shadow: none;
-                padding: 0;
-                max-height: none;
-                opacity: 1;
-                transform: none;
-                pointer-events: auto;
-                flex-direction: row;
-                gap: var(--gr-lg);
-                border-radius: 0;
-                border-bottom: none;
-            }
-            .nav-links li {
-                opacity: 1;
-                transform: none;
-            }
-            .nav-links a {
-                font-size: 14px;
-                padding: 0;
-                border-bottom: none;
-            }
-            .nav-links .admin-link {
-                border: none;
-                padding: 0;
-                background: transparent;
-                color: var(--text-secondary);
-                margin-top: 0;
-            }
-            .nav-links .admin-link i {
-                margin-right: 4px;
-            }
-            .nav-links .nav-cta {
-                padding: var(--gr-xs) var(--gr-md);
-                font-size: 13px !important;
-                width: auto;
-                margin-top: 0;
-            }
-        }
-
-        /* Ensure theme toggle and hamburger sit together */
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: var(--gr-sm);
-            flex-shrink: 0;
-            z-index: 1002;
-            position: relative;
-        }
-
-        /* Navbar container fixes */
-        .navbar .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: nowrap;
-        }
-        .nav-logo {
-            flex-shrink: 0;
-            font-size: clamp(20px, 2.5vw, 26px);
-        }
-
-        /* Navbar theme toggle inside */
-        .navbar .theme-toggle {
-            background: var(--bg-card);
-            border: 1px solid var(--border-light);
-            border-radius: 40px;
-            padding: var(--gr-xs) var(--gr-md);
-            display: flex;
-            align-items: center;
-            gap: var(--gr-sm);
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
-            box-shadow: var(--shadow-sm);
-            transition: background 0.3s ease, border-color 0.3s ease;
-            font-family: var(--font);
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            min-height: 40px;
-            min-width: 40px;
-        }
-        .navbar .theme-toggle:active {
-            transform: scale(0.95);
-        }
-        .navbar .theme-toggle .toggle-label {
-            display: inline;
-        }
-        @media (max-width: 768px) {
-            .navbar .theme-toggle .toggle-label {
-                display: none;
-            }
-            .navbar .theme-toggle {
-                padding: var(--gr-xs) var(--gr-sm);
-                font-size: 14px;
-                min-height: 40px;
-                min-width: 40px;
-            }
-        }
-
-        /* ============================================================
-           GOLDEN RATIO APPLIED TO OTHER ELEMENTS
-           ============================================================ */
-        .container {
-            padding: 0 var(--gr-lg);
-        }
-        .section {
-            padding: var(--gr-xxl) 0;
-        }
-        .section-title {
-            font-size: clamp(32px, 4vw, 44px);
-            margin-bottom: var(--gr-md);
-        }
-        .section-desc {
-            font-size: clamp(16px, 1.2vw, 18px);
-            line-height: 1.618;
-        }
-        .format-card {
-            padding: var(--gr-lg);
-        }
-        .format-card .price {
-            font-size: 32px;
-        }
-        .format-card ul li {
-            padding: var(--gr-xs) 0;
-            gap: var(--gr-sm);
-        }
-        .feature-item {
-            padding: var(--gr-lg) var(--gr-md);
-        }
-        .feature-item i {
-            font-size: 28px;
-            margin-bottom: var(--gr-sm);
-        }
-        .feature-item h4 {
-            font-size: 18px;
-        }
-        .trainer-card .info {
-            padding: var(--gr-md);
-        }
-        .trainer-card h4 {
-            font-size: 20px;
-            margin-bottom: var(--gr-xs);
-        }
-        .facility-item {
-            padding: var(--gr-md);
-        }
-        .facility-item i {
-            font-size: 2rem;
-            margin-bottom: var(--gr-sm);
-        }
-        .class-card {
-            padding: var(--gr-md);
-        }
-        .class-card i {
-            font-size: 2rem;
-            margin-bottom: var(--gr-sm);
-        }
-        .bmi-box {
-            padding: var(--gr-lg);
-        }
-        .bmi-box input {
-            padding: var(--gr-sm) var(--gr-md);
-            margin-bottom: var(--gr-md);
-        }
-        .offer-banner {
-            padding: var(--gr-xl) var(--gr-lg);
-        }
-        .offer-banner .countdown {
-            gap: var(--gr-lg);
-            margin: var(--gr-md) 0;
-        }
-        .faq-question {
-            padding: var(--gr-md) var(--gr-md);
-            gap: var(--gr-sm);
-        }
-        .faq-answer {
-            padding: 0 var(--gr-md);
-        }
-        .faq-item.active .faq-answer {
-            padding: 0 var(--gr-md) var(--gr-md);
-        }
-        .testimonial-card {
-            padding: var(--gr-lg);
-        }
-        .testimonial-card img {
-            margin: 0 auto var(--gr-md);
-        }
-        .contact-info p {
-            gap: var(--gr-sm);
-            margin-bottom: var(--gr-sm);
-        }
-        .contact-actions {
-            gap: var(--gr-sm);
-            margin-top: var(--gr-md);
-        }
-        .footer-grid {
-            gap: var(--gr-xl);
-            margin-bottom: var(--gr-xl);
-        }
-        .footer h4 {
-            margin-bottom: var(--gr-md);
-        }
-        .footer ul li {
-            margin-bottom: var(--gr-xs);
-        }
-        .footer-social {
-            gap: var(--gr-md);
-        }
-        .footer-bottom {
-            padding-top: var(--gr-md);
-            gap: var(--gr-sm);
-        }
-        .floating {
-            bottom: var(--gr-lg);
-            right: var(--gr-lg);
-            gap: var(--gr-sm);
-        }
-
-        /* Mobile specific golden ratio overrides */
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 var(--gr-md);
-            }
-            .section {
-                padding: var(--gr-xl) 0;
-            }
-            .format-card {
-                padding: var(--gr-md);
-            }
-            .format-card .price {
-                font-size: 28px;
-            }
-            .feature-item {
-                padding: var(--gr-md) var(--gr-sm);
-            }
-            .feature-item i {
-                font-size: 22px;
-            }
-            .facility-item {
-                padding: var(--gr-sm);
-            }
-            .facility-item i {
-                font-size: 1.6rem;
-            }
-            .class-card {
-                padding: var(--gr-sm);
-            }
-            .class-card i {
-                font-size: 1.6rem;
-            }
-            .bmi-box {
-                padding: var(--gr-md);
-            }
-            .offer-banner {
-                padding: var(--gr-lg) var(--gr-md);
-            }
-            .offer-banner .countdown {
-                gap: var(--gr-md);
-                font-size: 1.8rem;
-                flex-wrap: wrap;
-            }
-            .offer-banner .countdown span {
-                padding: var(--gr-sm) var(--gr-md);
-                min-width: 55px;
-            }
-            .faq-question {
-                padding: var(--gr-sm) var(--gr-md);
-                font-size: 15px;
-            }
-            .testimonial-card {
-                padding: var(--gr-md);
-            }
-            .contact-grid {
-                gap: var(--gr-lg);
-            }
-            .footer-grid {
-                gap: var(--gr-lg);
-            }
-            .floating {
-                bottom: var(--gr-md);
-                right: var(--gr-md);
-                gap: var(--gr-sm);
-            }
-            .floating .whatsapp {
-                width: 50px;
-                height: 50px;
-                font-size: 1.8rem;
-            }
-            .floating .back-top {
-                width: 42px;
-                height: 42px;
-                font-size: 1.2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 var(--gr-sm);
-            }
-            .section {
-                padding: var(--gr-lg) 0;
-            }
-            .section-title {
-                font-size: 26px;
-            }
-            .format-card .price {
-                font-size: 24px;
-            }
-            .hero-text h1 {
-                font-size: 28px;
-            }
-            .hero-text p {
-                font-size: 15px;
-            }
-            .modal-box {
-                padding: var(--gr-lg) var(--gr-md);
-            }
-            .modal-box h2 {
-                font-size: 22px;
-            }
-        }
-    </style>
+    <!-- ADMIN STYLES -->
+    <link rel="stylesheet" href="css/admin.css" />
 </head>
 <body>
 
     <!-- ============================================================
-    NAVBAR with Smooth Hamburger
+    ADMIN LOGIN FORM
     ============================================================ -->
-    <nav class="navbar" id="navbar">
-        <div class="container">
-
-            <!-- Hidden checkbox – MUST be before nav-links -->
-            <input type="checkbox" id="menu-toggle" class="menu-toggle" />
-
-            <a href="index.html" class="nav-logo">ELITE<span>FITNESS</span></a>
-
-            <div class="nav-right">
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    <span class="icon-sun"><i class="fas fa-sun"></i></span>
-                    <span class="icon-moon"><i class="fas fa-moon"></i></span>
-                    <span class="toggle-label">Theme</span>
-                </button>
-
-                <!-- Hamburger label (pure CSS) -->
-                <label for="menu-toggle" class="hamburger-label" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </label>
+    <section id="adminLoginForm" style="display:flex;">
+        <div class="login-container">
+            <div class="login-box">
+                <span class="login-icon"><i class="fas fa-user-shield"></i></span>
+                <h2>Admin Login</h2>
+                <p class="login-subtitle">Enter your credentials to access the admin panel.</p>
+                <form id="adminLoginFormElement">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="adminEmail" placeholder="admin@elitefitness.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <div style="position:relative;">
+                            <input type="password" id="adminPassword" placeholder="Enter password" required style="width:100%;padding-right:50px;" />
+                            <button type="button" id="togglePassword" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;padding:4px;">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+                        <input type="checkbox" id="rememberMe" />
+                        <label for="rememberMe" style="color:var(--text-secondary);font-size:13px;cursor:pointer;">Remember me on this device</label>
+                    </div>
+                    <div id="adminLoginError" class="login-error"></div>
+                    <button type="submit" class="btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
+                </form>
+                <div class="login-footer">
+                    <a href="index.html">← Back to Home</a>
+                </div>
             </div>
-
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#about">About</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#plans">Plans</a></li>
-                <li><a href="#trainers">Trainers</a></li>
-                <li><a href="star-members.html">Star Members</a></li>
-                <li><a href="admin.html" class="admin-link"><i class="fas fa-user-shield"></i> Admin</a></li>
-                <li><a href="dashboard.html" class="nav-cta">Login</a></li>
-            </ul>
-
         </div>
-    </nav>
+    </section>
 
     <!-- ============================================================
-    ALL OTHER SECTIONS (unchanged – kept compact for space)
+    ADMIN DASHBOARD
     ============================================================ -->
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-grid">
-                <div class="hero-text">
-                    <div class="hero-badge"><span class="dot"></span>Elite Fitness – Forge Your Legacy</div>
-                    <h1>Build Strength.<br /><span class="highlight">Build Confidence.</span></h1>
-                    <p>A premium fitness ecosystem designed for those who demand the best. Science-based training, world-class equipment, and a community that pushes you.</p>
-                    <div class="hero-actions">
-                        <a href="#plans" class="btn-primary"><i class="fas fa-arrow-right"></i> Join Now</a>
-                        <a href="#contact" class="btn-outline"><i class="fas fa-calendar-check"></i> Free Trial</a>
-                    </div>
-                    <div class="hero-stats">
-                        <div><div class="stat-number">1200+</div><div class="stat-label">Active Members</div></div>
-                        <div><div class="stat-number">4.9★</div><div class="stat-label">Average Rating</div></div>
-                        <div><div class="stat-number">10+</div><div class="stat-label">Years of Excellence</div></div>
-                    </div>
-                </div>
-                <div class="hero-image">
-                    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" alt="Elite Fitness Gym" loading="lazy" />
-                </div>
+    <section id="adminDashboard" style="display:none;">
+        <nav class="navbar" id="navbar">
+            <div class="container">
+                <a href="index.html" class="nav-logo">ELITE<span>FITNESS</span></a>
+                <ul class="nav-links">
+                    <li><a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a></li>
+                    <li><a href="#" id="adminLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
             </div>
-        </div>
-    </section>
+        </nav>
 
-    <section class="section" id="about">
-        <div class="container">
-            <div class="grid-2">
-                <div>
-                    <span class="section-label">About Elite Fitness</span>
-                    <h2 class="section-title">More Than a Gym – <span class="highlight">A Lifestyle</span></h2>
-                    <p class="section-desc">We combine science-backed training, premium equipment, and a supportive community to help you achieve results that last. Whether you're a beginner or a seasoned athlete, we have the tools and expertise to guide you.</p>
-                    <p class="section-desc" style="margin-top:12px;">Our trainers are among the best in the industry – certified, experienced, and passionate about your success.</p>
-                </div>
-                <div>
-                    <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=800&q=80" alt="Elite Fitness Interior" loading="lazy" style="width:100%; border-radius:var(--radius-lg); box-shadow:var(--shadow-md);" />
-                </div>
-            </div>
-        </div>
-    </section>
+        <div class="admin-dashboard">
+            <div class="container">
 
-    <section class="section section-alt" id="features">
-        <div class="container">
-            <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
-                <span class="section-label">Why Elite Fitness</span>
-                <h2 class="section-title">Built on <span class="highlight">Real Science</span>, Not Just Hype</h2>
-                <p class="section-desc" style="margin:0 auto;">Every aspect of our gym is designed with your results in mind.</p>
-            </div>
-            <div class="feature-grid">
-                <div class="feature-item"><i class="fas fa-dumbbell"></i><h4>Premium Equipment</h4><p>Top-tier machines and free weights for every muscle group.</p></div>
-                <div class="feature-item"><i class="fas fa-user-graduate"></i><h4>Certified Trainers</h4><p>Science-based coaches with real-world experience.</p></div>
-                <div class="feature-item"><i class="fas fa-apple-alt"></i><h4>Diet Guidance</h4><p>Personalized nutrition plans tailored to your goals.</p></div>
-                <div class="feature-item"><i class="fas fa-clock"></i><h4>Flexible Timings</h4><p>Open 5 AM – 12 AM, 365 days a year. No excuses.</p></div>
-            </div>
-        </div>
-    </section>
+                <h1>👋 Welcome, <span id="adminName">Admin</span></h1>
+                <p class="subtitle">Manage members, subscriptions, and track renewals.</p>
 
-    <section class="section" id="plans">
-        <div class="container">
-            <div style="text-align:center; max-width:700px; margin:0 auto 48px;">
-                <span class="section-label">Membership Plans</span>
-                <h2 class="section-title">Choose the <span class="highlight">Right Plan</span> for You</h2>
-                <p class="section-desc" style="margin:0 auto;">Flexible options to match your commitment level and goals.</p>
-            </div>
-            <div class="grid-3">
-                <div class="format-card">
-                    <h3>Starter</h3>
-                    <div class="subtitle">1 Month Membership</div>
-                    <div class="price">₹1,500 <span>/mo</span></div>
-                    <ul>
-                        <li><i class="fas fa-check"></i> Full gym access</li>
-                        <li><i class="fas fa-check"></i> Locker room & showers</li>
-                        <li><i class="fas fa-check"></i> 1 Group class / week</li>
-                    </ul>
-                    <a href="#checkout" class="btn-primary" style="width:100%; justify-content:center;">Join Now</a>
-                </div>
-                <div class="format-card" style="border-color:var(--accent);">
-                    <span class="popular">Best Value</span>
-                    <h3>Pro</h3>
-                    <div class="subtitle">3 Month Membership</div>
-                    <div class="price">₹4,000 <span>/mo</span></div>
-                    <ul>
-                        <li><i class="fas fa-check"></i> Everything in Starter</li>
-                        <li><i class="fas fa-check"></i> Unlimited group classes</li>
-                        <li><i class="fas fa-check"></i> 2 Personal training sessions</li>
-                        <li><i class="fas fa-check"></i> Custom diet plan</li>
-                    </ul>
-                    <a href="#checkout" class="btn-primary" style="width:100%; justify-content:center;">Join Now</a>
-                </div>
-                <div class="format-card">
-                    <h3>Elite</h3>
-                    <div class="subtitle">6 Month Membership</div>
-                    <div class="price">₹7,500 <span>/mo</span></div>
-                    <ul>
-                        <li><i class="fas fa-check"></i> Everything in Pro</li>
-                        <li><i class="fas fa-check"></i> Unlimited PT sessions</li>
-                        <li><i class="fas fa-check"></i> 24/7 keycard access</li>
-                        <li><i class="fas fa-check"></i> Priority class booking</li>
-                    </ul>
-                    <a href="#checkout" class="btn-primary" style="width:100%; justify-content:center;">Join Now</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section section-alt" id="checkout">
-        <div class="container">
-            <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
-                <span class="section-label">Secure Checkout</span>
-                <h2 class="section-title">Complete Your <span class="highlight">Membership</span></h2>
-            </div>
-            <div class="checkout-wrapper" id="checkoutWrapper">
-                <div>
-                    <h3>Selected Plan: <span id="selectedPlanName">Pro</span></h3>
-                    <p style="color:var(--text-secondary);">Monthly recurring, cancel anytime.</p>
-                    <div style="margin:1.5rem 0;">
-                        <label style="display:block;font-size:0.9rem;color:var(--text-secondary);margin-bottom:0.3rem;">Coupon Code</label>
-                        <div style="display:flex; gap:10px;">
-                            <input type="text" id="discountCodeInput" placeholder="Enter code (e.g., STUDENT200)" style="flex:1; padding:0.8rem; border-radius:8px; border:1px solid var(--border-light); background:var(--bg-card); color:var(--text-primary);" />
-                            <button class="btn-outline" id="applyDiscountBtn">Apply</button>
-                        </div>
-                        <div id="discountMessage" style="margin-top:0.5rem; font-size:0.9rem;"></div>
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalMembers">0</div>
+                        <div class="stat-label">Total Members</div>
                     </div>
-                    <div style="margin:1.5rem 0;">
-                        <label style="display:flex; align-items:center; gap:12px; cursor:pointer;">
-                            <input type="checkbox" id="ptAddon" style="width:20px; height:20px; accent-color:var(--accent);" />
-                            <span style="font-weight:600;">Add Advanced Personal Training</span>
-                            <span style="color:var(--accent); font-weight:700;">(+₹6,000/month)</span>
-                        </label>
-                        <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px; margin-left:32px;">One-on-one coaching with a certified trainer, tailored to your goals.</p>
+                    <div class="stat-card">
+                        <div class="stat-number" id="activeMemberships">0</div>
+                        <div class="stat-label">Active Subscriptions</div>
                     </div>
-                    <label style="display:block;font-size:0.9rem;color:var(--text-secondary);margin-bottom:0.5rem;">Payment Method</label>
-                    <div class="payment-methods">
-                        <button class="active"><i class="fas fa-mobile-alt"></i> UPI</button>
-                        <button><i class="fas fa-credit-card"></i> Credit</button>
-                        <button><i class="fas fa-wallet"></i> Wallet</button>
+                    <div class="stat-card">
+                        <div class="stat-number" id="expiringMemberships">0</div>
+                        <div class="stat-label">Expiring in 7 Days</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="expiredMemberships">0</div>
+                        <div class="stat-label">Expired</div>
                     </div>
                 </div>
-                <div>
-                    <h3>Summary</h3>
-                    <div class="summary-line"><span>Plan</span><span id="summaryPlanPrice">₹4,000.00</span></div>
-                    <div class="summary-line" id="ptSummaryRow" style="display:none;"><span>Advanced Personal Training</span><span id="summaryPtPrice">₹6,000.00</span></div>
-                    <div class="summary-line" id="discountSummaryRow" style="display:none;"><span>Discount</span><span id="summaryDiscount">-₹0.00</span></div>
-                    <div class="summary-line"><span>GST (18%)</span><span id="summaryGst">₹720.00</span></div>
-                    <div class="summary-line total"><span>Total</span><span id="summaryTotal">₹4,720.00</span></div>
-                    <button class="btn-primary" style="width:100%;margin-top:1.5rem;" id="proceedPaymentBtn"><i class="fas fa-lock"></i> Proceed to Payment</button>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="section" id="trainers">
-        <div class="container">
-            <div style="text-align:center; max-width:700px; margin:0 auto 48px;">
-                <span class="section-label">Our Trainers</span>
-                <h2 class="section-title">Learn from the <span class="highlight">Best</span></h2>
-                <p class="section-desc" style="margin:0 auto;">Certified professionals dedicated to your success.</p>
-            </div>
-            <div class="trainer-grid">
-                <div class="trainer-card">
-                    <img src="images/trainer-jeff.webp" alt="Jeff Nippard" loading="lazy" />
-                    <div class="info">
-                        <h4>Jeff Nippard</h4>
-                        <p>Science-Based Strength Coach</p>
-                        <p style="font-size:0.85rem; color:var(--text-muted);">10+ Years • Bodybuilding & Powerlifting</p>
-                        <button class="btn-primary" style="padding:0.4rem 1.2rem;font-size:0.8rem;margin-top:0.5rem;">Book Session</button>
+                <!-- All Members -->
+                <div class="admin-card">
+                    <h3><i class="fas fa-users"></i> All Members</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Plan</th>
+                                    <th>PT</th>
+                                    <th>Expiry</th>
+                                    <th>Days Left</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="membersTableBody"></tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="trainer-card">
-                    <img src="images/trainer-chris.webp" alt="Chris Bumstead" loading="lazy" />
-                    <div class="info">
-                        <h4>Chris Bumstead</h4>
-                        <p>Classic Physique Specialist</p>
-                        <p style="font-size:0.85rem; color:var(--text-muted);">8+ Years • Classic Physique & Aesthetics</p>
-                        <button class="btn-primary" style="padding:0.4rem 1.2rem;font-size:0.8rem;margin-top:0.5rem;">Book Session</button>
+
+                <!-- Expiring Soon -->
+                <div class="admin-card" style="border-color:var(--accent);">
+                    <h3><i class="fas fa-clock" style="color:var(--accent);"></i> Expiring in 7 Days</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Member</th>
+                                    <th>Plan</th>
+                                    <th>Expiry Date</th>
+                                    <th>Days Left</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expiringTableBody"></tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="section section-alt" id="facilities">
-        <div class="container">
-            <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
-                <span class="section-label">Facilities</span>
-                <h2 class="section-title">Everything You <span class="highlight">Need</span></h2>
-            </div>
-            <div class="facility-grid">
-                <div class="facility-item"><i class="fas fa-weight-hanging"></i><p>Strength Zone</p></div>
-                <div class="facility-item"><i class="fas fa-heartbeat"></i><p>Cardio Zone</p></div>
-                <div class="facility-item"><i class="fas fa-running"></i><p>CrossFit</p></div>
-                <div class="facility-item"><i class="fas fa-arrows-alt-h"></i><p>Functional Area</p></div>
-                <div class="facility-item"><i class="fas fa-tshirt"></i><p>Locker Room</p></div>
-                <div class="facility-item"><i class="fas fa-car"></i><p>Parking</p></div>
-                <div class="facility-item"><i class="fas fa-hot-tub"></i><p>Steam Bath</p></div>
-                <div class="facility-item"><i class="fas fa-snowflake"></i><p>Air Conditioning</p></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section" id="classes">
-        <div class="container">
-            <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
-                <span class="section-label">Group Classes</span>
-                <h2 class="section-title">Train <span class="highlight">Together</span></h2>
-            </div>
-            <div class="class-grid">
-                <div class="class-card"><i class="fas fa-bolt"></i><h4>HIIT</h4><div class="time">Mon/Wed/Fri • 6:00 AM</div></div>
-                <div class="class-card"><i class="fas fa-spa"></i><h4>Yoga</h4><div class="time">Tue/Thu • 7:00 PM</div></div>
-                <div class="class-card"><i class="fas fa-fire"></i><h4>CrossFit</h4><div class="time">Daily • 8:00 AM</div></div>
-                <div class="class-card"><i class="fas fa-arrow-up"></i><h4>Strength</h4><div class="time">Mon/Wed/Fri • 12:00 PM</div></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section section-alt" id="bmi">
-        <div class="container">
-            <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
-                <span class="section-label">BMI Calculator</span>
-                <h2 class="section-title">Know Your <span class="highlight">Numbers</span></h2>
-            </div>
-            <div class="bmi-box">
-                <input type="number" id="bmiHeight" placeholder="Height in cm (e.g., 175)" min="1" />
-                <input type="number" id="bmiWeight" placeholder="Weight in kg (e.g., 70)" min="1" />
-                <button class="btn-primary" id="calcBmi" style="width:100%;">Calculate BMI</button>
-                <div class="bmi-result" id="bmiResult">
-                    <div class="bmi-number">--</div>
-                    <p id="bmiCategory" style="color:var(--text-secondary);">Enter your details above</p>
-                    <p id="bmiSuggestion" style="font-size:0.9rem;color:var(--text-secondary);"></p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section" id="offers">
-        <div class="container">
-            <div class="offer-banner">
-                <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);">🔥 Summer Blaze Offer</h2>
-                <p style="color:var(--text-secondary);">Get 30% off on all annual memberships. Limited time only!</p>
-                <div class="countdown" id="countdown">
-                    <span><span id="days">00</span><span class="label">Days</span></span>
-                    <span><span id="hours">00</span><span class="label">Hours</span></span>
-                    <span><span id="minutes">00</span><span class="label">Mins</span></span>
-                    <span><span id="seconds">00</span><span class="label">Secs</span></span>
-                </div>
-                <a href="#plans" class="btn-primary" style="font-size:1.2rem;padding:0.8rem 3rem;">Claim Offer</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="section section-alt" id="faq">
-        <div class="container">
-            <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
-                <span class="section-label">FAQ</span>
-                <h2 class="section-title">Frequently Asked <span class="highlight">Questions</span></h2>
-            </div>
-            <div class="faq-list">
-                <div class="faq-item"><div class="faq-question">What are the membership terms? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">All memberships are monthly rolling. You can cancel anytime with 7 days' notice.</div></div>
-                <div class="faq-item"><div class="faq-question">Do you offer refunds? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">We offer a 7-day money-back guarantee if you are not satisfied with your trial.</div></div>
-                <div class="faq-item"><div class="faq-question">What are the gym timings? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">We are open from 5:00 AM to 12:00 AM, 365 days a year.</div></div>
-                <div class="faq-item"><div class="faq-question">Is parking available? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">Yes, we have a dedicated parking lot with 50+ spots for members.</div></div>
-                <div class="faq-item"><div class="faq-question">How do I book a personal trainer? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">You can book a session directly via the trainers' section on this site or at the front desk.</div></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section" id="testimonials">
-        <div class="container">
-            <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
-                <span class="section-label">Testimonials</span>
-                <h2 class="section-title">What Our <span class="highlight">Members Say</span></h2>
-            </div>
-            <div class="testimonial-carousel">
-                <div class="testimonial-track" id="testimonialTrack">
-                    <div class="testimonial-card"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80" alt="Member" loading="lazy" width="80" height="80" /><h4>Michael R.</h4><div class="stars">★★★★★</div><p>"The best gym I've ever been to. The trainers know their stuff, and the atmosphere is electric."</p></div>
-                    <div class="testimonial-card"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80" alt="Member" loading="lazy" width="80" height="80" /><h4>Sarah K.</h4><div class="stars">★★★★★</div><p>"I lost 15kg in 4 months thanks to the diet guidance and HIIT classes. I've never felt more confident."</p></div>
-                    <div class="testimonial-card"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80" alt="Member" loading="lazy" width="80" height="80" /><h4>David L.</h4><div class="stars">★★★★★</div><p>"State-of-the-art equipment and a welcoming community. It's my second home."</p></div>
-                </div>
-                <div class="dots" id="dotsContainer">
-                    <span class="active" data-index="0"></span>
-                    <span data-index="1"></span>
-                    <span data-index="2"></span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section section-alt" id="contact">
-        <div class="container">
-            <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
-                <span class="section-label">Contact</span>
-                <h2 class="section-title">Get In <span class="highlight">Touch</span></h2>
-            </div>
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <h3>Visit Us</h3>
-                    <p><i class="fas fa-map-pin"></i> 123 Fitness Ave, Downtown, NY 10001</p>
-                    <p><i class="fas fa-phone-alt"></i> +1 (555) 123-4567</p>
-                    <p><i class="fas fa-envelope"></i> info@elitefitness.com</p>
-                    <p><i class="fas fa-clock"></i> Mon-Sun: 5:00 AM – 12:00 AM</p>
-                    <div class="contact-actions">
-                        <a href="tel:+15551234567" class="btn-primary"><i class="fas fa-phone"></i> Call Now</a>
-                        <a href="#" class="btn-outline"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                        <a href="#" class="btn-outline"><i class="fas fa-directions"></i> Directions</a>
+                <!-- Expired -->
+                <div class="admin-card">
+                    <h3><i class="fas fa-times-circle" style="color:#ff4757;"></i> Expired Memberships</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Member</th>
+                                    <th>Plan</th>
+                                    <th>Expiry Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expiredTableBody"></tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="contact-map">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1!2d-74.006!3d40.7128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDQyJzQ2LjAiTiA3NMKwMDAnMjEuMCJX!5e0!3m2!1sen!2sus!4v1610000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Google Map"></iframe>
-                </div>
+
             </div>
         </div>
     </section>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <div class="nav-logo" style="font-size:20px;">ELITE<span style="color:var(--accent);">FITNESS</span></div>
-                    <p>Forge your legacy, one rep at a time.</p>
+    <!-- ============================================================
+    EDIT MEMBER MODAL
+    ============================================================ -->
+    <div class="admin-modal-overlay" id="editMemberModal">
+        <div class="admin-modal-box">
+            <button class="admin-modal-close" onclick="closeEditMemberModal()">&times;</button>
+            <h2>Edit Member</h2>
+            <form id="editMemberForm">
+                <input type="hidden" id="editMemberId" />
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="editMemberName" placeholder="Enter full name" required />
                 </div>
-                <div>
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#plans">Plans</a></li>
-                        <li><a href="#trainers">Trainers</a></li>
-                        <li><a href="star-members.html">Star Members</a></li>
-                    </ul>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="editMemberPhone" placeholder="Enter phone number" />
                 </div>
-                <div>
-                    <h4>Support</h4>
-                    <ul>
-                        <li><a href="#faq">FAQ</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                        <li><a href="#" onclick="openModal('privacy'); return false;">Privacy Policy</a></li>
-                        <li><a href="#" onclick="openModal('terms'); return false;">Terms & Conditions</a></li>
-                    </ul>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" id="editMemberAddress" placeholder="Enter address" />
                 </div>
-                <div>
-                    <h4>Connect</h4>
-                    <div class="footer-social">
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-x-twitter"></i></a>
-                    </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                    <button type="button" class="btn-outline" onclick="closeEditMemberModal()">Cancel</button>
                 </div>
-            </div>
-            <div class="footer-bottom">
-                <span>&copy; 2026 Elite Fitness. All rights reserved.</span>
-                <span>Built for Scale. Built for India.</span>
-            </div>
-        </div>
-    </footer>
-
-    <!-- MODAL -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-box">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-            <div id="modalContent">
-                <h2 id="modalTitle">Privacy Policy</h2>
-                <div id="modalBody"><p>Loading...</p></div>
-            </div>
+            </form>
         </div>
     </div>
 
-    <!-- FLOATING BUTTONS -->
-    <div class="floating">
-        <a href="https://wa.me/15551234567" target="_blank" class="whatsapp" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <button class="back-top" id="backTop" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+    <!-- ============================================================
+    ASSIGN PLAN MODAL
+    ============================================================ -->
+    <div class="admin-modal-overlay" id="assignPlanModal">
+        <div class="admin-modal-box">
+            <button class="admin-modal-close" onclick="closeAssignPlanModal()">&times;</button>
+            <h2>Assign Plan</h2>
+            <form id="assignPlanForm">
+                <input type="hidden" id="assignPlanMemberId" />
+                <div class="form-group">
+                    <label>Select Plan Type</label>
+                    <select id="assignPlanType">
+                        <option value="gym">Premium (Gym Only) – ₹4,000 / 3 months</option>
+                        <option value="gym_pt">Premium + PT – ₹10,000 / 3 months</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Duration</label>
+                    <select id="assignPlanDuration">
+                        <option value="1">1 Month – ₹1,500</option>
+                        <option value="3" selected>3 Months – ₹4,000</option>
+                        <option value="6">6 Months – ₹7,500</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display:flex; align-items:center; gap:12px; margin-bottom:var(--gr-md);">
+                    <input type="checkbox" id="assignPlanStudentDiscount" style="width:20px; height:20px; accent-color:var(--accent); cursor:pointer;" />
+                    <label for="assignPlanStudentDiscount" style="font-size:14px; color:var(--text-secondary); cursor:pointer;">Apply Student Discount (₹200 off)</label>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Assign Plan</button>
+                    <button type="button" class="btn-outline" onclick="closeAssignPlanModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- ============================================================
     SCRIPTS
     ============================================================ -->
     <script src="js/data-layer.js"></script>
-    <script src="js/script.js"></script>
-
-    <script>
-        // MODAL FUNCTIONS
-        function openModal(type) {
-            var overlay = document.getElementById('modalOverlay');
-            var title = document.getElementById('modalTitle');
-            var body = document.getElementById('modalBody');
-
-            if (type === 'privacy') {
-                title.textContent = 'Privacy Policy';
-                body.innerHTML = `
-                    <p><strong>Last Updated:</strong> January 2026</p>
-                    <p>At Elite Fitness, we take your privacy seriously. This policy describes how we collect, use, and protect your personal information.</p>
-                    <p><strong>1. Information We Collect</strong></p>
-                    <ul>
-                        <li>Name, email address, phone number, and physical address</li>
-                        <li>Membership details and payment history</li>
-                        <li>Fitness goals and progress tracking data</li>
-                        <li>Website usage data (cookies and analytics)</li>
-                    </ul>
-                    <p><strong>2. How We Use Your Information</strong></p>
-                    <ul>
-                        <li>To manage your membership and provide gym services</li>
-                        <li>To send you renewal reminders and important updates</li>
-                        <li>To improve our website and member experience</li>
-                        <li>To process payments and maintain records</li>
-                    </ul>
-                    <p><strong>3. Data Protection</strong></p>
-                    <p>We implement industry-standard security measures to protect your personal information. Your data is stored securely and is never shared with third parties without your explicit consent, except as required by law.</p>
-                    <p><strong>4. Your Rights</strong></p>
-                    <ul>
-                        <li>You may request access to your personal data at any time</li>
-                        <li>You may request corrections to your personal information</li>
-                        <li>You may request deletion of your data (subject to legal obligations)</li>
-                    </ul>
-                    <p><strong>5. Contact Us</strong></p>
-                    <p>If you have any questions about this policy, please contact us at <strong>info@elitefitness.com</strong>.</p>
-                `;
-            } else if (type === 'terms') {
-                title.textContent = 'Terms & Conditions';
-                body.innerHTML = `
-                    <p><strong>Last Updated:</strong> January 2026</p>
-                    <p>Welcome to Elite Fitness. By using our website and services, you agree to the following terms and conditions.</p>
-                    <p><strong>1. Membership Terms</strong></p>
-                    <ul>
-                        <li>Memberships are monthly rolling and auto-renew unless cancelled with 7 days' notice</li>
-                        <li>You may cancel your membership at any time with 7 days' notice</li>
-                        <li>No refunds are provided for partial months</li>
-                    </ul>
-                    <p><strong>2. Payments</strong></p>
-                    <ul>
-                        <li>All payments are processed securely through Razorpay</li>
-                        <li>GST (18%) is applicable on all memberships</li>
-                        <li>Student discounts (₹200 off) require a valid student ID</li>
-                    </ul>
-                    <p><strong>3. Gym Usage</strong></p>
-                    <ul>
-                        <li>All members must follow gym rules and safety guidelines</li>
-                        <li>Elite Fitness is not responsible for any injuries sustained during workouts</li>
-                        <li>Personal training sessions must be booked in advance</li>
-                    </ul>
-                    <p><strong>4. Liability</strong></p>
-                    <p>Elite Fitness is not liable for any loss, damage, or injury arising from your use of the gym facilities or services, except where required by law.</p>
-                    <p><strong>5. Changes to Terms</strong></p>
-                    <p>We reserve the right to update these terms at any time. Changes will be communicated via email or through the website.</p>
-                    <p><strong>6. Contact Us</strong></p>
-                    <p>For questions regarding these terms, please contact us at <strong>info@elitefitness.com</strong>.</p>
-                `;
-            }
-
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            var overlay = document.getElementById('modalOverlay');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        document.getElementById('modalOverlay').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeModal();
-        });
-    </script>
+    <script src="js/admin.js"></script>
 
 </body>
 </html>

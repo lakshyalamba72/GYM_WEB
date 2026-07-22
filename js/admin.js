@@ -1,12 +1,12 @@
 // ============================================================
 //  ELITE FITNESS – ADMIN JAVASCRIPT
-//  Login + Full Dashboard Management + Modal UI
+//  Complete: Login, Dashboard, Modals, CRUD Operations
 // ============================================================
 
 (function() {
     'use strict';
 
-    // ----- DOM Elements -----
+    // ----- DOM refs -----
     const loginForm = document.getElementById('adminLoginForm');
     const dashboard = document.getElementById('adminDashboard');
     const loginError = document.getElementById('adminLoginError');
@@ -97,6 +97,7 @@
                     if (loginError) loginError.textContent = '❌ Invalid email or password. Please try again.';
                 }
             } else {
+                // Fallback hardcoded check (if DB not loaded)
                 if (email === 'lakshyalamba72@gmail.com' && password === 'lakshya1') {
                     const admin = { email: email, name: 'Admin' };
                     sessionStorage.setItem('eliteAdminSession', JSON.stringify(admin));
@@ -121,9 +122,12 @@
 
         const session = sessionStorage.getItem('eliteAdminSession');
         const adminName = session ? JSON.parse(session).name || 'Admin' : 'Admin';
-        document.getElementById('adminName').textContent = adminName;
+        const adminNameEl = document.getElementById('adminName');
+        if (adminNameEl) adminNameEl.textContent = adminName;
 
         const today = new Date().toISOString().split('T')[0];
+
+        // ---- STATS ----
         const activeMemberships = memberships.filter(m => m.isActive && m.endDate >= today);
         const expiringMemberships = memberships.filter(m => {
             const end = new Date(m.endDate);
@@ -133,10 +137,15 @@
         });
         const expiredMemberships = memberships.filter(m => m.endDate < today || !m.isActive);
 
-        document.getElementById('totalMembers').textContent = members.length;
-        document.getElementById('activeMemberships').textContent = activeMemberships.length;
-        document.getElementById('expiringMemberships').textContent = expiringMemberships.length;
-        document.getElementById('expiredMemberships').textContent = expiredMemberships.length;
+        const totalMembersEl = document.getElementById('totalMembers');
+        const activeMembershipsEl = document.getElementById('activeMemberships');
+        const expiringMembershipsEl = document.getElementById('expiringMemberships');
+        const expiredMembershipsEl = document.getElementById('expiredMemberships');
+
+        if (totalMembersEl) totalMembersEl.textContent = members.length;
+        if (activeMembershipsEl) activeMembershipsEl.textContent = activeMemberships.length;
+        if (expiringMembershipsEl) expiringMembershipsEl.textContent = expiringMemberships.length;
+        if (expiredMembershipsEl) expiredMembershipsEl.textContent = expiredMemberships.length;
 
         // ---- ALL MEMBERS TABLE ----
         const tableBody = document.getElementById('membersTableBody');
@@ -166,6 +175,8 @@
                         daysLeft = diff > 0 ? diff + ' days' : 'Expired';
                     }
 
+                    const statusClass = (daysLeft !== 'Expired' && daysLeft !== 'N/A') ? 'active' : 'expired';
+
                     return `
                         <tr data-member-id="${m.id}">
                             <td><strong>${m.name}</strong></td>
@@ -174,10 +185,10 @@
                             <td>${plan}</td>
                             <td>${hasPT ? '✅ Yes' : '❌ No'}</td>
                             <td>${expiryDate}</td>
-                            <td><span class="status-badge ${daysLeft !== 'Expired' && daysLeft !== 'N/A' ? 'active' : 'expired'}">${daysLeft}</span></td>
+                            <td><span class="status-badge ${statusClass}">${daysLeft}</span></td>
                             <td>
                                 <div class="admin-actions">
-                                    <button class="btn-primary" style="padding:2px 10px;font-size:11px;" onclick="editMember('${m.id}')">Edit</button>
+                                    <button class="btn-primary" style="padding:2px 10px;font-size:11px;" onclick="openEditMemberModal('${m.id}')">Edit</button>
                                     <button class="btn-primary" style="padding:2px 10px;font-size:11px;background:var(--accent);" onclick="openAssignPlanModal('${m.id}')">Assign Plan</button>
                                     ${membershipId ? `
                                         <button class="btn-primary" style="padding:2px 10px;font-size:11px;background:#ffa502;" onclick="togglePT('${membershipId}')">${hasPT ? 'Remove PT' : 'Add PT'}</button>
@@ -237,205 +248,274 @@
     }
 
     // ----- LOGOUT -----
-    document.getElementById('adminLogoutBtn').addEventListener('click', function(e) {
-        e.preventDefault();
-        if (confirm('Are you sure you want to logout?')) {
-            sessionStorage.removeItem('eliteAdminSession');
-            localStorage.removeItem('eliteAdminRemember');
-            window.location.href = 'admin.html';
-        }
-    });
-
-})();
-
-// ============================================================
-//  GLOBAL FUNCTIONS
-// ============================================================
-
-// ----- ASSIGN PLAN MODAL -----
-function openAssignPlanModal(memberId) {
-    if (!window.DB) {
-        alert('Database not available.');
-        return;
+    const logoutBtn = document.getElementById('adminLogoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('eliteAdminSession');
+                localStorage.removeItem('eliteAdminRemember');
+                window.location.href = 'admin.html';
+            }
+        });
     }
 
-    const member = window.DB.getMember(memberId);
-    if (!member) {
-        alert('Member not found.');
-        return;
-    }
+    // ============================================================
+    //  GLOBAL FUNCTIONS (exposed to HTML onclick)
+    // ============================================================
 
-    document.getElementById('assignPlanMemberId').value = memberId;
-    document.getElementById('assignPlanMemberName').innerHTML = 'For: <strong>' + member.name + '</strong>';
-
-    document.getElementById('assignPlanType').value = 'gym';
-    document.getElementById('assignPlanDuration').value = '3';
-    document.getElementById('assignPlanStudentDiscount').checked = false;
-
-    const modal = document.getElementById('assignPlanModal');
-    modal.style.display = 'flex';
-}
-
-function closeAssignPlanModal() {
-    document.getElementById('assignPlanModal').style.display = 'none';
-}
-
-// ----- ASSIGN PLAN FORM -----
-document.getElementById('assignPlanForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    if (!window.DB) {
-        alert('Database not available.');
-        return;
-    }
-
-    const memberId = document.getElementById('assignPlanMemberId').value;
-    const planType = document.getElementById('assignPlanType').value;
-    const durationMonths = parseInt(document.getElementById('assignPlanDuration').value);
-    const studentDiscount = document.getElementById('assignPlanStudentDiscount').checked;
-
-    const prices = {
-        1: { gym: 1500, gym_pt: 7500 },
-        3: { gym: 4000, gym_pt: 10000 },
-        6: { gym: 7500, gym_pt: 15000 }
-    };
-
-    let basePrice = prices[durationMonths]?.[planType] || 4000;
-    let discount = studentDiscount ? 200 : 0;
-    let finalPrice = basePrice - discount;
-
-    const member = window.DB.getMember(memberId);
-    if (!member) {
-        alert('Member not found.');
-        return;
-    }
-
-    const memberships = window.DB.getMemberships();
-    const existing = memberships.find(m => m.memberId === memberId && m.isActive);
-    if (existing) {
-        if (!confirm(`This member already has an active membership. Cancel it and assign new plan?`)) {
+    // ----- EDIT MEMBER MODAL -----
+    window.openEditMemberModal = function(memberId) {
+        if (!window.DB) {
+            alert('Database not available.');
             return;
         }
-        window.DB.cancelMembership(existing.id);
+
+        const member = window.DB.getMember(memberId);
+        if (!member) {
+            alert('Member not found.');
+            return;
+        }
+
+        const idField = document.getElementById('editMemberId');
+        const nameField = document.getElementById('editMemberName');
+        const phoneField = document.getElementById('editMemberPhone');
+        const addressField = document.getElementById('editMemberAddress');
+
+        if (idField) idField.value = memberId;
+        if (nameField) nameField.value = member.name || '';
+        if (phoneField) phoneField.value = member.phone || '';
+        if (addressField) addressField.value = member.address || '';
+
+        const modal = document.getElementById('editMemberModal');
+        if (modal) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    };
+
+    window.closeEditMemberModal = function() {
+        const modal = document.getElementById('editMemberModal');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    };
+
+    // Edit Member Form Submit
+    const editForm = document.getElementById('editMemberForm');
+    if (editForm) {
+        editForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('editMemberId').value;
+            const name = document.getElementById('editMemberName').value.trim();
+            const phone = document.getElementById('editMemberPhone').value.trim();
+            const address = document.getElementById('editMemberAddress').value.trim();
+
+            if (!name) {
+                alert('Name is required.');
+                return;
+            }
+
+            if (window.DB) {
+                window.DB.updateMember(id, { name, phone, address });
+                alert('✅ Member updated successfully.');
+                window.closeEditMemberModal();
+                window.location.reload();
+            } else {
+                alert('Database not available.');
+            }
+        });
     }
 
-    window.DB.createMembership({
-        memberId: memberId,
-        type: planType,
-        durationMonths: durationMonths,
-        basePrice: basePrice,
-        discountApplied: discount,
-        finalPrice: finalPrice,
-        paymentStatus: 'paid'
+    // Close edit modal on outside click & ESC
+    const editModal = document.getElementById('editMemberModal');
+    if (editModal) {
+        editModal.addEventListener('click', function(e) {
+            if (e.target === this) window.closeEditMemberModal();
+        });
+    }
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            window.closeEditMemberModal();
+            window.closeAssignPlanModal();
+        }
     });
 
-    alert('✅ Plan assigned successfully to ' + member.name + '!');
-    closeAssignPlanModal();
-    window.location.reload();
-});
+    // ----- ASSIGN PLAN MODAL -----
+    window.openAssignPlanModal = function(memberId) {
+        if (!window.DB) {
+            alert('Database not available.');
+            return;
+        }
 
-// ----- Close modal on outside click -----
-document.getElementById('assignPlanModal').addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeAssignPlanModal();
-    }
-});
+        const member = window.DB.getMember(memberId);
+        if (!member) {
+            alert('Member not found.');
+            return;
+        }
 
-// ----- RENEW MEMBERSHIP -----
-function renewMember(membershipId) {
-    if (!window.DB) {
-        alert('Database not available.');
-        return;
-    }
+        const idField = document.getElementById('assignPlanMemberId');
+        const typeField = document.getElementById('assignPlanType');
+        const durationField = document.getElementById('assignPlanDuration');
+        const discountField = document.getElementById('assignPlanStudentDiscount');
 
-    const membership = window.DB.getMembership(membershipId);
-    if (!membership) {
-        alert('Membership not found.');
-        return;
-    }
+        if (idField) idField.value = memberId;
+        if (typeField) typeField.value = 'gym';
+        if (durationField) durationField.value = '3';
+        if (discountField) discountField.checked = false;
 
-    const duration = membership.durationMonths || 1;
-    const price = membership.basePrice || 1500;
+        const modal = document.getElementById('assignPlanModal');
+        if (modal) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    };
 
-    if (confirm(`Renew this membership for another ${duration} month(s)? No payment required.`)) {
-        window.DB.renewMembership(membershipId, duration, price, 0);
-        alert('✅ Membership renewed successfully!');
-        window.location.reload();
-    }
-}
+    window.closeAssignPlanModal = function() {
+        const modal = document.getElementById('assignPlanModal');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    };
 
-// ----- CANCEL MEMBERSHIP -----
-function cancelMembership(membershipId) {
-    if (!window.DB) {
-        alert('Database not available.');
-        return;
-    }
+    // Assign Plan Form Submit
+    const assignForm = document.getElementById('assignPlanForm');
+    if (assignForm) {
+        assignForm.addEventListener('submit', function(e) {
+            e.preventDefault();
 
-    const membership = window.DB.getMembership(membershipId);
-    if (!membership) {
-        alert('Membership not found.');
-        return;
-    }
+            if (!window.DB) {
+                alert('Database not available.');
+                return;
+            }
 
-    if (confirm('Are you sure you want to cancel this membership? This cannot be undone.')) {
-        window.DB.cancelMembership(membershipId);
-        alert('✅ Membership cancelled successfully.');
-        window.location.reload();
-    }
-}
+            const memberId = document.getElementById('assignPlanMemberId').value;
+            const planType = document.getElementById('assignPlanType').value;
+            const durationMonths = parseInt(document.getElementById('assignPlanDuration').value);
+            const studentDiscount = document.getElementById('assignPlanStudentDiscount').checked;
 
-// ----- TOGGLE PT -----
-function togglePT(membershipId) {
-    if (!window.DB) {
-        alert('Database not available.');
-        return;
-    }
+            const prices = {
+                1: { gym: 1500, gym_pt: 7500 },
+                3: { gym: 4000, gym_pt: 10000 },
+                6: { gym: 7500, gym_pt: 15000 }
+            };
 
-    const membership = window.DB.getMembership(membershipId);
-    if (!membership) {
-        alert('Membership not found.');
-        return;
-    }
+            let basePrice = prices[durationMonths]?.[planType] || 4000;
+            let discount = studentDiscount ? 200 : 0;
+            let finalPrice = basePrice - discount;
 
-    const member = window.DB.getMember(membership.memberId);
-    const currentType = membership.type;
-    const newType = currentType === 'gym' ? 'gym_pt' : 'gym';
-    const action = currentType === 'gym' ? 'Add' : 'Remove';
+            const member = window.DB.getMember(memberId);
+            if (!member) {
+                alert('Member not found.');
+                return;
+            }
 
-    if (confirm(`${action} Personal Training for ${member ? member.name : 'this member'}?`)) {
-        window.DB.updateMembership(membershipId, { 
-            type: newType,
-            basePrice: newType === 'gym_pt' ? 10000 : 4000,
-            finalPrice: newType === 'gym_pt' ? 10000 : 4000
+            const memberships = window.DB.getMemberships();
+            const existing = memberships.find(m => m.memberId === memberId && m.isActive);
+            if (existing) {
+                if (!confirm(`This member already has an active membership. Cancel it and assign new plan?`)) {
+                    return;
+                }
+                window.DB.cancelMembership(existing.id);
+            }
+
+            window.DB.createMembership({
+                memberId: memberId,
+                type: planType,
+                durationMonths: durationMonths,
+                basePrice: basePrice,
+                discountApplied: discount,
+                finalPrice: finalPrice,
+                paymentStatus: 'paid'
+            });
+
+            alert('✅ Plan assigned successfully to ' + member.name + '!');
+            window.closeAssignPlanModal();
+            window.location.reload();
         });
-        alert(`✅ Personal Training ${action === 'Add' ? 'added to' : 'removed from'} membership.`);
-        window.location.reload();
-    }
-}
-
-// ----- EDIT MEMBER -----
-function editMember(memberId) {
-    if (!window.DB) {
-        alert('Database not available.');
-        return;
     }
 
-    const member = window.DB.getMember(memberId);
-    if (!member) {
-        alert('Member not found.');
-        return;
-    }
-
-    const newName = prompt('Edit Name:', member.name);
-    if (newName !== null && newName.trim()) {
-        const newPhone = prompt('Edit Phone:', member.phone || '');
-        const newAddress = prompt('Edit Address:', member.address || '');
-        window.DB.updateMember(memberId, {
-            name: newName.trim(),
-            phone: newPhone || '',
-            address: newAddress || ''
+    // Close assign modal on outside click
+    const assignModal = document.getElementById('assignPlanModal');
+    if (assignModal) {
+        assignModal.addEventListener('click', function(e) {
+            if (e.target === this) window.closeAssignPlanModal();
         });
-        alert('✅ Member updated successfully.');
-        window.location.reload();
     }
-}
+
+    // ----- RENEW MEMBERSHIP -----
+    window.renewMember = function(membershipId) {
+        if (!window.DB) {
+            alert('Database not available.');
+            return;
+        }
+
+        const membership = window.DB.getMembership(membershipId);
+        if (!membership) {
+            alert('Membership not found.');
+            return;
+        }
+
+        const duration = membership.durationMonths || 1;
+        const price = membership.basePrice || 1500;
+
+        if (confirm(`Renew this membership for another ${duration} month(s)? No payment required.`)) {
+            window.DB.renewMembership(membershipId, duration, price, 0);
+            alert('✅ Membership renewed successfully!');
+            window.location.reload();
+        }
+    };
+
+    // ----- CANCEL MEMBERSHIP -----
+    window.cancelMembership = function(membershipId) {
+        if (!window.DB) {
+            alert('Database not available.');
+            return;
+        }
+
+        const membership = window.DB.getMembership(membershipId);
+        if (!membership) {
+            alert('Membership not found.');
+            return;
+        }
+
+        if (confirm('Are you sure you want to cancel this membership? This cannot be undone.')) {
+            window.DB.cancelMembership(membershipId);
+            alert('✅ Membership cancelled successfully.');
+            window.location.reload();
+        }
+    };
+
+    // ----- TOGGLE PT (Add or Remove Personal Training) -----
+    window.togglePT = function(membershipId) {
+        if (!window.DB) {
+            alert('Database not available.');
+            return;
+        }
+
+        const membership = window.DB.getMembership(membershipId);
+        if (!membership) {
+            alert('Membership not found.');
+            return;
+        }
+
+        const member = window.DB.getMember(membership.memberId);
+        const currentType = membership.type;
+        const newType = currentType === 'gym' ? 'gym_pt' : 'gym';
+        const action = currentType === 'gym' ? 'Add' : 'Remove';
+
+        if (confirm(`${action} Personal Training for ${member ? member.name : 'this member'}?`)) {
+            window.DB.updateMembership(membershipId, { 
+                type: newType,
+                basePrice: newType === 'gym_pt' ? 10000 : 4000,
+                finalPrice: newType === 'gym_pt' ? 10000 : 4000
+            });
+            alert(`✅ Personal Training ${action === 'Add' ? 'added to' : 'removed from'} membership.`);
+            window.location.reload();
+        }
+    };
+
+})();
