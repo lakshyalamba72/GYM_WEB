@@ -301,6 +301,8 @@ function verifyAdmin(email, password) {
 function initSampleData() {
     // Ensure admin exists
     addAdmin({ email: 'lakshyalamba72@gmail.com', password: 'lakshya1', name: 'Admin' });
+    addAdmin({ email: 'Admin123@gmail.com', password: 'ADMIN123', name: 'Admin1' });
+
 
     if (DB.get('initialized')) return;
 
