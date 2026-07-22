@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Elite Fitness – Built for Scale. Built for India.</title>
 
-    <!-- Theme Script (must run before page loads) -->
     <script>
         (function() {
             var savedTheme = localStorage.getItem('theme') || 'dark';
@@ -13,35 +12,104 @@
         })();
     </script>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
-
-    <!-- Font Awesome (only for icons, not hamburger) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-
-    <!-- MAIN STYLES -->
     <link rel="stylesheet" href="css/style.css" />
+
+    <style>
+        /* ============================================================
+           MODAL STYLES (for Privacy Policy & Terms)
+           ============================================================ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 40px 32px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+        .modal-box h2 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        .modal-box p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        .modal-box ul {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 14px;
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 28px;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s ease;
+        }
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+        @media (max-width: 480px) {
+            .modal-box {
+                padding: 24px 16px;
+            }
+            .modal-box h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
 
     <!-- ============================================================
-    NAVBAR – Fixed Hamburger (Pure CSS, no Font Awesome)
+    NAVBAR
     ============================================================ -->
     <nav class="navbar" id="navbar">
         <div class="container">
             <a href="index.html" class="nav-logo">ELITE<span>FITNESS</span></a>
 
             <div class="nav-right">
-                <!-- Theme Toggle -->
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
                     <span class="icon-sun"><i class="fas fa-sun"></i></span>
                     <span class="icon-moon"><i class="fas fa-moon"></i></span>
                     <span class="toggle-label">Theme</span>
                 </button>
 
-                <!-- Pure CSS Hamburger (no Font Awesome) -->
                 <button class="hamburger" id="hamburger" aria-label="Toggle menu">
                     <span></span>
                     <span></span>
@@ -62,9 +130,12 @@
     </nav>
 
     <!-- ============================================================
-    REST OF THE SECTIONS (unchanged from your current file)
+    HERO – ABOUT – FEATURES – PLANS – CHECKOUT – TRAINERS – FACILITIES
+    CLASSES – BMI – OFFERS – FAQ – TESTIMONIALS – CONTACT
+    (All sections remain exactly as before)
     ============================================================ -->
-    <!-- HERO -->
+
+    <!-- ===== HERO ===== -->
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-grid">
@@ -86,18 +157,9 @@
                         <a href="#contact" class="btn-outline"><i class="fas fa-calendar-check"></i> Free Trial</a>
                     </div>
                     <div class="hero-stats">
-                        <div>
-                            <div class="stat-number">1200+</div>
-                            <div class="stat-label">Active Members</div>
-                        </div>
-                        <div>
-                            <div class="stat-number">4.9★</div>
-                            <div class="stat-label">Average Rating</div>
-                        </div>
-                        <div>
-                            <div class="stat-number">10+</div>
-                            <div class="stat-label">Years of Excellence</div>
-                        </div>
+                        <div><div class="stat-number">1200+</div><div class="stat-label">Active Members</div></div>
+                        <div><div class="stat-number">4.9★</div><div class="stat-label">Average Rating</div></div>
+                        <div><div class="stat-number">10+</div><div class="stat-label">Years of Excellence</div></div>
                     </div>
                 </div>
                 <div class="hero-image">
@@ -107,22 +169,15 @@
         </div>
     </section>
 
-    <!-- ABOUT -->
+    <!-- ===== ABOUT ===== -->
     <section class="section" id="about">
         <div class="container">
             <div class="grid-2">
                 <div>
                     <span class="section-label">About Elite Fitness</span>
                     <h2 class="section-title">More Than a Gym – <span class="highlight">A Lifestyle</span></h2>
-                    <p class="section-desc">
-                        We combine science-backed training, premium equipment, and a supportive community
-                        to help you achieve results that last. Whether you're a beginner or a seasoned athlete,
-                        we have the tools and expertise to guide you.
-                    </p>
-                    <p class="section-desc" style="margin-top:12px;">
-                        Our trainers are among the best in the industry – certified, experienced, and passionate
-                        about your success.
-                    </p>
+                    <p class="section-desc">We combine science-backed training, premium equipment, and a supportive community to help you achieve results that last. Whether you're a beginner or a seasoned athlete, we have the tools and expertise to guide you.</p>
+                    <p class="section-desc" style="margin-top:12px;">Our trainers are among the best in the industry – certified, experienced, and passionate about your success.</p>
                 </div>
                 <div>
                     <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=800&q=80" alt="Elite Fitness Interior" loading="lazy" style="width:100%; border-radius:var(--radius-lg); box-shadow:var(--shadow-md);" />
@@ -131,7 +186,7 @@
         </div>
     </section>
 
-    <!-- WHY CHOOSE US -->
+    <!-- ===== WHY CHOOSE US ===== -->
     <section class="section section-alt" id="features">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -148,7 +203,7 @@
         </div>
     </section>
 
-    <!-- MEMBERSHIP PLANS -->
+    <!-- ===== MEMBERSHIP PLANS ===== -->
     <section class="section" id="plans">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 48px;">
@@ -197,7 +252,7 @@
         </div>
     </section>
 
-    <!-- CHECKOUT -->
+    <!-- ===== CHECKOUT ===== -->
     <section class="section section-alt" id="checkout">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -222,9 +277,7 @@
                             <span style="font-weight:600;">Add Advanced Personal Training</span>
                             <span style="color:var(--accent); font-weight:700;">(+₹6,000/month)</span>
                         </label>
-                        <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px; margin-left:32px;">
-                            One-on-one coaching with a certified trainer, tailored to your goals.
-                        </p>
+                        <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px; margin-left:32px;">One-on-one coaching with a certified trainer, tailored to your goals.</p>
                     </div>
                     <label style="display:block;font-size:0.9rem;color:var(--text-secondary);margin-bottom:0.5rem;">Payment Method</label>
                     <div class="payment-methods">
@@ -246,7 +299,7 @@
         </div>
     </section>
 
-    <!-- TRAINERS -->
+    <!-- ===== TRAINERS ===== -->
     <section class="section" id="trainers">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 48px;">
@@ -277,7 +330,7 @@
         </div>
     </section>
 
-    <!-- FACILITIES -->
+    <!-- ===== FACILITIES ===== -->
     <section class="section section-alt" id="facilities">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -297,7 +350,7 @@
         </div>
     </section>
 
-    <!-- GROUP CLASSES -->
+    <!-- ===== GROUP CLASSES ===== -->
     <section class="section" id="classes">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -313,7 +366,7 @@
         </div>
     </section>
 
-    <!-- BMI CALCULATOR -->
+    <!-- ===== BMI CALCULATOR ===== -->
     <section class="section section-alt" id="bmi">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -333,7 +386,7 @@
         </div>
     </section>
 
-    <!-- SPECIAL OFFERS -->
+    <!-- ===== SPECIAL OFFERS ===== -->
     <section class="section" id="offers">
         <div class="container">
             <div class="offer-banner">
@@ -350,7 +403,7 @@
         </div>
     </section>
 
-    <!-- FAQ -->
+    <!-- ===== FAQ ===== -->
     <section class="section section-alt" id="faq">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -367,7 +420,7 @@
         </div>
     </section>
 
-    <!-- TESTIMONIALS -->
+    <!-- ===== TESTIMONIALS ===== -->
     <section class="section" id="testimonials">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -389,7 +442,7 @@
         </div>
     </section>
 
-    <!-- CONTACT -->
+    <!-- ===== CONTACT ===== -->
     <section class="section section-alt" id="contact">
         <div class="container">
             <div style="text-align:center; max-width:700px; margin:0 auto 40px;">
@@ -416,7 +469,7 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -438,8 +491,8 @@
                     <ul>
                         <li><a href="#faq">FAQ</a></li>
                         <li><a href="#contact">Contact</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#" onclick="openModal('privacy')">Privacy Policy</a></li>
+                        <li><a href="#" onclick="openModal('terms')">Terms & Conditions</a></li>
                     </ul>
                 </div>
                 <div>
@@ -459,7 +512,24 @@
         </div>
     </footer>
 
-    <!-- FLOATING BUTTONS -->
+    <!-- ============================================================
+    MODAL – Privacy Policy & Terms & Conditions
+    ============================================================ -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modalContent">
+                <h2 id="modalTitle">Privacy Policy</h2>
+                <div id="modalBody">
+                    <p>Loading...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    FLOATING BUTTONS
+    ============================================================ -->
     <div class="floating">
         <a href="https://wa.me/15551234567" target="_blank" class="whatsapp" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
         <button class="back-top" id="backTop" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
@@ -471,29 +541,123 @@
     <script src="js/data-layer.js"></script>
     <script src="js/script.js"></script>
 
-    <!-- Mobile Menu Script (additional fallback) -->
     <script>
+        // ============================================================
+        // MODAL FUNCTIONS
+        // ============================================================
+        function openModal(type) {
+            var overlay = document.getElementById('modalOverlay');
+            var title = document.getElementById('modalTitle');
+            var body = document.getElementById('modalBody');
+
+            if (type === 'privacy') {
+                title.textContent = 'Privacy Policy';
+                body.innerHTML = `
+                    <p><strong>Last Updated:</strong> January 2026</p>
+                    <p>At Elite Fitness, we take your privacy seriously. This policy describes how we collect, use, and protect your personal information.</p>
+                    <p><strong>1. Information We Collect</strong></p>
+                    <ul>
+                        <li>Name, email address, phone number, and physical address</li>
+                        <li>Membership details and payment history</li>
+                        <li>Fitness goals and progress tracking data</li>
+                        <li>Website usage data (cookies and analytics)</li>
+                    </ul>
+                    <p><strong>2. How We Use Your Information</strong></p>
+                    <ul>
+                        <li>To manage your membership and provide gym services</li>
+                        <li>To send you renewal reminders and important updates</li>
+                        <li>To improve our website and member experience</li>
+                        <li>To process payments and maintain records</li>
+                    </ul>
+                    <p><strong>3. Data Protection</strong></p>
+                    <p>We implement industry-standard security measures to protect your personal information. Your data is stored securely and is never shared with third parties without your explicit consent, except as required by law.</p>
+                    <p><strong>4. Your Rights</strong></p>
+                    <ul>
+                        <li>You may request access to your personal data at any time</li>
+                        <li>You may request corrections to your personal information</li>
+                        <li>You may request deletion of your data (subject to legal obligations)</li>
+                    </ul>
+                    <p><strong>5. Contact Us</strong></p>
+                    <p>If you have any questions about this policy, please contact us at <strong>info@elitefitness.com</strong>.</p>
+                `;
+            } else if (type === 'terms') {
+                title.textContent = 'Terms & Conditions';
+                body.innerHTML = `
+                    <p><strong>Last Updated:</strong> January 2026</p>
+                    <p>Welcome to Elite Fitness. By using our website and services, you agree to the following terms and conditions.</p>
+                    <p><strong>1. Membership Terms</strong></p>
+                    <ul>
+                        <li>Memberships are monthly rolling and auto-renew unless cancelled with 7 days' notice</li>
+                        <li>You may cancel your membership at any time with 7 days' notice</li>
+                        <li>No refunds are provided for partial months</li>
+                    </ul>
+                    <p><strong>2. Payments</strong></p>
+                    <ul>
+                        <li>All payments are processed securely through Razorpay</li>
+                        <li>GST (18%) is applicable on all memberships</li>
+                        <li>Student discounts (₹200 off) require a valid student ID</li>
+                    </ul>
+                    <p><strong>3. Gym Usage</strong></p>
+                    <ul>
+                        <li>All members must follow gym rules and safety guidelines</li>
+                        <li>Elite Fitness is not responsible for any injuries sustained during workouts</li>
+                        <li>Personal training sessions must be booked in advance</li>
+                    </ul>
+                    <p><strong>4. Liability</strong></p>
+                    <p>Elite Fitness is not liable for any loss, damage, or injury arising from your use of the gym facilities or services, except where required by law.</p>
+                    <p><strong>5. Changes to Terms</strong></p>
+                    <p>We reserve the right to update these terms at any time. Changes will be communicated via email or through the website.</p>
+                    <p><strong>6. Contact Us</strong></p>
+                    <p>For questions regarding these terms, please contact us at <strong>info@elitefitness.com</strong>.</p>
+                `;
+            }
+
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            var overlay = document.getElementById('modalOverlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on outside click
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // ============================================================
+        // MOBILE MENU – ADDITIONAL FIX
+        // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
-            const hamburger = document.getElementById('hamburger');
-            const navLinks = document.getElementById('navLinks');
+            var hamburger = document.getElementById('hamburger');
+            var navLinks = document.getElementById('navLinks');
 
             if (hamburger && navLinks) {
-                // Toggle menu on click (works on both desktop & mobile)
+                // Click event (works on both desktop & mobile)
                 hamburger.addEventListener('click', function(e) {
                     e.stopPropagation();
                     this.classList.toggle('active');
                     navLinks.classList.toggle('open');
                 });
 
-                // Also handle touch events for mobile (fallback)
-                hamburger.addEventListener('touchstart', function(e) {
-                    // Prevent double-firing on mobile
-                    if (!this.click) {
-                        e.preventDefault();
-                        this.classList.toggle('active');
-                        navLinks.classList.toggle('open');
-                    }
-                }, { passive: false });
+                // Close menu on link click
+                navLinks.querySelectorAll('a').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        hamburger.classList.remove('active');
+                        navLinks.classList.remove('open');
+                    });
+                });
 
                 // Close menu when clicking outside
                 document.addEventListener('click', function(e) {
@@ -503,14 +667,6 @@
                             navLinks.classList.remove('open');
                         }
                     }
-                });
-
-                // Close menu on link click
-                navLinks.querySelectorAll('a').forEach(function(link) {
-                    link.addEventListener('click', function() {
-                        hamburger.classList.remove('active');
-                        navLinks.classList.remove('open');
-                    });
                 });
             }
         });
