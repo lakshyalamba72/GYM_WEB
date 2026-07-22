@@ -246,16 +246,20 @@
         }
     }
 
-    // ----- LOGOUT -----
+    // ----- LOGOUT (now uses confirm modal) -----
     const logoutBtn = document.getElementById('adminLogoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            if (confirm('Are you sure you want to logout?')) {
-                sessionStorage.removeItem('eliteAdminSession');
-                localStorage.removeItem('eliteAdminRemember');
-                window.location.href = 'admin.html';
-            }
+            showConfirmModal(
+                'Are you sure you want to logout?',
+                'Logout Confirmation',
+                function() {
+                    sessionStorage.removeItem('eliteAdminSession');
+                    localStorage.removeItem('eliteAdminRemember');
+                    window.location.href = 'admin.html';
+                }
+            );
         });
     }
 

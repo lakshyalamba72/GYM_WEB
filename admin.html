@@ -58,6 +58,9 @@
                     </div>
                     <div id="adminLoginError" class="login-error"></div>
                     <button type="submit" class="btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
+                    <div style="text-align:center;margin-top:12px;">
+                        <a href="#" id="forgotPasswordLink" style="color:var(--text-muted);font-size:13px;text-decoration:underline;cursor:pointer;">Forgot Password?</a>
+                    </div>
                 </form>
                 <div class="login-footer">
                     <a href="index.html">← Back to Home</a>
@@ -74,7 +77,6 @@
             <div class="container">
                 <a href="index.html" class="nav-logo">ELITE<span>FITNESS</span></a>
 
-                <!-- Admin Hamburger -->
                 <button class="admin-hamburger" id="adminHamburger" aria-label="Toggle menu">
                     <span></span>
                     <span></span>
@@ -94,7 +96,6 @@
                 <h1>👋 Welcome, <span id="adminName">Admin</span></h1>
                 <p class="subtitle">Manage members, subscriptions, and track renewals.</p>
 
-                <!-- Stats -->
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-number" id="totalMembers">0</div>
@@ -178,8 +179,9 @@
     </section>
 
     <!-- ============================================================
-    EDIT MEMBER MODAL
+    MODALS
     ============================================================ -->
+    <!-- Edit Member Modal -->
     <div class="admin-modal-overlay" id="editMemberModal">
         <div class="admin-modal-box">
             <button class="admin-modal-close" onclick="closeEditMemberModal()">&times;</button>
@@ -206,9 +208,7 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    ASSIGN PLAN MODAL
-    ============================================================ -->
+    <!-- Assign Plan Modal -->
     <div class="admin-modal-overlay" id="assignPlanModal">
         <div class="admin-modal-box">
             <button class="admin-modal-close" onclick="closeAssignPlanModal()">&times;</button>
@@ -242,9 +242,7 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    CONFIRM MODAL (Replaces browser confirm for PT, Renew, Cancel)
-    ============================================================ -->
+    <!-- Confirm Modal -->
     <div class="admin-modal-overlay" id="confirmModal">
         <div class="admin-modal-box" style="max-width:420px;">
             <button class="admin-modal-close" onclick="closeConfirmModal()">&times;</button>
@@ -257,13 +255,32 @@
         </div>
     </div>
 
+    <!-- Forgot Password Modal -->
+    <div class="admin-modal-overlay" id="forgotPasswordModal">
+        <div class="admin-modal-box" style="max-width:420px;">
+            <button class="admin-modal-close" onclick="closeForgotPasswordModal()">&times;</button>
+            <h2>Forgot Password</h2>
+            <p style="color:var(--text-secondary); font-size:14px; margin-bottom:var(--gr-md);">Enter your registered email address. We'll send you a password reset link.</p>
+            <form id="forgotPasswordForm">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="forgotPasswordEmail" placeholder="admin@elitefitness.com" required />
+                </div>
+                <div id="forgotPasswordMessage" style="color:var(--accent);font-size:14px;margin-bottom:var(--gr-sm);"></div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Send Reset Link</button>
+                    <button type="button" class="btn-outline" onclick="closeForgotPasswordModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ============================================================
     SCRIPTS
     ============================================================ -->
     <script src="js/data-layer.js"></script>
     <script src="js/admin.js"></script>
 
-    <!-- Admin Hamburger Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const hamburger = document.getElementById('adminHamburger');
@@ -276,7 +293,6 @@
                     navLinks.classList.toggle('open');
                 });
 
-                // Close menu on link click
                 navLinks.querySelectorAll('a').forEach(function(link) {
                     link.addEventListener('click', function() {
                         hamburger.classList.remove('active');
@@ -284,7 +300,6 @@
                     });
                 });
 
-                // Close on outside click
                 document.addEventListener('click', function(e) {
                     if (navLinks.classList.contains('open')) {
                         if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
@@ -294,6 +309,79 @@
                     }
                 });
             }
+
+            // ----- FORGOT PASSWORD -----
+            const forgotLink = document.getElementById('forgotPasswordLink');
+            const forgotModal = document.getElementById('forgotPasswordModal');
+            const forgotForm = document.getElementById('forgotPasswordForm');
+            const forgotMessage = document.getElementById('forgotPasswordMessage');
+
+            if (forgotLink) {
+                forgotLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (forgotModal) {
+                        forgotModal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+            }
+
+            window.closeForgotPasswordModal = function() {
+                if (forgotModal) {
+                    forgotModal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+                if (forgotMessage) forgotMessage.textContent = '';
+            };
+
+            if (forgotForm) {
+                forgotForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const email = document.getElementById('forgotPasswordEmail').value.trim();
+                    if (!email) {
+                        forgotMessage.textContent = '⚠️ Please enter your email.';
+                        forgotMessage.style.color = '#ffa502';
+                        return;
+                    }
+                    if (window.DB) {
+                        const admins = window.DB.getAdmins();
+                        const exists = admins.some(a => a.email === email);
+                        if (exists) {
+                            forgotMessage.textContent = '✅ Password reset link sent to ' + email + ' (Demo)';
+                            forgotMessage.style.color = 'var(--accent)';
+                            setTimeout(function() {
+                                closeForgotPasswordModal();
+                            }, 3000);
+                        } else {
+                            forgotMessage.textContent = '❌ Email not found in our records.';
+                            forgotMessage.style.color = '#ff4757';
+                        }
+                    } else {
+                        if (email === 'lakshyalamba72@gmail.com') {
+                            forgotMessage.textContent = '✅ Password reset link sent (Demo)';
+                            forgotMessage.style.color = 'var(--accent)';
+                            setTimeout(function() {
+                                closeForgotPasswordModal();
+                            }, 3000);
+                        } else {
+                            forgotMessage.textContent = '❌ Email not found.';
+                            forgotMessage.style.color = '#ff4757';
+                        }
+                    }
+                });
+            }
+
+            if (forgotModal) {
+                forgotModal.addEventListener('click', function(e) {
+                    if (e.target === this) closeForgotPasswordModal();
+                });
+            }
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeForgotPasswordModal();
+                    closeConfirmModal();
+                }
+            });
         });
     </script>
 
